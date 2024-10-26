@@ -5,6 +5,13 @@ This project processes data from multiple source tables and stores it in final t
 ## Data Flow Diagram
 
 ```mermaid
+---
+config:
+  look: handDrawn
+  theme: forest
+  layout: dagre
+---
+
 graph LR
     %% Source tables
     A1["FNTB_Voyage_Port_Call"] --> B1["Z_PBI_Schedule_Leg"]
@@ -35,3 +42,12 @@ graph LR
     B6["CTE_NF"] --> D1
     B7["CTE_DA"] --> D1
     B8["CTE_Intermodal"] --> D1
+
+
+
+    %% Applicare il colore giallo a ciascun nodo
+    style B1 fill:#FFFF99,stroke:#333,stroke-width:1px
+    style B2 fill:#FFFF99,stroke:#333,stroke-width:1px
+    style D1 fill:#FFFF99,stroke:#333,stroke-width:1px
+    style B3 fill:#FFFF99,stroke:#333,stroke-width:1px
+    style B4 fill:#FFFF99,stroke:#333,stroke-width:1px
