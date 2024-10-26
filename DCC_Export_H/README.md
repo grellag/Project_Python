@@ -5,7 +5,7 @@ This project processes data from multiple source tables and stores it in final t
 ## Data Flow Diagram
 
 ```mermaid
-graph TD
+graph LR
     %% Source tables
     A1["FNTB_Voyage_Port_Call"] --> B1["Z_PBI_Schedule_Leg"]
     A2["FNTB_Schedule_Leg"] --> B1
