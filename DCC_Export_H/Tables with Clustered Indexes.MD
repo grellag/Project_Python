@@ -4,7 +4,7 @@
 
 ```mermaid
 erDiagram
-    Z_PBI_Equipment_Event_H {
+    #Z_PBI_Equipment_Event_H {
         int Process_id
         int Eq_Cycle_id
         int Voyage_Port_Call_id
@@ -38,16 +38,18 @@ erDiagram
         varchar EDI_Filename
         varchar Rail_Truck
         varchar Rail_Truck_ID
-        
-        idx_ZPE_Equipment_Event_Cycle_Booking_H (Eq_Cycle_id, EC_Booking_Number, Equipment_Number)
-        idx_ZPE_Equipment_Event_Type_Date_H (EventType, Event_Date, Event_Time)
     }
+    note for #Z_PBI_Equipment_Event_H
+        Indici:
+        - idx_ZPE_Equipment_Event_Cycle_Booking_H (Eq_Cycle_id, EC_Booking_Number, Equipment_Number)
+        - idx_ZPE_Equipment_Event_Type_Date_H (EventType, Event_Date, Event_Time)
+    end note
 
     PBI_DCC_Export_H_Cache_temp {
         
     }
 
-    TempScheduleLegCTE_H {
+    #TempScheduleLegCTE_H {
         int Process_id
         int Schedule_Leg_id
         datetime Local_or_Global_Arrival_DateTime
@@ -57,11 +59,13 @@ erDiagram
         datetime Commercial_Arrival_Time
         varchar GVA_DocService
         varchar Ownership_Type
-        
-        idx_TempScheduleLegCTE_H_schedule_leg_id (Schedule_Leg_id)
-        idx_TempCSCCTE_H (schedule_leg_id)
     }
+    note for #TempScheduleLegCTE_H
+        Indici:
+        - idx_TempScheduleLegCTE_H_schedule_leg_id (Schedule_Leg_id)
+        - idx_TempCSCCTE_H (schedule_leg_id)
+    end note
 
-    TempCSCCTE_H {
+    #TempCSCCTE_H {
         
     }
