@@ -27,6 +27,21 @@ graph LR
     A11["FNTB_HSCodes_By_Cargo_Shipment_Container"] --> B7["CTE_DA"]
     A12["FNTB_ContainerSmart_ByContainer"] --> B8["CTE_Intermodal"]
 
+    %% Multi-line label on the connection arrow
+    A13["PBI_Charge_Lenavi_MEDLOG"] -->|"""OWN \n
+    TRI \n
+    ONC \n
+    PRE \n
+    CUC \n
+    RCP \n
+    HVP \n
+    STO \n"""| B2["PBI_Vessel_Reconciliation_temp"]
+
+    %% Multi-line label on the connection arrow
+    A14["FNTB_Voyage_Port_Call(0, 12)"] -->|"""Ownership Type \n
+    Commercial Arrival Time """| B2["PBI_Vessel_Reconciliation_temp"]
+
+
     %% Function tables (intermediate processing)
     C1["OVAVREC_FNTB_CSC_Hazardous_Info"] --> B2
     C2["FNTB_SecUser"] --> B3
