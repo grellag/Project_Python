@@ -4,7 +4,7 @@
 
 ```mermaid
 erDiagram
-    #Z_PBI_Equipment_Event_H {
+    Z_PBI_Equipment_Event_H {
         int Process_id
         int Eq_Cycle_id
         int Voyage_Port_Call_id
@@ -39,7 +39,7 @@ erDiagram
         varchar Rail_Truck
         varchar Rail_Truck_ID
     }
-    note for #Z_PBI_Equipment_Event_H
+    note for Z_PBI_Equipment_Event_H
         Indici:
         - idx_ZPE_Equipment_Event_Cycle_Booking_H (Eq_Cycle_id, EC_Booking_Number, Equipment_Number)
         - idx_ZPE_Equipment_Event_Type_Date_H (EventType, Event_Date, Event_Time)
@@ -49,7 +49,7 @@ erDiagram
         
     }
 
-    #TempScheduleLegCTE_H {
+    TempScheduleLegCTE_H {
         int Process_id
         int Schedule_Leg_id
         datetime Local_or_Global_Arrival_DateTime
@@ -66,6 +66,6 @@ erDiagram
         - idx_TempCSCCTE_H (schedule_leg_id)
     end note
 
-    #TempCSCCTE_H {
+    TempCSCCTE_H {
         
     }
