@@ -4,7 +4,7 @@
 
 ```mermaid
 erDiagram
-    #Z_PBI_Equipment_Event_H {
+    Z_PBI_Equipment_Event_H {
         int Process_id
         int Eq_Cycle_id
         int Voyage_Port_Call_id
@@ -47,7 +47,7 @@ erDiagram
         
     }
 
-    #TempScheduleLegCTE_H {
+    TempScheduleLegCTE_H {
         int Process_id
         int Schedule_Leg_id
         datetime Local_or_Global_Arrival_DateTime
@@ -62,6 +62,6 @@ erDiagram
         idx_TempCSCCTE_H (schedule_leg_id)
     }
 
-    #TempCSCCTE_H {
+    TempCSCCTE_H {
         
     }
