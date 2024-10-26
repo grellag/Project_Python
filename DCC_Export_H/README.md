@@ -1,6 +1,6 @@
-# Project Documentation
+# DCC Export Historical Documentation
 
-This project processes data from multiple source tables and stores it in final tables.
+This project processes data from multiple source tables and stores it in a .
 
 ## Data Flow Diagram
 
