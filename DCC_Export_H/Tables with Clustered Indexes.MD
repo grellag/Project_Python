@@ -39,11 +39,9 @@ erDiagram
         varchar Rail_Truck
         varchar Rail_Truck_ID
     }
-    note for Z_PBI_Equipment_Event_H
-        Indici:
-        - idx_ZPE_Equipment_Event_Cycle_Booking_H (Eq_Cycle_id, EC_Booking_Number, Equipment_Number)
-        - idx_ZPE_Equipment_Event_Type_Date_H (EventType, Event_Date, Event_Time)
-    end note
+    %% Indici:
+    %% - idx_ZPE_Equipment_Event_Cycle_Booking_H (Eq_Cycle_id, EC_Booking_Number, Equipment_Number)
+    %% - idx_ZPE_Equipment_Event_Type_Date_H (EventType, Event_Date, Event_Time)
 
     PBI_DCC_Export_H_Cache_temp {
         
@@ -60,11 +58,9 @@ erDiagram
         varchar GVA_DocService
         varchar Ownership_Type
     }
-    note for #TempScheduleLegCTE_H
-        Indici:
-        - idx_TempScheduleLegCTE_H_schedule_leg_id (Schedule_Leg_id)
-        - idx_TempCSCCTE_H (schedule_leg_id)
-    end note
+    %% Indici:
+    %% - idx_TempScheduleLegCTE_H_schedule_leg_id (Schedule_Leg_id)
+    %% - idx_TempCSCCTE_H (schedule_leg_id)
 
     TempCSCCTE_H {
         
