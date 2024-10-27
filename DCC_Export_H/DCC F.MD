@@ -32,6 +32,7 @@ flowchart LR
     DCC_Export_DOC_Date_Time["DCC_Export_DOC_Date_Time"]
     Bill_Of_Lading["Bill_Of_Lading"]
     FNTB_Schedule_Leg_TSPorts["FNTB_Schedule_Leg_TSPorts(null)"]
+    FNTB_Schedule_Leg_TS_ETA_ETD_Cache["FNTB_Schedule_Leg_TS_ETA_ETD_Cache()"]
     Cargo_Container_Transship["Cargo_Container_Transship"]
 
 
@@ -43,6 +44,7 @@ flowchart LR
     OVAVREC_FNTB_CSC_Hazardous_Info -->|Update 18 colonne usando Cargo_Shipment_Container_id| PBI_Vessel_Reconciliation_temp
     Bill_Of_Lading -->|Update 9 colonne usando Bill_Of_Lading_id| PBI_Vessel_Reconciliation_temp
     FNTB_Schedule_Leg_TSPorts -->|Update 4 colonne usando Schedule_Leg_id se Transship=S| PBI_Vessel_Reconciliation_temp
+    FNTB_Schedule_Leg_TS_ETA_ETD_Cache -->|Update 11 colonne usando Schedule_Leg_id se Transship=S| PBI_Vessel_Reconciliation_temp
     Cargo_Container_Transship -->|Update 13 colonne usando Cargo_Container_id se Transship=D| PBI_Vessel_Reconciliation_temp
 
 %% Relazioni di update
@@ -52,9 +54,10 @@ DCC_Export_DOC_Date_Time -->|Aggiorna . . . | PBI_Vessel_Reconciliation_temp
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
 Interlink_DFeed90 -->|Aggiorna dati| OVAVREC_FNTB_CSC_Hazardous_Info
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Schedule_Leg_TSPorts(null)
+Interlink_DFeed90  -->|Importa dati| FNTB_Schedule_Leg_TS_ETA_ETD_Cache()
 Interlink_Main90 -->|Importa dati| DOC_DATE_TIME
 Interlink_Main90 -->|Importa dati| BL_CHARGE_TEXT
-Interlink_Main90 -->|Importa dati| Bill_Of_Lading
+
 Interlink_Main90 -->|Importa dati| Cargo_Container_Transship
 Interlink_Main90 -->|Importa dati| Bill_Of_Lading
 
