@@ -27,10 +27,13 @@ flowchart LR
 
     %% Funzioni e database di aggiornamento
     FNTB_Container_Last_Event["FNTB_Container_Last_Event()"]
-    OVAVREC_FNTB_CSC_Hazardous_Info["OVAVREC_FNTB_CSC_Hazardous_Info( )"]
+    OVAVREC_FNTB_CSC_Hazardous_Info["OVAVREC_FNTB_CSC_Hazardous_Info()"]
     DCC_Export_FTC["DCC_Export_FTC"]
     DCC_Export_DOC_Date_Time["DCC_Export_DOC_Date_Time"]
     Bill_Of_Lading["Bill_Of_Lading"]
+    FNTB_Schedule_Leg_TSPorts["FNTB_Schedule_Leg_TSPorts(null)"]
+    Cargo_Container_Transship["Cargo_Container_Transship"]
+
 
     %% Flusso dei dati e join
     TempScheduleLegCTE -->|Join usando idx_TempScheduleLegCTE_schedule_leg_id su Schedule_Leg_id| PBI_Vessel_Reconciliation_temp
@@ -38,7 +41,9 @@ flowchart LR
     Z_PBI_Equipment_Event -->|Update usando idx_Z_PBI_Equipment_Event su Event_Id e Equipment_Id| PBI_Vessel_Reconciliation_temp
     TempChargeData -->|Update usando idx_TempChargeData su Cargo_Shipment_Container_id| PBI_Vessel_Reconciliation_temp
     OVAVREC_FNTB_CSC_Hazardous_Info -->|Update 18 colonne usando Cargo_Shipment_Container_id| PBI_Vessel_Reconciliation_temp
-    Bill_Of_Lading -->|Update 9 colonne usando Bill_Of_Lading_id_id| PBI_Vessel_Reconciliation_temp
+    Bill_Of_Lading -->|Update 9 colonne usando Bill_Of_Lading_id| PBI_Vessel_Reconciliation_temp
+    FNTB_Schedule_Leg_TSPorts -->|Update 4 colonne usando Schedule_Leg_id se Transship=S| PBI_Vessel_Reconciliation_temp
+    Cargo_Container_Transship -->|Update 13 colonne usando Cargo_Container_id se Transship=D| PBI_Vessel_Reconciliation_temp
 
 %% Relazioni di update
 FNTB_Container_Last_Event -->|Aggiorna Last Event Date, Last Event DateTime, Last Event Type, Last Event Description| PBI_Vessel_Reconciliation_temp
@@ -46,9 +51,13 @@ DCC_Export_FTC -->|Aggiorna . . . | PBI_Vessel_Reconciliation_temp
 DCC_Export_DOC_Date_Time -->|Aggiorna . . . | PBI_Vessel_Reconciliation_temp
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
 Interlink_DFeed90 -->|Aggiorna dati| OVAVREC_FNTB_CSC_Hazardous_Info
+Interlink_DFeed90 -->|Aggiorna dati| FNTB_Schedule_Leg_TSPorts(null)
 Interlink_Main90 -->|Importa dati| DOC_DATE_TIME
 Interlink_Main90 -->|Importa dati| BL_CHARGE_TEXT
 Interlink_Main90 -->|Importa dati| Bill_Of_Lading
+Interlink_Main90 -->|Importa dati| Cargo_Container_Transship
+Interlink_Main90 -->|Importa dati| Bill_Of_Lading
+
 BL_CHARGE_TEXT -->|Importa dati| DCC_Export_FTC
 DOC_DATE_TIME -->|Importa dati| DCC_Export_DOC_Date_Time
 SP_PBI_DCC_Export_Schedule_Leg_Cache -->|Import Data| TempScheduleLegCTE:::stored_proc
