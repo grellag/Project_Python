@@ -35,10 +35,10 @@ flowchart TD
 FNTB_Container_Last_Event -->|Aggiorna Last Event Date, Last Event DateTime, Last Event Type, Last Event Description| PBI_Vessel_Reconciliation_temp
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
 SP_PBI_DCC_Export_Schedule_Leg_Cache -->|Import Data| TempScheduleLegCTE:::stored_proc
-Job_PBI_Export_ScheduleLeg -->|Refresh Data| SP_PBI_DCC_Export_Schedule_Leg_Cache:::job
+Job_PBI_Export_ScheduleLeg -->|Refresh Data (Dalle 07:00 AM, ogni 15 minuti)| SP_PBI_DCC_Export_Schedule_Leg_Cache:::job
 SP_PBI_Build_BK_BL_CSC_Export_Cache -->|Import Data| TempCSCCTE:::stored_proc
-Job_PBI_Export_CSC -->|Refresh Data| SP_PBI_Build_BK_BL_CSC_Export_Cache:::job
+Job_PBI_Export_CSC -->|Refresh Data (Dalle 07:00 AM, ogni 15 minuti)| SP_PBI_Build_BK_BL_CSC_Export_Cache:::job
 SP_PBI_Equipment_Event_EQ_Events -->|Import Data| Z_PBI_Equipment_Event:::stored_proc
-Job_PBI_Trasporti_Eq_Events -->|Refresh Data| SP_PBI_Equipment_Event_EQ_Events:::job
+Job_PBI_Trasporti_Eq_Events -->|Refresh Data (Dalle 07:00 AM, ogni 15 minuti)| SP_PBI_Equipment_Event_EQ_Events:::job
 SP_PBI_Build_Charge_Lenavi_MEDLOG -->|Import Data| TempChargeData:::stored_proc
-Job_PBI_Charge_ALL -->|Refresh Data| SP_PBI_Build_Charge_Lenavi_MEDLOG:::job
+Job_PBI_Charge_ALL -->|Refresh Data (Dalle 10:00 AM, ogni 2 ore)| SP_PBI_Build_Charge_Lenavi_MEDLOG:::job
