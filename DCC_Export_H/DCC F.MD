@@ -10,11 +10,16 @@ config:
   layout: dagre
 ---
 flowchart TD
+    %% Definizione delle classi di stile
+    classDef tempTable fill:#f9f,stroke:#333,stroke-width:4px
+    classDef job fill:#bbf,stroke:#333,stroke-width:4px
+    classDef stored_proc fill:#bfb,stroke:#333,stroke-width:4px
+
     %% Tabelle temporanee e principali
-    TempScheduleLegCTE["#TempScheduleLegCTE\nIndice Clustered: idx_TempScheduleLegCTE_schedule_leg_id\nColonna: Schedule_Leg_id"]
-    TempCSCCTE["#TempCSCCTE\nIndice Clustered: idx_TempCSCCTE\nColonna: Schedule_Leg_id"]
-    Z_PBI_Equipment_Event["#Z_PBI_Equipment_Event\nIndice Clustered: idx_Z_PBI_Equipment_Event\nColonne: Event_Id, Equipment_Id"]
-    PBI_Vessel_Reconciliation_temp["LeNavi_LOCAL.dbo.PBI_Vessel_Reconciliation_temp\nIndice Clustered: PK_PBI_Vessel_Reconciliation_temp\nColonna: ID"]
+    TempScheduleLegCTE["#TempScheduleLegCTE"]:::tempTable
+    TempCSCCTE["#TempCSCCTE"]:::tempTable
+    Z_PBI_Equipment_Event["#Z_PBI_Equipment_Event"]:::tempTable
+    PBI_Vessel_Reconciliation_temp["PBI_Vessel_Reconciliation_temp"]:::tempTable
 
     %% Funzioni e database di aggiornamento
     FNTB_Container_Last_Event["FNTB_Container_Last_Event() - da Interlink_DFeed90"]
@@ -27,3 +32,7 @@ flowchart TD
 %% Relazioni di update
 FNTB_Container_Last_Event -->|Aggiorna Last Event Date, Last Event DateTime, Last Event Type, Last Event Description| PBI_Vessel_Reconciliation_temp
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
+SP_PBI_DCC_Export_Schedule_Leg_Cache -->|Import Data| TempScheduleLegCTE:::stored_proc
+Job_PBI_Export_ScheduleLeg -->|Refresh Data| SP_PBI_DCC_Export_Schedule_Leg_Cache:::job
+SP_PBI_Build_BK_BL_CSC_Export_Cache -->|Import Data| TempCSCCTE:::stored_proc
+Job_PBI_Export_CSC -->|Refresh Data| SP_PBI_Build_BK_BL_CSC_Export_Cache:::job
