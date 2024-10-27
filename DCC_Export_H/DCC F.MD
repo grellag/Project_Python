@@ -31,8 +31,8 @@ flowchart LR
     DCC_Export_FTC["DCC_Export_FTC"]
     DCC_Export_DOC_Date_Time["DCC_Export_DOC_Date_Time"]
     Bill_Of_Lading["Bill_Of_Lading"]
-    FNTB_Schedule_Leg_TSPorts["FNTB_Schedule_Leg_TSPorts(null)"]
-    FNTB_Schedule_Leg_TS_ETA_ETD_Cache["FNTB_Schedule_Leg_TS_ETA_ETD_Cache(null)"]
+    FNTB_Schedule_Leg_TSPorts["FNTB_Schedule_Leg_TSPorts()"]
+    FNTB_Schedule_Leg_TS_ETA_ETD_Cache["FNTB_Schedule_Leg_TS_ETA_ETD_Cache()"]
     Cargo_Container_Transship["Cargo_Container_Transship"]
 
 
