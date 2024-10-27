@@ -47,10 +47,11 @@ flowchart LR
     FNTB_Schedule_Leg_TS_ETA_ETD_Cache -->|Update 11 colonne usando Schedule_Leg_id se Transship=S| PBI_Vessel_Reconciliation_temp
     Cargo_Container_Transship -->|Update 13 colonne usando Cargo_Container_id se Transship=D| PBI_Vessel_Reconciliation_temp
 
+
 %% Relazioni di update
 FNTB_Container_Last_Event -->|Aggiorna Last Event Date, Last Event DateTime, Last Event Type, Last Event Description| PBI_Vessel_Reconciliation_temp
 DCC_Export_FTC -->|Aggiorna . . . | PBI_Vessel_Reconciliation_temp
-DCC_Export_DOC_Date_Time -->|Aggiorna . . . | PBI_Vessel_Reconciliation_temp
+DCC_Export_DOC_Date_Time -->|Aggiorna 5 colonne: Originals_Last_Set_Printed_Date as OBL_PRINTED + EXPORT_DOC_TO_CASHIER + CASHIER_RECEIVED_FROM_EXPORT + OBL_SENT_TO_CUSTOMER + BL_TELEX_RELEASE_date | PBI_Vessel_Reconciliation_temp
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
 Interlink_DFeed90 -->|Aggiorna dati| OVAVREC_FNTB_CSC_Hazardous_Info
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Schedule_Leg_TSPorts
