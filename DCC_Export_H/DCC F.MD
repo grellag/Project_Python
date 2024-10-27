@@ -50,7 +50,7 @@ flowchart LR
 
 %% Relazioni di update
 FNTB_Container_Last_Event -->|Aggiorna Last Event Date, Last Event DateTime, Last Event Type, Last Event Description| PBI_Vessel_Reconciliation_temp
-DCC_Export_FTC -->|Aggiorna . . . | PBI_Vessel_Reconciliation_temp
+DCC_Export_FTC -->|Aggiorna FTC_Flag = 1 | PBI_Vessel_Reconciliation_temp
 DCC_Export_DOC_Date_Time -->|Aggiorna 5 colonne: Originals_Last_Set_Printed_Date as OBL_PRINTED + EXPORT_DOC_TO_CASHIER + CASHIER_RECEIVED_FROM_EXPORT + OBL_SENT_TO_CUSTOMER + BL_TELEX_RELEASE_date | PBI_Vessel_Reconciliation_temp
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
 Interlink_DFeed90 -->|Aggiorna dati| OVAVREC_FNTB_CSC_Hazardous_Info
