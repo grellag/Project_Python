@@ -1,4 +1,4 @@
-# Flusso dei Dati PBI_Vessel_Reconciliation
+# Flusso Dati DCC Export Live
 
 Questo diagramma mostra il flusso dei dati per aggiornare la tabella `PBI_Vessel_Reconciliation` con relazioni tra le tabelle, incluso l'uso degli indici, delle join e della funzione `FNTB_Container_Last_Event()`.
 
@@ -9,11 +9,14 @@ config:
   theme: forest
   layout: dagre
 ---
-flowchart TD
+flowchart LR
     %% Definizione delle classi di stile
     classDef tempTable fill:#f9f,stroke:#333,stroke-width:4px
     classDef job fill:#bbf,stroke:#333,stroke-width:4px
+    classDef job_refresh fill:#ffb,stroke:#333,stroke-width:4px
+    classDef job_name fill:#bff,stroke:#333,stroke-width:4px
     classDef stored_proc fill:#bfb,stroke:#333,stroke-width:4px
+
 
     %% Tabelle temporanee e principali
     TempScheduleLegCTE["#TempScheduleLegCTE"]:::tempTable
@@ -35,10 +38,10 @@ flowchart TD
 FNTB_Container_Last_Event -->|Aggiorna Last Event Date, Last Event DateTime, Last Event Type, Last Event Description| PBI_Vessel_Reconciliation_temp
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
 SP_PBI_DCC_Export_Schedule_Leg_Cache -->|Import Data| TempScheduleLegCTE:::stored_proc
-Job_PBI_Export_ScheduleLeg -->|Refresh Data: dalle 07:00 AM, ogni 10 minuti| SP_PBI_DCC_Export_Schedule_Leg_Cache:::job
+Job_PBI_Export_ScheduleLeg:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 10 minuti| SP_PBI_DCC_Export_Schedule_Leg_Cache:::job_refresh
 SP_PBI_Build_BK_BL_CSC_Export_Cache -->|Import Data| TempCSCCTE:::stored_proc
-Job_PBI_Export_CSC -->|Refresh Data: dalle 07:00 AM, ogni 15 minuti| SP_PBI_Build_BK_BL_CSC_Export_Cache:::job
+Job_PBI_Export_CSC:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 15 minuti| SP_PBI_Build_BK_BL_CSC_Export_Cache:::job_refresh
 SP_PBI_Equipment_Event_EQ_Events -->|Import Data| Z_PBI_Equipment_Event:::stored_proc
-Job_PBI_Trasporti_Eq_Events -->|Refresh Data: dalle 07:00 AM, ogni 15 minuti| SP_PBI_Equipment_Event_EQ_Events:::job
+Job_PBI_Trasporti_Eq_Events:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 15 minuti| SP_PBI_Equipment_Event_EQ_Events:::job_refresh
 SP_PBI_Build_Charge_Lenavi_MEDLOG -->|Import Data| TempChargeData:::stored_proc
-Job_PBI_Charge_ALL -->|Refresh Data: dalle 10:00 AM, ogni 2 ore| SP_PBI_Build_Charge_Lenavi_MEDLOG:::job
+Job_PBI_Charge_ALL:::job_name -->|Refresh Data: dalle 10:00 AM, ogni 2 ore| SP_PBI_Build_Charge_Lenavi_MEDLOG:::job_refresh
