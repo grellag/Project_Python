@@ -27,6 +27,7 @@ flowchart LR
 
     %% Funzioni e database di aggiornamento
     FNTB_Container_Last_Event["FNTB_Container_Last_Event()"]
+    OVAVREC_FNTB_CSC_Hazardous_Info["OVAVREC_FNTB_CSC_Hazardous_Info( )"]
     DCC_Export_FTC["DCC_Export_FTC"]
     DCC_Export_DOC_Date_Time["DCC_Export_DOC_Date_Time"]
 
@@ -35,12 +36,14 @@ flowchart LR
     TempCSCCTE -->|Join usando idx_TempCSCCTE su Schedule_Leg_id| PBI_Vessel_Reconciliation_temp
     Z_PBI_Equipment_Event -->|Update usando idx_Z_PBI_Equipment_Event su Event_Id e Equipment_Id| PBI_Vessel_Reconciliation_temp
     TempChargeData -->|Update usando idx_TempChargeData su Cargo_Shipment_Container_id| PBI_Vessel_Reconciliation_temp
+    OVAVREC_FNTB_CSC_Hazardous_Info -->|Update 18 colonne usando Cargo_Shipment_Container_id| PBI_Vessel_Reconciliation_temp
 
 %% Relazioni di update
 FNTB_Container_Last_Event -->|Aggiorna Last Event Date, Last Event DateTime, Last Event Type, Last Event Description| PBI_Vessel_Reconciliation_temp
 DCC_Export_FTC -->|Aggiorna . . . | PBI_Vessel_Reconciliation_temp
 DCC_Export_DOC_Date_Time -->|Aggiorna . . . | PBI_Vessel_Reconciliation_temp
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
+Interlink_DFeed90 -->|Aggiorna dati| OVAVREC_FNTB_CSC_Hazardous_Info
 Interlink_Main90 -->|Importa dati| DOC_DATE_TIME
 Interlink_Main90 -->|Importa dati| BL_CHARGE_TEXT
 BL_CHARGE_TEXT -->|Importa dati| DCC_Export_FTC
