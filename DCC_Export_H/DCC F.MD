@@ -32,7 +32,7 @@ flowchart LR
     DCC_Export_DOC_Date_Time["DCC_Export_DOC_Date_Time"]
     Bill_Of_Lading["Bill_Of_Lading"]
     FNTB_Schedule_Leg_TSPorts["FNTB_Schedule_Leg_TSPorts(null)"]
-    FNTB_Schedule_Leg_TS_ETA_ETD_Cache["FNTB_Schedule_Leg_TS_ETA_ETD_Cache()"]
+    FNTB_Schedule_Leg_TS_ETA_ETD_Cache["FNTB_Schedule_Leg_TS_ETA_ETD_Cache(null)"]
     Cargo_Container_Transship["Cargo_Container_Transship"]
 
 
@@ -54,7 +54,7 @@ DCC_Export_DOC_Date_Time -->|Aggiorna . . . | PBI_Vessel_Reconciliation_temp
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
 Interlink_DFeed90 -->|Aggiorna dati| OVAVREC_FNTB_CSC_Hazardous_Info
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Schedule_Leg_TSPorts(null)
-Interlink_DFeed90  -->|Importa dati| FNTB_Schedule_Leg_TS_ETA_ETD_Cache()
+Interlink_DFeed90 -->|Importa dati| FNTB_Schedule_Leg_TS_ETA_ETD_Cache(null)
 Interlink_Main90 -->|Importa dati| DOC_DATE_TIME
 Interlink_Main90 -->|Importa dati| BL_CHARGE_TEXT
 
