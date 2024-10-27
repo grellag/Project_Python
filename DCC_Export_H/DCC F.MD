@@ -41,4 +41,4 @@ Job_PBI_Export_CSC -->|Refresh Data| SP_PBI_Build_BK_BL_CSC_Export_Cache:::job
 SP_PBI_Equipment_Event_EQ_Events -->|Import Data| Z_PBI_Equipment_Event:::stored_proc
 Job_PBI_Trasporti_Eq_Events -->|Refresh Data| SP_PBI_Equipment_Event_EQ_Events:::job
 SP_PBI_Build_Charge_Lenavi_MEDLOG -->|Import Data| Z_PBI_Equipment_Event:::stored_proc
-Job_PBI_Charge_ALL -->|Refresh Data| SP_PBI_Equipment_Event_EQ_Events:::job
+Job_PBI_Charge_ALL -->|Refresh Data| SP_PBI_Build_Charge_Lenavi_MEDLOG:::job
