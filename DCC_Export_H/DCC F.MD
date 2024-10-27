@@ -24,6 +24,6 @@ flowchart TD
     TempCSCCTE -->|Join usando idx_TempCSCCTE su Schedule_Leg_id| PBI_Vessel_Reconciliation_temp
     Z_PBI_Equipment_Event -->|Update usando idx_Z_PBI_Equipment_Event su Event_Id e Equipment_Id| PBI_Vessel_Reconciliation_temp
 
-    %% Relazioni di update
-    FNTB_Container_Last_Event -->|Aggiorna dati| PBI_Vessel_Reconciliation_temp
-    Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
+%% Relazioni di update
+FNTB_Container_Last_Event -->|Aggiorna Last Event Date, Last Event DateTime, Last Event Type, Last Event Description| PBI_Vessel_Reconciliation_temp
+Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
