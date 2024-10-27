@@ -26,7 +26,9 @@ flowchart LR
     PBI_Vessel_Reconciliation_temp["PBI_Vessel_Reconciliation_temp"]:::tempTable
 
     %% Funzioni e database di aggiornamento
-    FNTB_Container_Last_Event["FNTB_Container_Last_Event() - da Interlink_DFeed90"]
+    FNTB_Container_Last_Event["FNTB_Container_Last_Event()"]
+    DCC_Export_FTC["DCC_Export_FTC"]
+    DCC_Export_DOC_Date_Time["DCC_Export_DOC_Date_Time"]
 
     %% Flusso dei dati e join
     TempScheduleLegCTE -->|Join usando idx_TempScheduleLegCTE_schedule_leg_id su Schedule_Leg_id| PBI_Vessel_Reconciliation_temp
@@ -36,7 +38,13 @@ flowchart LR
 
 %% Relazioni di update
 FNTB_Container_Last_Event -->|Aggiorna Last Event Date, Last Event DateTime, Last Event Type, Last Event Description| PBI_Vessel_Reconciliation_temp
+DCC_Export_FTC -->|Aggiorna . . . | PBI_Vessel_Reconciliation_temp
+DCC_Export_DOC_Date_Time -->|Aggiorna . . . | PBI_Vessel_Reconciliation_temp
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
+Interlink_Main90 -->|Importa dati| DOC_DATE_TIME
+Interlink_Main90 -->|Importa dati| BL_CHARGE_TEXT
+BL_CHARGE_TEXT -->|Importa dati| DCC_Export_FTC
+DOC_DATE_TIME -->|Importa dati| DCC_Export_DOC_Date_Time
 SP_PBI_DCC_Export_Schedule_Leg_Cache -->|Import Data| TempScheduleLegCTE:::stored_proc
 Job_PBI_Export_ScheduleLeg:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 10 minuti| SP_PBI_DCC_Export_Schedule_Leg_Cache:::job_refresh
 SP_PBI_Build_BK_BL_CSC_Export_Cache -->|Import Data| TempCSCCTE:::stored_proc
