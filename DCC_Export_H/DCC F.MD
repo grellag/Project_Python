@@ -58,6 +58,7 @@ DCC_Export_DOC_Date_Time -->|Aggiorna 5 colonne: Originals_Last_Set_Printed_Date
 DCC_Payment_Term -->|Aggiorna Deferred_Payment_613, Deferred_Payment_fob, Inv_Company_Address_613, Inv_Company_Address_fob, Inv_Company_Address_id_613, Inv_Company_Address_id_fob, Payment_Type_613 | PBI_Vessel_Reconciliation_temp
 #VGMInfoTemp -->|Aggiorna 28 colonne | PBI_Vessel_Reconciliation_temp
 PBI_DCC_Export_Planner -->|Aggiorna 10 colonne | PBI_Vessel_Reconciliation_temp
+PBI_DCC_Export_H_Cache_final -->|Aggiorna 550 colonne | PBI_Vessel_Reconciliation_temp
 
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
 Interlink_DFeed90 -->|Aggiorna dati| OVAVREC_FNTB_CSC_Hazardous_Info
@@ -90,10 +91,13 @@ Job_PBI_Payment_Term:::job_name -->|Refresh Data: dalle 07:30 AM, ogni 40 minuti
 SP_PBI_BL_List_by_freight_debtor -->|Import Data| DCC_Payment_Term:::stored_proc
 
 Job_PBI_VGM_Info:::job_name -->|Refresh Data: dalle 06:55 AM, ogni 15 minuti| SP_PBI_Vessel_Reconciliation_CSC_VGM:::job_refresh
-get_Planner_NextPOD_CT -->|Import Data| #VGMInfoTemp:::stored_proc
+SP_PBI_Vessel_Reconciliation_CSC_VGM -->|Import Data| #VGMInfoTemp:::stored_proc
 
 Job_PBI_Planner:::job_name -->|Refresh Data: dalle 06:55 AM, ogni 15 minuti| get_Planner_NextPOD_CT:::job_refresh
 get_Planner_NextPOD_CT -->|Import Data| PBI_DCC_Export_Planner:::stored_proc
 
+Job_PBI_Planner:::job_name -->|Refresh Data: dalle 06:55 AM, ogni 15 minuti| SP_PBI_DCC_EXPORT_H_Cache_Final:::job_refresh
+SP_PBI_DCC_EXPORT_H_Cache_Final -->|Import Data| PBI_DCC_Export_H_Cache_vw:::stored_proc
+PBI_DCC_Export_H_Cache_vw -->|Importa dati| PBI_DCC_Export_H_Cache_final_temp
 
-
+PBI_DCC_Export_H_Cache_final_temp -->|Rename Table| PBI_DCC_Export_H_Cache_final
