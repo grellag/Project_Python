@@ -56,6 +56,7 @@ flowchart LR
 FNTB_Container_Last_Event -->|Aggiorna Last Event Date, Last Event DateTime, Last Event Type, Last Event Description| PBI_Vessel_Reconciliation_temp
 DCC_Export_FTC -->|Aggiorna FTC_Flag = 1 | PBI_Vessel_Reconciliation_temp
 DCC_Export_DOC_Date_Time -->|Aggiorna 5 colonne: Originals_Last_Set_Printed_Date as OBL_PRINTED + EXPORT_DOC_TO_CASHIER + CASHIER_RECEIVED_FROM_EXPORT + OBL_SENT_TO_CUSTOMER + BL_TELEX_RELEASE_date | PBI_Vessel_Reconciliation_temp
+DCC_Payment_Term -->|Aggiorna Deferred_Payment_613, Deferred_Payment_fob, Inv_Company_Address_613, Inv_Company_Address_fob, Inv_Company_Address_id_613, Inv_Company_Address_id_fob, Payment_Type_613 | PBI_Vessel_Reconciliation_temp
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
 Interlink_DFeed90 -->|Aggiorna dati| OVAVREC_FNTB_CSC_Hazardous_Info
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Schedule_Leg_TSPorts
@@ -78,3 +79,5 @@ SP_PBI_Equipment_Event_EQ_Events -->|Import Data| Z_PBI_Equipment_Event:::stored
 Job_PBI_Trasporti_Eq_Events:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 15 minuti| SP_PBI_Equipment_Event_EQ_Events:::job_refresh
 SP_PBI_Build_Charge_Lenavi_MEDLOG -->|Import Data| TempChargeData:::stored_proc
 Job_PBI_Charge_ALL:::job_name -->|Refresh Data: dalle 10:00 AM, ogni 2 ore| SP_PBI_Build_Charge_Lenavi_MEDLOG:::job_refresh
+SP_PBI_BL_List_by_freight_debtor -->|Import Data| PBI_BL_List_by_freight_debtor:::stored_proc
+Job_PBI_Payment_Term:::job_name -->|Refresh Data: dalle 07:30 AM, ogni 40 minuti| SP_PBI_BL_List_by_freight_debtor:::job_refresh
