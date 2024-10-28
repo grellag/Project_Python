@@ -79,5 +79,5 @@ SP_PBI_Equipment_Event_EQ_Events -->|Import Data| Z_PBI_Equipment_Event:::stored
 Job_PBI_Trasporti_Eq_Events:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 15 minuti| SP_PBI_Equipment_Event_EQ_Events:::job_refresh
 SP_PBI_Build_Charge_Lenavi_MEDLOG -->|Import Data| TempChargeData:::stored_proc
 Job_PBI_Charge_ALL:::job_name -->|Refresh Data: dalle 10:00 AM, ogni 2 ore| SP_PBI_Build_Charge_Lenavi_MEDLOG:::job_refresh
-SP_PBI_BL_List_by_freight_debtor -->|Import Data| PBI_BL_List_by_freight_debtor:::stored_proc
+SP_PBI_BL_List_by_freight_debtor -->|Import Data| DCC_Payment_Term:::stored_proc
 Job_PBI_Payment_Term:::job_name -->|Refresh Data: dalle 07:30 AM, ogni 40 minuti| SP_PBI_BL_List_by_freight_debtor:::job_refresh
