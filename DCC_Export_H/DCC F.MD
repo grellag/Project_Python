@@ -34,6 +34,8 @@ flowchart LR
     FNTB_Schedule_Leg_TSPorts["FNTB_Schedule_Leg_TSPorts()"]
     FNTB_Schedule_Leg_TS_ETA_ETD_Cache["FNTB_Schedule_Leg_TS_ETA_ETD_Cache()"]
     Cargo_Container_Transship["Cargo_Container_Transship"]
+    Casp_File_7_Container["Casp_File_7_Container"]
+    Casp_File_7["Casp_File_7"] 
 
 
     %% Flusso dei dati e join
@@ -43,6 +45,8 @@ flowchart LR
     TempChargeData -->|Update usando idx_TempChargeData su Cargo_Shipment_Container_id| PBI_Vessel_Reconciliation_temp
     OVAVREC_FNTB_CSC_Hazardous_Info -->|Update 18 colonne usando Cargo_Shipment_Container_id| PBI_Vessel_Reconciliation_temp
     Bill_Of_Lading -->|Update 9 colonne usando Bill_Of_Lading_id| PBI_Vessel_Reconciliation_temp
+    Casp_File_7 -->|Update 8 colonne OBLX usando Cargo_Shipment_Container_id| PBI_Vessel_Reconciliation_temp
+    Casp_File_7_Container -->|Update 8 colonne OBLX usando Cargo_Shipment_Container_id| PBI_Vessel_Reconciliation_temp
     FNTB_Schedule_Leg_TSPorts -->|Update 4 colonne usando Schedule_Leg_id se Transship=S| PBI_Vessel_Reconciliation_temp
     FNTB_Schedule_Leg_TS_ETA_ETD_Cache -->|Update 11 colonne usando Schedule_Leg_id se Transship=S| PBI_Vessel_Reconciliation_temp
     Cargo_Container_Transship -->|Update 13 colonne usando Cargo_Container_id se Transship=D| PBI_Vessel_Reconciliation_temp
@@ -61,6 +65,8 @@ Interlink_Main90 -->|Importa dati| BL_CHARGE_TEXT
 
 Interlink_Main90 -->|Importa dati| Cargo_Container_Transship
 Interlink_Main90 -->|Importa dati| Bill_Of_Lading
+Interlink_Main90 -->|Importa dati| Casp_File_7
+Interlink_Main90 -->|Importa dati| Casp_File_7_Container
 
 BL_CHARGE_TEXT -->|Importa dati| DCC_Export_FTC
 DOC_DATE_TIME -->|Importa dati| DCC_Export_DOC_Date_Time
