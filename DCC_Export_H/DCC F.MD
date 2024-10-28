@@ -17,7 +17,6 @@ flowchart LR
     classDef job_name fill:#bff,stroke:#333,stroke-width:4px
     classDef stored_proc fill:#bfb,stroke:#333,stroke-width:4px
 
-
     %% Tabelle temporanee e principali
     TempScheduleLegCTE["#TempScheduleLegCTE"]:::tempTable
     TempCSCCTE["#TempCSCCTE"]:::tempTable
@@ -58,6 +57,8 @@ DCC_Export_FTC -->|Aggiorna FTC_Flag = 1 | PBI_Vessel_Reconciliation_temp
 DCC_Export_DOC_Date_Time -->|Aggiorna 5 colonne: Originals_Last_Set_Printed_Date as OBL_PRINTED + EXPORT_DOC_TO_CASHIER + CASHIER_RECEIVED_FROM_EXPORT + OBL_SENT_TO_CUSTOMER + BL_TELEX_RELEASE_date | PBI_Vessel_Reconciliation_temp
 DCC_Payment_Term -->|Aggiorna Deferred_Payment_613, Deferred_Payment_fob, Inv_Company_Address_613, Inv_Company_Address_fob, Inv_Company_Address_id_613, Inv_Company_Address_id_fob, Payment_Type_613 | PBI_Vessel_Reconciliation_temp
 #VGMInfoTemp -->|Aggiorna 28 colonne | PBI_Vessel_Reconciliation_temp
+PBI_DCC_Export_Planner -->|Aggiorna 10 colonne | PBI_Vessel_Reconciliation_temp
+
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Container_Last_Event
 Interlink_DFeed90 -->|Aggiorna dati| OVAVREC_FNTB_CSC_Hazardous_Info
 Interlink_DFeed90 -->|Aggiorna dati| FNTB_Schedule_Leg_TSPorts
@@ -72,17 +73,27 @@ Interlink_Main90 -->|Importa dati| Casp_File_7_Container
 
 BL_CHARGE_TEXT -->|Importa dati| DCC_Export_FTC
 DOC_DATE_TIME -->|Importa dati| DCC_Export_DOC_Date_Time
-SP_PBI_DCC_Export_Schedule_Leg_Cache -->|Import Data| TempScheduleLegCTE:::stored_proc
-Job_PBI_Export_ScheduleLeg:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 10 minuti| SP_PBI_DCC_Export_Schedule_Leg_Cache:::job_refresh
-SP_PBI_Build_BK_BL_CSC_Export_Cache -->|Import Data| TempCSCCTE:::stored_proc
-Job_PBI_Export_CSC:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 15 minuti| SP_PBI_Build_BK_BL_CSC_Export_Cache:::job_refresh
-SP_PBI_Equipment_Event_EQ_Events -->|Import Data| Z_PBI_Equipment_Event:::stored_proc
-Job_PBI_Trasporti_Eq_Events:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 15 minuti| SP_PBI_Equipment_Event_EQ_Events:::job_refresh
-SP_PBI_Build_Charge_Lenavi_MEDLOG -->|Import Data| TempChargeData:::stored_proc
-Job_PBI_Charge_ALL:::job_name -->|Refresh Data: dalle 10:00 AM, ogni 2 ore| SP_PBI_Build_Charge_Lenavi_MEDLOG:::job_refresh
-SP_PBI_BL_List_by_freight_debtor -->|Import Data| DCC_Payment_Term:::stored_proc
-Job_PBI_Payment_Term:::job_name -->|Refresh Data: dalle 07:30 AM, ogni 40 minuti| SP_PBI_BL_List_by_freight_debtor:::job_refresh
 
-SP_PBI_Vessel_Reconciliation_CSC_VGM -->|Import Data| #VGMInfoTemp:::stored_proc
+Job_PBI_Export_ScheduleLeg:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 10 minuti| SP_PBI_DCC_Export_Schedule_Leg_Cache:::job_refresh
+SP_PBI_DCC_Export_Schedule_Leg_Cache -->|Import Data| TempScheduleLegCTE:::stored_proc
+
+Job_PBI_Export_CSC:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 15 minuti| SP_PBI_Build_BK_BL_CSC_Export_Cache:::job_refresh
+SP_PBI_Build_BK_BL_CSC_Export_Cache -->|Import Data| TempCSCCTE:::stored_proc
+
+Job_PBI_Trasporti_Eq_Events:::job_name -->|Refresh Data: dalle 07:00 AM, ogni 15 minuti| SP_PBI_Equipment_Event_EQ_Events:::job_refresh
+SP_PBI_Equipment_Event_EQ_Events -->|Import Data| Z_PBI_Equipment_Event:::stored_proc
+
+Job_PBI_Charge_ALL:::job_name -->|Refresh Data: dalle 10:00 AM, ogni 2 ore| SP_PBI_Build_Charge_Lenavi_MEDLOG:::job_refresh
+SP_PBI_Build_Charge_Lenavi_MEDLOG -->|Import Data| TempChargeData:::stored_proc
+
+Job_PBI_Payment_Term:::job_name -->|Refresh Data: dalle 07:30 AM, ogni 40 minuti| SP_PBI_BL_List_by_freight_debtor:::job_refresh
+SP_PBI_BL_List_by_freight_debtor -->|Import Data| DCC_Payment_Term:::stored_proc
+
 Job_PBI_VGM_Info:::job_name -->|Refresh Data: dalle 06:55 AM, ogni 15 minuti| SP_PBI_Vessel_Reconciliation_CSC_VGM:::job_refresh
+get_Planner_NextPOD_CT -->|Import Data| #VGMInfoTemp:::stored_proc
+
+Job_PBI_Planner:::job_name -->|Refresh Data: dalle 06:55 AM, ogni 15 minuti| get_Planner_NextPOD_CT:::job_refresh
+get_Planner_NextPOD_CT -->|Import Data| PBI_DCC_Export_Planner:::stored_proc
+
+
 
