@@ -1,3 +1,6 @@
+# Diagramma di Controllo Documentazione
+
+```mermaid
 graph TB
     classDef boundary fill:#FFEBCD,stroke:#333,stroke-width:2px;
 
@@ -21,4 +24,3 @@ graph TB
     MSCLink -->|Data Feed| PowerBI
     SharePoint -->|Data Feed| PowerBI
     BarcodeReader -->|Data Feed| PowerBI
-
