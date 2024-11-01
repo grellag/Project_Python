@@ -1,4 +1,4 @@
-# Diagramma della Documentation Control Console
+# Diagramma della 'Documentation Control Console'
 
 ```mermaid
 flowchart TB
