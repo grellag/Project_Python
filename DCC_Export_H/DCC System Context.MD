@@ -1,12 +1,13 @@
-# Diagramma della 'Documentation Control Console'
+# Documentation Control Diagrams
+
+## Context Diagram
 
 ```mermaid
 flowchart TB
-    classDef departmentColor fill:#FFD700,stroke:#333,stroke-width:2px;  %% Top color
-    classDef dccColor fill:#8AC6D1,stroke:#333,stroke-width:2px;         %% Center color
-    classDef dataSourceColor fill:#FF6347,stroke:#333,stroke-width:2px;  %% Bottom color
+    classDef departmentColor fill:#FFD700,stroke:#333,stroke-width:2px;
+    classDef dccColor fill:#8AC6D1,stroke:#333,stroke-width:2px;
+    classDef dataSourceColor fill:#FF6347,stroke:#333,stroke-width:2px;
 
-    %% Departments (Top)
     subgraph Departments ["Departments"]
         direction TB
         Accounting["Accounting Department"]:::departmentColor
@@ -16,11 +17,10 @@ flowchart TB
         PortOperationsOffice["Port Operations Office"]:::departmentColor
     end
 
-    %% Central DCC Node with link to Container Diagram section
-    click DCC "##Container-Diagram" "Go to Container Diagram"
+    %% Central DCC Node with link to Container Diagram file
+    click DCC "./DCC Container Diagram.md" "Go to Container Diagram"
     DCC["Documentation Control Console (DCC)"]:::dccColor
 
-    %% Data Sources (Bottom)
     subgraph DataSources ["Data Sources"]
         direction TB
         MSCLink["MSCLink System"]:::dataSourceColor
@@ -28,10 +28,7 @@ flowchart TB
         BarcodeReader["Barcode Reading Tools"]:::dataSourceColor
     end
 
-    %% Connections with Dashed Lines (No Arrows)
     Departments -->|Accesses Reports| DCC
     DCC -.->|Data Feed| MSCLink
     DCC -.->|Data Feed| SharePoint
     DCC -.->|Data Feed| BarcodeReader
-
-
