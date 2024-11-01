@@ -1,28 +1,42 @@
 # Diagramma di Controllo Documentazione
 
 ```mermaid
-graph TB
+flowchart TB
     classDef boundary fill:#FFEBCD,stroke:#333,stroke-width:2px;
 
-    subgraph "Documentation Control Console (Power BI)"
-        class PowerBI fill:#8AC6D1,stroke:#333,stroke-width:2px;
-        PowerBI["Documentation Control Console (Power BI)"]
+    %% Central DCC Node
+    DCC["Documentation Control Console (DCC)"]:::central
+
+    %% Departments (Top)
+    Accounting["Accounting Department"] -->|Accesses Reports| DCC
+    ExportCommercials["Export Commercials"] -->|Accesses Reports| DCC
+    FreightCashier["Freight Cashier"] -->|Accesses Reports| DCC
+    DocumentationOffice["Documentation Office"] -->|Accesses Reports| DCC
+    PortOperationsOffice["Port Operations Office"] -->|Accesses Reports| DCC
+
+    %% Data Sources (Bottom)
+    MSCLink["MSCLink System"] -->|Data Feed| DCC
+    SharePoint["SharePoint Folders (Excel Files)"] -->|Data Feed| DCC
+    BarcodeReader["Barcode Reading Tools"] -->|Data Feed| DCC
+
+    %% Layout Adjustments for Top/Bottom Positioning
+    subgraph Top[" "]
+        direction TB
+        Accounting
+        ExportCommercials
+        FreightCashier
+        DocumentationOffice
+        PortOperationsOffice
     end
 
-    Accounting[Accounting Department] -->|Accesses Reports| PowerBI
-    ExportCommercials[Export Commercials] -->|Accesses Reports| PowerBI
-    FreightCashier[Freight Cashier] -->|Accesses Reports| PowerBI
-    DocumentationOffice[Documentation Office] -->|Accesses Reports| PowerBI
-    PortOperationsOffice[Port Operations Office] -->|Accesses Reports| PowerBI
-
-    subgraph boundary ["Data Sources"]
-        MSCLink[MSCLink System]
-        SharePoint["SharePoint Folders (Excel Files)"]
-        BarcodeReader[Barcode Reading Tools]
+    subgraph Bottom[" "]
+        direction TB
+        MSCLink
+        SharePoint
+        BarcodeReader
     end
 
-    MSCLink -->|Data Feed| PowerBI
-    SharePoint -->|Data Feed| PowerBI
-    BarcodeReader -->|Data Feed| PowerBI
+    class DCC fill:#8AC6D1,stroke:#333,stroke-width:2px;
+
 
 
