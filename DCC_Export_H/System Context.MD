@@ -27,8 +27,8 @@ flowchart TB
         BarcodeReader["Barcode Reading Tools"]:::dataSourceColor
     end
 
-    %% Connections with Custom Arrow Directions
+    %% Connections with Forced Direction
     Departments -->|Accesses Reports| DCC
-    MSCLink -->|Data Feed| DCC
-    SharePoint -->|Data Feed| DCC
-    BarcodeReader -->|Data Feed| DCC
+    MSCLink -.->|Data Feed| DCC
+    SharePoint -.->|Data Feed| DCC
+    BarcodeReader -.->|Data Feed| DCC
