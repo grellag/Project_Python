@@ -23,7 +23,7 @@ flowchart TB
     subgraph DataSources ["Data Sources"]
         direction TB
         MSCLink["MSCLink System"]:::dataSourceColor
-        SharePoint["SharePoint Folders (Excel Files)"]:::dataSourceColor
+        SharePoint["SharePoint (Excel Files)"]:::dataSourceColor
         BarcodeReader["Barcode Reading Tools"]:::dataSourceColor
     end
 
