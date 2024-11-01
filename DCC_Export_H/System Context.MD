@@ -17,11 +17,12 @@ graph TB
 
     subgraph boundary ["Data Sources"]
         MSCLink[MSCLink System]
-        SharePoint[SharePoint Folders (Excel Files)]
+        SharePoint["SharePoint Folders (Excel Files)"]
         BarcodeReader[Barcode Reading Tools]
     end
 
     MSCLink -->|Data Feed| PowerBI
     SharePoint -->|Data Feed| PowerBI
     BarcodeReader -->|Data Feed| PowerBI
+
 
