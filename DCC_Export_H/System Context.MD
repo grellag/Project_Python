@@ -1,4 +1,4 @@
-# Diagramma di Controllo Documentazione
+# Diagramma della Documentation Control Console
 
 ```mermaid
 flowchart TB
@@ -17,7 +17,7 @@ flowchart TB
     end
 
     %% Central DCC Node
-    DCC["Documentation Control Console (DCC)"]:::dccColor
+    DCC["DCC"]:::dccColor
 
     %% Data Sources (Bottom)
     subgraph DataSources ["Data Sources"]
