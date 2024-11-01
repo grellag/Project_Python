@@ -1,0 +1,22 @@
+```markdown
+## Container Diagram
+
+```mermaid
+flowchart TB
+    classDef containerColor fill:#8AC6D1,stroke:#333,stroke-width:2px;
+    classDef serviceColor fill:#B0E0E6,stroke:#333,stroke-width:2px;
+    classDef databaseColor fill:#FFD700,stroke:#333,stroke-width:2px;
+
+    subgraph DCC["Documentation Control Console (DCC)"]
+        direction TB
+        PowerBI["Power BI Service"]:::serviceColor
+        SQLDB["SQL Database"]:::databaseColor
+        APIGateway["API Gateway"]:::serviceColor
+        BarcodeService["Barcode Service"]:::serviceColor
+        FileStorage["SharePoint Storage"]:::databaseColor
+    end
+
+    PowerBI -->|Data Query| SQLDB
+    PowerBI -->|Fetch Data| APIGateway
+    APIGateway -->|Retrieve Barcode| BarcodeService
+    APIGateway -->|Access Files| FileStorage
