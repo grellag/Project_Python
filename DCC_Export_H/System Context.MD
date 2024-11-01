@@ -1,39 +1,42 @@
 # Diagramma di Controllo Documentazione
 
 ```mermaid
-graph TB
+# Diagramma di Controllo Documentazione
+
+```mermaid
+flowchart TB
     classDef boundary fill:#FFEBCD,stroke:#333,stroke-width:2px;
 
-    %% Define departments at the top
-    subgraph "Departments"
-        direction LR
-        Accounting["Accounting Department"]
-        ExportCommercials["Export Commercials"]
-        FreightCashier["Freight Cashier"]
-        DocumentationOffice["Documentation Office"]
-        PortOperationsOffice["Port Operations Office"]
-    end
-
-    %% Center the Documentation Control Console (DCC)
-    classDef central fill:#8AC6D1,stroke:#333,stroke-width:2px;
+    %% Central DCC Node
     DCC["Documentation Control Console (DCC)"]:::central
 
-    %% Define data sources at the bottom
-    subgraph boundary ["Data Sources"]
-        direction LR
-        MSCLink["MSCLink System"]
-        SharePoint["SharePoint Folders (Excel Files)"]
-        BarcodeReader["Barcode Reading Tools"]
+    %% Departments (Top)
+    Accounting["Accounting Department"] -->|Accesses Reports| DCC
+    ExportCommercials["Export Commercials"] -->|Accesses Reports| DCC
+    FreightCashier["Freight Cashier"] -->|Accesses Reports| DCC
+    DocumentationOffice["Documentation Office"] -->|Accesses Reports| DCC
+    PortOperationsOffice["Port Operations Office"] -->|Accesses Reports| DCC
+
+    %% Data Sources (Bottom)
+    MSCLink["MSCLink System"] -->|Data Feed| DCC
+    SharePoint["SharePoint Folders (Excel Files)"] -->|Data Feed| DCC
+    BarcodeReader["Barcode Reading Tools"] -->|Data Feed| DCC
+
+    %% Layout Adjustments for Top/Bottom Positioning
+    subgraph Top[" "]
+        direction TB
+        Accounting
+        ExportCommercials
+        FreightCashier
+        DocumentationOffice
+        PortOperationsOffice
     end
 
-    %% Connections from departments to DCC
-    Accounting -->|Accesses Reports| DCC
-    ExportCommercials -->|Accesses Reports| DCC
-    FreightCashier -->|Accesses Reports| DCC
-    DocumentationOffice -->|Accesses Reports| DCC
-    PortOperationsOffice -->|Accesses Reports| DCC
+    subgraph Bottom[" "]
+        direction TB
+        MSCLink
+        SharePoint
+        BarcodeReader
+    end
 
-    %% Connections from data sources to DCC
-    MSCLink -->|Data Feed| DCC
-    SharePoint -->|Data Feed| DCC
-    BarcodeReader -->|Data Feed| DCC
+    class DCC fill:#8AC6D1,stroke:#333,stroke-width:2px;
