@@ -5,6 +5,7 @@ flowchart TB
     classDef departmentColor fill:#FFD700,stroke:#333,stroke-width:2px;  %% Top color
     classDef dccColor fill:#8AC6D1,stroke:#333,stroke-width:2px;         %% Center color
     classDef dataSourceColor fill:#FF6347,stroke:#333,stroke-width:2px;  %% Bottom color
+    classDef invis stroke-width:0px,fill:none;
 
     %% Departments (Top)
     subgraph Departments ["Departments"]
@@ -27,8 +28,12 @@ flowchart TB
         BarcodeReader["Barcode Reading Tools"]:::dataSourceColor
     end
 
-    %% Connections with Forced Direction
+    %% Invisible Node to Bridge Layout Without Affecting Positioning
+    invisConnector[ ]:::invis
+
+    %% Connections with Layout Constraints
     Departments -->|Accesses Reports| DCC
-    MSCLink -.->|Data Feed| DCC
-    SharePoint -.->|Data Feed| DCC
-    BarcodeReader -.->|Data Feed| DCC
+    MSCLink -->|Data Feed| invisConnector
+    SharePoint -->|Data Feed| invisConnector
+    BarcodeReader -->|Data Feed| invisConnector
+    invisConnector --> DCC
