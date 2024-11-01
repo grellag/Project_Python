@@ -6,7 +6,7 @@ graph TB
 
     subgraph "Documentation Control Console (Power BI)"
         class PowerBI fill:#8AC6D1,stroke:#333,stroke-width:2px;
-        PowerBI[Documentation Control Console (Power BI)]
+        PowerBI["Documentation Control Console (Power BI)"]
     end
 
     Accounting[Accounting Department] -->|Accesses Reports| PowerBI
@@ -24,3 +24,4 @@ graph TB
     MSCLink -->|Data Feed| PowerBI
     SharePoint -->|Data Feed| PowerBI
     BarcodeReader -->|Data Feed| PowerBI
+
