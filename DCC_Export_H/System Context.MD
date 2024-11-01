@@ -1,9 +1,6 @@
 # Diagramma di Controllo Documentazione
 
 ```mermaid
-# Diagramma di Controllo Documentazione
-
-```mermaid
 flowchart TB
     classDef boundary fill:#FFEBCD,stroke:#333,stroke-width:2px;
 
