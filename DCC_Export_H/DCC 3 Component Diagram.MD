@@ -1,4 +1,4 @@
-### Structured Diagram with Jobs, Stored Procedures, Containers, and Final DCC Container with Aligned Height
+### Structured Diagram with Jobs, Stored Procedures, Containers, and Final DCC Container with Red Arrows for Step Sequence
 
 ```mermaid
 flowchart LR
@@ -54,19 +54,17 @@ flowchart LR
     %% Final DCC Container in the fourth column with placeholder nodes
     subgraph FINAL_DCC_COLUMN["Final DCC Container"]
         direction TB
-        empty0[" "]:::invisible
         empty1[" "]:::invisible
         empty2[" "]:::invisible
         empty3[" "]:::invisible
         empty4[" "]:::invisible
-            %% Central DCC Node with clickable link to Container Diagram file
-        click DCC "./DCC 1 System Context.MD" "Go to Container Diagram"
-        DCC["Documentation Control Console (DCC)"]:::dccColor
         empty5[" "]:::invisible
         empty6[" "]:::invisible
         empty7[" "]:::invisible
         empty8[" "]:::invisible
-        empty9[" "]:::invisible
+        %% Central DCC Node with clickable link to Container Diagram file
+        click DCC "./DCC Container Diagram.md" "Go to Container Diagram"
+        DCC["Documentation Control Console (DCC)"]:::dccColor
     end
 
     %% Horizontal connections from Jobs to Stored Procedures to Containers
@@ -80,15 +78,24 @@ flowchart LR
     PaymentTermsJob --> PaymentTermsSP --> PaymentTermsContainer
     HazardousJob --> HazardousSP --> HazardousInfoContainer
 
-    %% Vertical connections between Containers for the sequence flow
-    ScheduleLegContainer --> DocumentsContainer
-    DocumentsContainer --> DeadlineContainer
-    DeadlineContainer --> ShippingInstructionsContainer
-    ShippingInstructionsContainer --> ExportEventsContainer
-    ExportEventsContainer --> TransportEventsContainer
-    TransportEventsContainer --> ChargesContainer
-    ChargesContainer --> PaymentTermsContainer
-    PaymentTermsContainer --> HazardousInfoContainer
+    %% Vertical connections between Containers for the sequence flow with red arrows
+    ScheduleLegContainer -->|Sequence| DocumentsContainer
+    DocumentsContainer -->|Sequence| DeadlineContainer
+    DeadlineContainer -->|Sequence| ShippingInstructionsContainer
+    ShippingInstructionsContainer -->|Sequence| ExportEventsContainer
+    ExportEventsContainer -->|Sequence| TransportEventsContainer
+    TransportEventsContainer -->|Sequence| ChargesContainer
+    ChargesContainer -->|Sequence| PaymentTermsContainer
+    PaymentTermsContainer -->|Sequence| HazardousInfoContainer
+    HazardousInfoContainer -->|Sequence| DCC
 
-    %% Connection from the last container to the final DCC container
-    HazardousInfoContainer --> DCC
+    %% Set the link style to red for each container-to-container connection
+    linkStyle 10 stroke:#FF0000,stroke-width:2px;
+    linkStyle 11 stroke:#FF0000,stroke-width:2px;
+    linkStyle 12 stroke:#FF0000,stroke-width:2px;
+    linkStyle 13 stroke:#FF0000,stroke-width:2px;
+    linkStyle 14 stroke:#FF0000,stroke-width:2px;
+    linkStyle 15 stroke:#FF0000,stroke-width:2px;
+    linkStyle 16 stroke:#FF0000,stroke-width:2px;
+    linkStyle 17 stroke:#FF0000,stroke-width:2px;
+    linkStyle 18 stroke:#FF0000,stroke-width:2px;
