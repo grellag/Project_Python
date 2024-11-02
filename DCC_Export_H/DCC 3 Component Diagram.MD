@@ -60,7 +60,7 @@ flowchart LR
         empty3[" "]:::invisible
         empty4[" "]:::invisible
             %% Central DCC Node with clickable link to Container Diagram file
-        click DCC "./DCC Container Diagram.md" "Go to Container Diagram"
+        click DCC "./DCC 1 System Context.MD" "Go to Container Diagram"
         DCC["Documentation Control Console (DCC)"]:::dccColor
         empty5[" "]:::invisible
         empty6[" "]:::invisible
