@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3.js Treemap</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        .node {
+            font: 10px sans-serif;
+            text-anchor: middle;
+        }
+        .node rect {
+            fill: none;
+            stroke: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<div id="treemap"></div>
+
+<script>
+    const data = {
+        name: "DCC",
+        children: [
+            { name: "Schedule Leg Vessel", value: 100 },
+            { name: "Documenti Container Export", value: 80 },
+            { name: "Deadline Vessel", value: 60 },
+            { name: "Shipping Instructions", value: 40 },
+            { name: "Eventi Container Export", value: 30 },
+            { name: "Eventi Trasporto Export", value: 20 },
+            { name: "Charges Container", value: 10 },
+            { name: "Termini di Pagamento Cliente", value: 15 },
+            { name: "Informazioni Merce Pericolosa", value: 5 }
+        ]
+    };
+
+    const width = 800;
+    const height = 500;
+
+    const treemapLayout = d3.treemap()
+        .size([width, height])
+        .padding(2);
+
+    const root = d3.hierarchy(data)
+        .sum(d => d.value);
+
+    treemapLayout(root);
+
+    const nodes = d3.select("#treemap")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .selectAll("g")
+        .data(root.descendants())
+        .enter()
+        .append("g")
+        .attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+    nodes.append("rect")
+        .attr("width", d => d.x1 - d.x0)
+        .attr("height", d => d.y1 - d.y0)
+        .attr("fill", "#8AC6D1");
+
+    nodes.append("text")
+        .attr("dx", 4)
+        .attr("dy", 14)
+        .text(d => d.children ? null : d.data.name);
+</script>
+
+</body>
+</html>

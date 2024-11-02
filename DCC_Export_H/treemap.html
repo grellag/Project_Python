@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3.js Treemap with Gradient Background and Arrows</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        #treemap {
+            font-size: 12px;
+            background: linear-gradient(0deg, #f0f8ff, #8AC6D1); /* Light to dark gradient */
+            padding: 10px;
+        }
+        .node rect {
+            fill: #8AC6D1;
+            stroke: #333;
+            stroke-width: 1px;
+        }
+        .node text {
+            pointer-events: none;
+            fill: #333;
+        }
+        .arrow {
+            stroke: #333;
+            stroke-width: 1px;
+            marker-end: url(#arrowhead); /* Reference the arrowhead marker */
+        }
+    </style>
+</head>
+<body>
+
+<div id="treemap"></div>
+
+<script>
+    const data = {
+        name: "DCC",
+        children: [
+            { name: "Schedule Leg Vessel", value: 100 },
+            { name: "Documenti Container Export", value: 80 },
+            { name: "Deadline Vessel", value: 60 },
+            { name: "Shipping Instructions", value: 40 },
+            { name: "Eventi Container Export", value: 30 },
+            { name: "Eventi Trasporto Export", value: 20 },
+            { name: "Charges Container", value: 10 },
+            { name: "Termini di Pagamento Cliente", value: 15 },
+            { name: "Informazioni Merce Pericolosa", value: 5 }
+        ]
+    };
+
+    const width = 800;
+    const height = 500;
+
+    const treemapLayout = d3.treemap()
+        .size([width, height])
+        .padding(2);
+
+    const root = d3.hierarchy(data)
+        .sum(d => d.value);
+
+    treemapLayout(root);
+
+    const svg = d3.select("#treemap")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    // Define an arrowhead marker
+    svg.append("defs").append("marker")
+        .attr("id", "arrowhead")
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 10)
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+        .append("path")
+        .attr("d", "M0,-5L10,0L0,5")
+        .attr("fill", "#333");
+
+    const nodes = svg.selectAll("g")
+        .data(root.descendants())
+        .enter()
+        .append("g")
+        .attr("class", "node")
+        .attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+    nodes.append("rect")
+        .attr("width", d => d.x1 - d.x0)
+        .attr("height", d => d.y1 - d.y0);
+
+    nodes.append("text")
+        .attr("dx", 4)
+        .attr("dy", 14)
+        .text(d => d.children ? null : d.data.name);
+
+    // Add arrows for each node except the last one
+    const descendants = root.descendants();
+    for (let i = 0; i < descendants.length - 1; i++) {
+        const d = descendants[i];
+        const next = descendants[i + 1];
+        
+        svg.append("line")
+            .attr("class", "arrow")
+            .attr("x1", d.x0 + (d.x1 - d.x0) / 2)
+            .attr("y1", d.y1)
+            .attr("x2", next.x0 + (next.x1 - next.x0) / 2)
+            .attr("y2", next.y0)
+            .attr("stroke", "#333")
+            .attr("stroke-width", 1)
+            .attr("marker-end", "url(#arrowhead)");
+    }
+</script>
+
+</body>
+</html>
+
