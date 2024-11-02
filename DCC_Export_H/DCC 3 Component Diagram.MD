@@ -1,6 +1,12 @@
 ### Structured Diagram with a Single Red Arrow between "Schedule Leg Vessel" and "Documenti Container Export"
 
 ```mermaid
+---
+config:
+  look: handDrawn
+  theme: forest
+  layout: dagre
+---
 flowchart LR
     %% Define styles for components
     classDef jobStyle fill:#FFD700,stroke:#333,stroke-width:1px;
