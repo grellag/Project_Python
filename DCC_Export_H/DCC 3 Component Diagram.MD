@@ -1,4 +1,4 @@
-### Structured Diagram with Jobs, Stored Procedures, and Containers Aligned in Separate Columns
+### Structured Diagram with Jobs, Stored Procedures, Containers, and Final DCC Container with Aligned Height
 
 ```mermaid
 flowchart LR
@@ -6,8 +6,10 @@ flowchart LR
     classDef jobStyle fill:#FFD700,stroke:#333,stroke-width:1px;
     classDef spStyle fill:#87CEEB,stroke:#333,stroke-width:1px;
     classDef containerStyle fill:#8AC6D1,stroke:#333,stroke-width:1px;
+    classDef dccColor fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef invisible fill:transparent,stroke:none;
 
-    %% Jobs in the left column
+    %% Jobs in the first column
     subgraph JOBS_COLUMN["Jobs"]
         direction TB
         ScheduleLegJob["Job_DCC_EXP_ScheduleLeg"]:::jobStyle
@@ -21,7 +23,7 @@ flowchart LR
         HazardousJob["Job_DCC_EXP_Haz"]:::jobStyle
     end
 
-    %% Stored Procedures in the middle column
+    %% Stored Procedures in the second column
     subgraph SPS_COLUMN["Stored Procedures"]
         direction TB
         ScheduleLegSP["SP_PBI_DCC_Exp_Schedule_Leg_Cache"]:::spStyle
@@ -35,7 +37,7 @@ flowchart LR
         HazardousSP["SP_PBI_DCC_Exp_Transport_Cache"]:::spStyle
     end
 
-    %% Containers in the right column
+    %% Data Enrichment Containers in the third column
     subgraph CONTAINERS_COLUMN["Data Enrichment Steps"]
         direction TB
         ScheduleLegContainer["Schedule Leg Vessel"]:::containerStyle
@@ -47,6 +49,24 @@ flowchart LR
         ChargesContainer["Charges Container"]:::containerStyle
         PaymentTermsContainer["Termini di Pagamento Cliente"]:::containerStyle
         HazardousInfoContainer["Informazioni Merce Pericolosa"]:::containerStyle
+    end
+
+    %% Final DCC Container in the fourth column with placeholder nodes
+    subgraph FINAL_DCC_COLUMN["Final DCC Container"]
+        direction TB
+        empty0[" "]:::invisible
+        empty1[" "]:::invisible
+        empty2[" "]:::invisible
+        empty3[" "]:::invisible
+        empty4[" "]:::invisible
+            %% Central DCC Node with clickable link to Container Diagram file
+        click DCC "./DCC Container Diagram.md" "Go to Container Diagram"
+        DCC["Documentation Control Console (DCC)"]:::dccColor
+        empty5[" "]:::invisible
+        empty6[" "]:::invisible
+        empty7[" "]:::invisible
+        empty8[" "]:::invisible
+        empty9[" "]:::invisible
     end
 
     %% Horizontal connections from Jobs to Stored Procedures to Containers
@@ -69,3 +89,6 @@ flowchart LR
     TransportEventsContainer --> ChargesContainer
     ChargesContainer --> PaymentTermsContainer
     PaymentTermsContainer --> HazardousInfoContainer
+
+    %% Connection from the last container to the final DCC container
+    HazardousInfoContainer --> DCC
