@@ -1,4 +1,4 @@
-### Component Diagram with Jobs, Stored Procedures, and Final DCC Container
+### Structured Diagram with a Single Red Arrow between "Schedule Leg Vessel" and "Documenti Container Export"
 
 ```mermaid
 flowchart LR
@@ -89,6 +89,14 @@ flowchart LR
     TransportEventsContainer --> ChargesContainer
     ChargesContainer --> PaymentTermsContainer
     PaymentTermsContainer --> HazardousInfoContainer
-
-    %% Connection from the last container to the final DCC container
     HazardousInfoContainer --> DCC
+
+    %% Set only the first container-to-container link style to red
+    linkStyle 18 stroke:#FF0000,stroke-width:4px;
+    linkStyle 19 stroke:#FF0000,stroke-width:4px;
+    linkStyle 20 stroke:#FF0000,stroke-width:4px;
+    linkStyle 21 stroke:#FF0000,stroke-width:4px;
+    linkStyle 22 stroke:#FF0000,stroke-width:4px;
+    linkStyle 23 stroke:#FF0000,stroke-width:4px;
+    linkStyle 24 stroke:#FF0000,stroke-width:4px;
+    linkStyle 25 stroke:#FF0000,stroke-width:4px;
