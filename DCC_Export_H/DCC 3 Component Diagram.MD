@@ -8,6 +8,10 @@ flowchart LR
     classDef containerStyle fill:#8AC6D1,stroke:#333,stroke-width:1px;
     classDef dccColor fill:#FFA07A,stroke:#333,stroke-width:2px;
     classDef invisible fill:transparent,stroke:none;
+    
+    classDef redLink stroke:#FF0000,stroke-width:2px;
+
+
 
     %% Jobs in the first column
     subgraph JOBS_COLUMN["Jobs"]
@@ -91,12 +95,4 @@ flowchart LR
     PaymentTermsContainer --> HazardousInfoContainer
     HazardousInfoContainer --> DCC
 
-    %% Set only the first container-to-container link style to red
-    linkStyle 18 stroke:#FF0000,stroke-width:4px;
-    linkStyle 19 stroke:#FF0000,stroke-width:4px;
-    linkStyle 20 stroke:#FF0000,stroke-width:4px;
-    linkStyle 21 stroke:#FF0000,stroke-width:4px;
-    linkStyle 22 stroke:#FF0000,stroke-width:4px;
-    linkStyle 23 stroke:#FF0000,stroke-width:4px;
-    linkStyle 24 stroke:#FF0000,stroke-width:4px;
-    linkStyle 25 stroke:#FF0000,stroke-width:4px;
+
