@@ -17,6 +17,7 @@
   }
 
   /* Colori personalizzati per i nodi */
+  .node-start { fill: #4CAF50; } /* Verde per il primo nodo */
   .node-default { fill: #F9D371; } /* Giallo chiaro */
   .node-special { fill: #FF6347; } /* Rosso arancio per DCC */
 </style>
@@ -29,7 +30,7 @@
 
 <script>
   const nodes = [
-    { id: "Schedule", label: "Schedule Leg by Vessel/Voyage" },
+    { id: "Schedule", label: "Schedule Leg by Vessel/Voyage", class: "node-start" }, // Primo nodo in verde
     { id: "Documents", label: "CSC Document" },
     { id: "Deadlines", label: "Deadline Vessel/Voyage" },
     { id: "ShippingInstructions", label: "Shipping Instructions" },
@@ -38,9 +39,10 @@
     { id: "Charges", label: "CSC Charges" },
     { id: "PaymentTerms", label: "Termini di Pagamento Cliente" },
     { id: "DangerousGoods", label: "CSC Info Hazardous" },
-    { id: "DCC", label: "Documentation Control Console (DCC)" },
+    { id: "DCC", label: "Documentation Control Console (DCC)", class: "node-special" }, // Nodo finale in rosso
   ];
 
+  // Collegamenti modificati per includere DCC nel flusso circolare
   const links = [
     { source: "Schedule", target: "Documents" },
     { source: "Documents", target: "Deadlines" },
@@ -50,8 +52,8 @@
     { source: "EventsTransport", target: "Charges" },
     { source: "Charges", target: "PaymentTerms" },
     { source: "PaymentTerms", target: "DangerousGoods" },
-    { source: "DangerousGoods", target: "Schedule" },
-    { source: "DangerousGoods", target: "DCC" },
+    { source: "DangerousGoods", target: "DCC" }, // DCC dentro al flusso
+    { source: "DCC", target: "Schedule" }, // Collega DCC al nodo iniziale per chiudere il flusso
   ];
 
   let width = window.innerWidth;
@@ -65,17 +67,17 @@
   svg.append("defs").append("marker")
       .attr("id", "arrowhead")
       .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 10)
+      .attr("refX", 15)  // distanza del punto della freccia dal nodo
       .attr("refY", 0)
       .attr("markerWidth", 6)
       .attr("markerHeight", 6)
       .attr("orient", "auto")
     .append("path")
-      .attr("d", "M0,-5L10,0L0,5")
-      .attr("fill", "#333");
+      .attr("d", "M0,-5L10,0L0,5")  // Forma della freccia
+      .attr("fill", "#333");  // Colore della freccia
 
   const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).distance(100).strength(1).id(d => d.id))
+      .force("link", d3.forceLink(links).distance(120).strength(1).id(d => d.id))
       .force("charge", d3.forceManyBody().strength(-500))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("radial", d3.forceRadial(Math.min(width, height) / 3, width / 2, height / 2));
@@ -85,7 +87,8 @@
       .data(links)
       .enter().append("line")
       .style("stroke", "#aaa")
-      .attr("marker-end", "url(#arrowhead)");
+      .style("stroke-width", 2) // Linee più spesse per visibilità
+      .attr("marker-end", "url(#arrowhead)"); // Aggiungi la freccia alla fine di ogni collegamento
 
   const node = svg.append("g")
       .selectAll("g")
@@ -114,7 +117,7 @@
       .attr("height", d => d.bboxHeight)
       .attr("x", d => -d.bboxWidth / 2)
       .attr("y", d => -d.bboxHeight / 2)
-      .attr("class", d => d.id === "DCC" ? "node-special handdrawn" : "node-default handdrawn");
+      .attr("class", d => d.class ? d.class + " handdrawn" : "node-default handdrawn");
 
   simulation.on("tick", () => {
     link
