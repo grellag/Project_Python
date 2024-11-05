@@ -3,16 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diagramma a Schermo Intero - D3.js</title>
+<title>Diagramma Hand-Drawn - D3.js</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
   body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
   text { font-size: 12px; fill: black; }
+
+  /* Effetto hand-drawn per i rettangoli */
+  .handdrawn {
+    stroke: #333;
+    stroke-width: 1.5px;
+    stroke-dasharray: 3, 2;
+  }
+
+  /* Colori personalizzati per i nodi */
+  .node-default { fill: #F9D371; } /* Giallo chiaro */
+  .node-special { fill: #FF6347; } /* Rosso arancio per DCC */
 </style>
 </head>
 <body>
 
-<h1 style="display: none;">Diagramma a Schermo Intero dei Componenti DCC Export</h1>
+<h1 style="display: none;">Diagramma Hand-Drawn dei Componenti DCC Export</h1>
 
 <div id="chart"></div>
 
@@ -40,8 +51,7 @@
     { source: "Charges", target: "PaymentTerms" },
     { source: "PaymentTerms", target: "DangerousGoods" },
     { source: "DangerousGoods", target: "Schedule" },
-    // Aggiungi collegamento extra tra DangerousGoods e DCC
-    { source: "DangerousGoods", target: "DCC" },
+    { source: "DangerousGoods", target: "DCC" }, // Collegamento a DCC
   ];
 
   let width = window.innerWidth;
@@ -70,10 +80,9 @@
       .enter().append("rect")
       .attr("width", rectWidth)
       .attr("height", rectHeight)
-      // Imposta colore: usa #FF6347 solo per il nodo DCC, altrimenti #4CAF50
-      .attr("fill", d => d.id === "DCC" ? "#FF6347" : "#4CAF50")
-      .attr("rx", 5)
-      .attr("ry", 5)
+      .attr("rx", 8)  // arrotondamento per effetto hand-drawn
+      .attr("ry", 8)
+      .attr("class", d => d.id === "DCC" ? "node-special handdrawn" : "node-default handdrawn")
       .call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)
@@ -104,7 +113,7 @@
         .attr("y", d => d.y);
   });
 
-  // Ridimensiona automaticamente il grafico quando la finestra cambia dimensione
+  // Ridimensionamento dinamico del grafico
   window.addEventListener("resize", () => {
     width = window.innerWidth;
     height = window.innerHeight;
