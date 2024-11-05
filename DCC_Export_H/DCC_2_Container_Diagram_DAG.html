@@ -44,7 +44,7 @@
     { id: "DCC", label: "Documentation Control Console (DCC)", class: "node-special" }, // Nodo finale in rosso
   ];
 
-  // Collegamenti modificati per mantenere DCC al centro e senza collegamento a Schedule
+  // Collegamenti modificati per mantenere DCC al centro e senza collegamenti
   const links = [
     { source: "Schedule", target: "Documents" },
     { source: "Documents", target: "Deadlines" },
@@ -53,8 +53,8 @@
     { source: "EventsContainer", target: "EventsTransport" },
     { source: "EventsTransport", target: "Charges" },
     { source: "Charges", target: "PaymentTerms" },
-    { source: "PaymentTerms", target: "DangerousGoods" },
-    { source: "DangerousGoods", target: "DCC" } // Collegamento a DCC ma senza collegamento a Schedule
+    { source: "PaymentTerms", target: "DangerousGoods" }
+    // Nessun collegamento a DCC
   ];
 
   let width = window.innerWidth;
@@ -103,7 +103,7 @@
       .enter().append("line")
       .style("stroke", "#aaa")
       .style("stroke-width", 2)
-      .attr("marker-end", "url(#arrowhead)"); 
+      .attr("marker-end", "url(#arrowhead)");
 
   const node = svg.append("g")
       .selectAll("g")
@@ -111,25 +111,33 @@
       .enter().append("g")
       .attr("class", "node");
 
-  node.append("text")
+  node.each(function(d) {
+    const textElem = d3.select(this).append("text")
       .attr("dy", 4)
       .attr("text-anchor", "middle")
-      .text(d => d.label)
+      .text(d.label)
       .style("fill", "#000");
 
-  node.each(function(d) {
-    const textElem = d3.select(this).select("text");
     const bbox = textElem.node().getBBox();
     d.bboxWidth = bbox.width + 20;
     d.bboxHeight = bbox.height + 10;
-  });
 
-  node.insert("rect", "text")
-      .attr("width", d => d.bboxWidth)
-      .attr("height", d => d.bboxHeight)
-      .attr("x", d => -d.bboxWidth / 2)
-      .attr("y", d => -d.bboxHeight / 2)
-      .attr("class", d => d.class ? d.class + " handdrawn" : "node-default handdrawn");
+    // Aggiungi uno sfondo bianco dietro il testo per migliorarne la leggibilità
+    d3.select(this).insert("rect", "text")
+      .attr("width", bbox.width + 10)
+      .attr("height", bbox.height + 4)
+      .attr("x", -bbox.width / 2 - 5)
+      .attr("y", -bbox.height / 2 - 2)
+      .attr("fill", "white"); // Sfondo bianco
+
+    // Rettangolo principale del nodo
+    d3.select(this).insert("rect", "text")
+      .attr("width", d.bboxWidth)
+      .attr("height", d.bboxHeight)
+      .attr("x", -d.bboxWidth / 2)
+      .attr("y", -d.bboxHeight / 2)
+      .attr("class", d.class ? d.class + " handdrawn" : "node-default handdrawn");
+  });
 
   // Assicura che il nodo DCC resti al centro
   nodes.find(node => node.id === "DCC").fx = width / 2;
