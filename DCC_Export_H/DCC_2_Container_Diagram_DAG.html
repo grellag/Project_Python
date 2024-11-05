@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://d3js.org;">
 <title>Diagramma con Frecce - D3.js</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <!-- Importa un font leggibile e in grassetto -->
@@ -100,7 +101,7 @@
 
     const bbox = textElem.node().getBBox();
     d.bboxWidth = bbox.width + 20;
-    d.bboxHeight = bbox.height + 10;
+    d.bboxHeight = bbox.height + 30;
 
     // Aggiungi uno sfondo bianco dietro il testo per migliorarne la leggibilità
     d3.select(this).insert("rect", "text")
