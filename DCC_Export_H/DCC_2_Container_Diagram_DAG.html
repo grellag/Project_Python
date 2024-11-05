@@ -38,37 +38,4 @@
     { id: "Charges", label: "CSC Charges" },
     { id: "PaymentTerms", label: "Termini di Pagamento Cliente" },
     { id: "DangerousGoods", label: "CSC Info Hazardous" },
-    { id: "DCC", label: "Documentation Control Console (DCC)" },
-  ];
-
-  const links = [
-    { source: "Schedule", target: "Documents" },
-    { source: "Documents", target: "Deadlines" },
-    { source: "Deadlines", target: "ShippingInstructions" },
-    { source: "ShippingInstructions", target: "EventsContainer" },
-    { source: "EventsContainer", target: "EventsTransport" },
-    { source: "EventsTransport", target: "Charges" },
-    { source: "Charges", target: "PaymentTerms" },
-    { source: "PaymentTerms", target: "DangerousGoods" },
-    { source: "DangerousGoods", target: "Schedule" },
-    { source: "DangerousGoods", target: "DCC" }, // Collegamento a DCC
-  ];
-
-  let width = window.innerWidth;
-  let height = window.innerHeight;
-
-  const svg = d3.select("body").append("svg")
-      .attr("width", width)
-      .attr("height", height);
-
-  // Definisci una freccia per ogni collegamento
-  svg.append("defs").append("marker")
-      .attr("id", "arrowhead")
-      .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 10)  // distanza del punto della freccia dal nodo
-      .attr("refY", 0)
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("orient", "auto")
-    .append("path")
-      .attr("d", "M0,-5L10,0L
+    { id: "DCC", label: "Document
