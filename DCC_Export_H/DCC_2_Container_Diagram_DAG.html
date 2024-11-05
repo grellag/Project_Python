@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Diagramma Hand-Drawn con Frecce - D3.js</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<!-- Importa un font hand-drawn simile a Mermaid.js -->
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
-  text { font-size: 12px; fill: black; }
+  body { margin: 0; overflow: hidden; font-family: 'Caveat', cursive; }
+  text { font-size: 16px; fill: black; font-family: 'Caveat', cursive; }
 
   /* Effetto hand-drawn per i rettangoli */
   .handdrawn {
@@ -16,10 +18,10 @@
     stroke-dasharray: 3, 2;
   }
 
-  /* Colori personalizzati per i nodi */
-  .node-start { fill: #4CAF50; } /* Verde per il primo nodo */
-  .node-default { fill: #F9D371; } /* Giallo chiaro */
-  .node-special { fill: #FF6347; } /* Rosso arancio per DCC */
+  /* Colori per i pattern */
+  .node-start { fill: url(#patternGreen); } /* Verde per il primo nodo */
+  .node-default { fill: url(#patternYellow); } /* Giallo per i nodi intermedi */
+  .node-special { fill: url(#patternRed); } /* Rosso arancio per il nodo finale DCC */
 </style>
 </head>
 <body>
@@ -62,6 +64,19 @@
   const svg = d3.select("body").append("svg")
       .attr("width", width)
       .attr("height", height);
+
+  // Definisci i pattern per l'effetto hand-drawn
+  svg.append("defs").html(`
+    <pattern id="patternGreen" patternUnits="userSpaceOnUse" width="10" height="10">
+      <path d="M0,0 L10,10 M10,0 L0,10" stroke="#4CAF50" stroke-width="1" />
+    </pattern>
+    <pattern id="patternYellow" patternUnits="userSpaceOnUse" width="10" height="10">
+      <path d="M0,0 L10,10 M10,0 L0,10" stroke="#F9D371" stroke-width="1" />
+    </pattern>
+    <pattern id="patternRed" patternUnits="userSpaceOnUse" width="10" height="10">
+      <path d="M0,0 L10,10 M10,0 L0,10" stroke="#FF6347" stroke-width="1" />
+    </pattern>
+  `);
 
   // Definisci una freccia per ogni collegamento
   svg.append("defs").append("marker")
@@ -111,7 +126,7 @@
     d.bboxHeight = bbox.height + 10; // padding di 5px sopra e sotto
   });
 
-  // Aggiungi rettangoli dimensionati
+  // Aggiungi rettangoli dimensionati con pattern di riempimento
   node.insert("rect", "text")
       .attr("width", d => d.bboxWidth)
       .attr("height", d => d.bboxHeight)
