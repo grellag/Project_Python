@@ -44,7 +44,7 @@
     { id: "DCC", label: "Documentation Control Console (DCC)", class: "node-special" }, // Nodo finale in rosso
   ];
 
-  // Collegamenti modificati per includere DCC nel flusso circolare
+  // Collegamenti modificati per mantenere DCC al centro e senza collegamento a Schedule
   const links = [
     { source: "Schedule", target: "Documents" },
     { source: "Documents", target: "Deadlines" },
@@ -54,8 +54,7 @@
     { source: "EventsTransport", target: "Charges" },
     { source: "Charges", target: "PaymentTerms" },
     { source: "PaymentTerms", target: "DangerousGoods" },
-    { source: "DangerousGoods", target: "DCC" }, // DCC dentro al flusso
-    { source: "DCC", target: "Schedule" }, // Collega DCC al nodo iniziale per chiudere il flusso
+    { source: "DangerousGoods", target: "DCC" } // Collegamento a DCC ma senza collegamento a Schedule
   ];
 
   let width = window.innerWidth;
@@ -82,7 +81,7 @@
   svg.append("defs").append("marker")
       .attr("id", "arrowhead")
       .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 15)  // distanza del punto della freccia dal nodo
+      .attr("refX", 10)
       .attr("refY", 0)
       .attr("markerWidth", 6)
       .attr("markerHeight", 6)
@@ -95,15 +94,16 @@
       .force("link", d3.forceLink(links).distance(120).strength(1).id(d => d.id))
       .force("charge", d3.forceManyBody().strength(-500))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("radial", d3.forceRadial(Math.min(width, height) / 3, width / 2, height / 2));
+      .force("radial", d3.forceRadial(Math.min(width, height) / 3, width / 2, height / 2))
+      .on("tick", ticked);
 
   const link = svg.append("g")
       .selectAll("line")
       .data(links)
       .enter().append("line")
       .style("stroke", "#aaa")
-      .style("stroke-width", 2) // Linee più spesse per visibilità
-      .attr("marker-end", "url(#arrowhead)"); // Aggiungi la freccia alla fine di ogni collegamento
+      .style("stroke-width", 2)
+      .attr("marker-end", "url(#arrowhead)"); 
 
   const node = svg.append("g")
       .selectAll("g")
@@ -111,22 +111,19 @@
       .enter().append("g")
       .attr("class", "node");
 
-  // Aggiungi testo prima per misurarne le dimensioni
   node.append("text")
       .attr("dy", 4)
       .attr("text-anchor", "middle")
       .text(d => d.label)
       .style("fill", "#000");
 
-  // Calcola la dimensione del rettangolo per adattarsi al testo
   node.each(function(d) {
     const textElem = d3.select(this).select("text");
     const bbox = textElem.node().getBBox();
-    d.bboxWidth = bbox.width + 20;  // padding di 10px per lato
-    d.bboxHeight = bbox.height + 10; // padding di 5px sopra e sotto
+    d.bboxWidth = bbox.width + 20;
+    d.bboxHeight = bbox.height + 10;
   });
 
-  // Aggiungi rettangoli dimensionati con pattern di riempimento
   node.insert("rect", "text")
       .attr("width", d => d.bboxWidth)
       .attr("height", d => d.bboxHeight)
@@ -134,23 +131,28 @@
       .attr("y", d => -d.bboxHeight / 2)
       .attr("class", d => d.class ? d.class + " handdrawn" : "node-default handdrawn");
 
-  simulation.on("tick", () => {
+  // Assicura che il nodo DCC resti al centro
+  nodes.find(node => node.id === "DCC").fx = width / 2;
+  nodes.find(node => node.id === "DCC").fy = height / 2;
+
+  function ticked() {
     link
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
+      .attr("x1", d => d.source.x < d.target.x ? d.source.x + d.source.bboxWidth / 2 : d.source.x - d.source.bboxWidth / 2)
+      .attr("y1", d => d.source.y)
+      .attr("x2", d => d.target.x < d.source.x ? d.target.x + d.target.bboxWidth / 2 : d.target.x - d.target.bboxWidth / 2)
+      .attr("y2", d => d.target.y);
 
     node.attr("transform", d => `translate(${d.x},${d.y})`);
-  });
+  }
 
-  // Ridimensionamento dinamico del grafico
   window.addEventListener("resize", () => {
     width = window.innerWidth;
     height = window.innerHeight;
     svg.attr("width", width).attr("height", height);
     simulation.force("center", d3.forceCenter(width / 2, height / 2));
     simulation.force("radial", d3.forceRadial(Math.min(width, height) / 3, width / 2, height / 2));
+    nodes.find(node => node.id === "DCC").fx = width / 2;
+    nodes.find(node => node.id === "DCC").fy = height / 2;
     simulation.alpha(1).restart();
   });
 
