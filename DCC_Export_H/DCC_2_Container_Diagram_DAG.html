@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diagramma Hand-Drawn - D3.js</title>
+<title>Diagramma Hand-Drawn con Frecce - D3.js</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
   body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
@@ -23,7 +23,7 @@
 </head>
 <body>
 
-<h1 style="display: none;">Diagramma Hand-Drawn dei Componenti DCC Export</h1>
+<h1 style="display: none;">Diagramma Hand-Drawn con Frecce</h1>
 
 <div id="chart"></div>
 
@@ -56,90 +56,19 @@
 
   let width = window.innerWidth;
   let height = window.innerHeight;
-  const rectWidth = 80, rectHeight = 40;
 
   const svg = d3.select("body").append("svg")
       .attr("width", width)
       .attr("height", height);
 
-  const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).distance(100).strength(1).id(d => d.id))
-      .force("charge", d3.forceManyBody().strength(-500))
-      .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("radial", d3.forceRadial(Math.min(width, height) / 3, width / 2, height / 2));
-
-  const link = svg.append("g")
-      .selectAll("line")
-      .data(links)
-      .enter().append("line")
-      .style("stroke", "#aaa");
-
-  const node = svg.append("g")
-      .selectAll("rect")
-      .data(nodes)
-      .enter().append("rect")
-      .attr("width", rectWidth)
-      .attr("height", rectHeight)
-      .attr("rx", 8)  // arrotondamento per effetto hand-drawn
-      .attr("ry", 8)
-      .attr("class", d => d.id === "DCC" ? "node-special handdrawn" : "node-default handdrawn")
-      .call(d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended));
-
-  const label = svg.append("g")
-      .selectAll("text")
-      .data(nodes)
-      .enter().append("text")
-      .attr("dy", 4)
-      .attr("text-anchor", "middle")
-      .text(d => d.label)
-      .style("fill", "#000");
-
-  simulation.on("tick", () => {
-    link
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
-
-    node
-        .attr("x", d => d.x - rectWidth / 2)
-        .attr("y", d => d.y - rectHeight / 2);
-
-    label
-        .attr("x", d => d.x)
-        .attr("y", d => d.y);
-  });
-
-  // Ridimensionamento dinamico del grafico
-  window.addEventListener("resize", () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    svg.attr("width", width).attr("height", height);
-    simulation.force("center", d3.forceCenter(width / 2, height / 2));
-    simulation.force("radial", d3.forceRadial(Math.min(width, height) / 3, width / 2, height / 2));
-    simulation.alpha(1).restart();
-  });
-
-  function dragstarted(event, d) {
-    if (!event.active) simulation.alphaTarget(0.3).restart();
-    d.fx = d.x;
-    d.fy = d.y;
-  }
-
-  function dragged(event, d) {
-    d.fx = event.x;
-    d.fy = event.y;
-  }
-
-  function dragended(event, d) {
-    if (!event.active) simulation.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
-  }
-</script>
-
-</body>
-</html>
+  // Definisci una freccia per ogni collegamento
+  svg.append("defs").append("marker")
+      .attr("id", "arrowhead")
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 10)  // distanza del punto della freccia dal nodo
+      .attr("refY", 0)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+    .append("path")
+      .attr("d", "M0,-5L10,0L
