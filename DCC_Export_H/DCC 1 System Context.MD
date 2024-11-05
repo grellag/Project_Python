@@ -11,8 +11,8 @@ config:
 ---
 flowchart TB
     classDef departmentColor fill:#FFD700,stroke:#333,stroke-width:2px;
-    classDef dccColor fill:#8AC6D1,stroke:#333,stroke-width:2px;
-    classDef dataSourceColor fill:#FF6347,stroke:#333,stroke-width:2px;
+    classDef dccColor fill:#FF6347,stroke:#333,stroke-width:2px;
+    classDef dataSourceColor fill:#8AC6D1,stroke:#333,stroke-width:2px;
 
     subgraph Departments ["Departments"]
         direction TB
