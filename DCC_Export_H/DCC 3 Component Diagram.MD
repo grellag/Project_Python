@@ -1,4 +1,4 @@
-### Structured Diagram with a Single Red Arrow between "Schedule Leg Vessel" and "Documenti Container Export"
+### Structured Diagram DCC
 
 ```mermaid
 ---
@@ -100,5 +100,3 @@ flowchart LR
     ChargesContainer --> PaymentTermsContainer
     PaymentTermsContainer --> HazardousInfoContainer
     HazardousInfoContainer --> DCC
-
-
