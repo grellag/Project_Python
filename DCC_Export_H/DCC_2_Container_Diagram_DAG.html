@@ -3,30 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diagramma Hand-Drawn con Frecce - D3.js</title>
+<title>Diagramma con Frecce - D3.js</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
-<!-- Importa un font hand-drawn simile a Mermaid.js -->
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<!-- Importa un font leggibile e in grassetto -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
 <style>
-  body { margin: 0; overflow: hidden; font-family: 'Caveat', cursive; }
-  text { font-size: 16px; fill: black; font-family: 'Caveat', cursive; }
+  body { margin: 0; overflow: hidden; font-family: 'Roboto', sans-serif; }
+  text { font-size: 16px; fill: black; font-family: 'Roboto', sans-serif; font-weight: bold; }
 
-  /* Effetto hand-drawn per i rettangoli */
-  .handdrawn {
-    stroke: #333;
-    stroke-width: 1.5px;
-    stroke-dasharray: 3, 2;
-  }
-
-  /* Colori per i pattern */
-  .node-start { fill: url(#patternGreen); } /* Verde per il primo nodo */
-  .node-default { fill: url(#patternYellow); } /* Giallo per i nodi intermedi */
-  .node-special { fill: url(#patternRed); } /* Rosso arancio per il nodo finale DCC */
+  /* Colori per i nodi */
+  .node-start { fill: #4CAF50; } /* Verde per il primo nodo */
+  .node-default { fill: #F9D371; } /* Giallo per i nodi intermedi */
+  .node-special { fill: #FF6347; } /* Rosso arancio per il nodo finale DCC */
 </style>
 </head>
 <body>
 
-<h1 style="display: none;">Diagramma Hand-Drawn con Frecce</h1>
+<h1 style="display: none;">Diagramma con Frecce</h1>
 
 <div id="chart"></div>
 
@@ -53,8 +46,8 @@
     { source: "EventsContainer", target: "EventsTransport" },
     { source: "EventsTransport", target: "Charges" },
     { source: "Charges", target: "PaymentTerms" },
-    { source: "PaymentTerms", target: "DangerousGoods" }
-    // Nessun collegamento a DCC
+    { source: "PaymentTerms", target: "DangerousGoods" },
+    { source: "DangerousGoods", target: "Schedule" } // Aggiungi collegamento diretto a Schedule
   ];
 
   let width = window.innerWidth;
@@ -63,19 +56,6 @@
   const svg = d3.select("body").append("svg")
       .attr("width", width)
       .attr("height", height);
-
-  // Definisci i pattern per l'effetto hand-drawn
-  svg.append("defs").html(`
-    <pattern id="patternGreen" patternUnits="userSpaceOnUse" width="10" height="10">
-      <path d="M0,0 L10,10 M10,0 L0,10" stroke="#4CAF50" stroke-width="1" />
-    </pattern>
-    <pattern id="patternYellow" patternUnits="userSpaceOnUse" width="10" height="10">
-      <path d="M0,0 L10,10 M10,0 L0,10" stroke="#F9D371" stroke-width="1" />
-    </pattern>
-    <pattern id="patternRed" patternUnits="userSpaceOnUse" width="10" height="10">
-      <path d="M0,0 L10,10 M10,0 L0,10" stroke="#FF6347" stroke-width="1" />
-    </pattern>
-  `);
 
   // Definisci una freccia per ogni collegamento
   svg.append("defs").append("marker")
@@ -130,13 +110,13 @@
       .attr("y", -bbox.height / 2 - 2)
       .attr("fill", "white"); // Sfondo bianco
 
-    // Rettangolo principale del nodo
+    // Rettangolo principale del nodo senza effetto hand-drawn
     d3.select(this).insert("rect", "text")
       .attr("width", d.bboxWidth)
       .attr("height", d.bboxHeight)
       .attr("x", -d.bboxWidth / 2)
       .attr("y", -d.bboxHeight / 2)
-      .attr("class", d.class ? d.class + " handdrawn" : "node-default handdrawn");
+      .attr("class", d.class ? d.class : "node-default"); // Colore per tipo di nodo
   });
 
   // Assicura che il nodo DCC resti al centro
