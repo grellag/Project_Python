@@ -21,6 +21,7 @@ flowchart TB
         FreightCashier["Freight Cashier"]:::departmentColor
         DocumentationOffice["Documentation Office"]:::departmentColor
         PortOperationsOffice["Port Operations Office"]:::departmentColor
+        TransshipmentOffice["Transshipment Port"]:::departmentColor
     end
 
     %% Central DCC Node with link to Container Diagram file
