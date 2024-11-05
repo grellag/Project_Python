@@ -40,6 +40,8 @@
     { source: "Charges", target: "PaymentTerms" },
     { source: "PaymentTerms", target: "DangerousGoods" },
     { source: "DangerousGoods", target: "Schedule" },
+    // Aggiungi collegamento extra tra DangerousGoods e DCC
+    { source: "DangerousGoods", target: "DCC" },
   ];
 
   let width = window.innerWidth;
@@ -68,7 +70,8 @@
       .enter().append("rect")
       .attr("width", rectWidth)
       .attr("height", rectHeight)
-      .attr("fill", "#8AC6D1")
+      // Imposta colore: usa #FF6347 solo per il nodo DCC, altrimenti #4CAF50
+      .attr("fill", d => d.id === "DCC" ? "#FF6347" : "#4CAF50")
       .attr("rx", 5)
       .attr("ry", 5)
       .call(d3.drag()
@@ -108,7 +111,7 @@
     svg.attr("width", width).attr("height", height);
     simulation.force("center", d3.forceCenter(width / 2, height / 2));
     simulation.force("radial", d3.forceRadial(Math.min(width, height) / 3, width / 2, height / 2));
-    simulation.alpha(1).restart(); // Rilancia la simulazione per aggiornare il layout
+    simulation.alpha(1).restart();
   });
 
   function dragstarted(event, d) {
