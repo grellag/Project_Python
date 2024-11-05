@@ -16,10 +16,10 @@ flowchart TB
 
     subgraph Departments ["Departments"]
         direction TB
-        Accounting["Accounting Department"]:::departmentColor
-        ExportCommercials["Export Commercials"]:::departmentColor
+        DocumentationOffice["Export Documentation"]:::departmentColor
+        ExportCommercials["Export Sales"]:::departmentColor
+        Accounting["Accounting"]:::departmentColor
         FreightCashier["Freight Cashier"]:::departmentColor
-        DocumentationOffice["Documentation Office"]:::departmentColor
         PortOperationsOffice["Port Operations Office"]:::departmentColor
         TransshipmentOffice["Transshipment Port"]:::departmentColor
     end
