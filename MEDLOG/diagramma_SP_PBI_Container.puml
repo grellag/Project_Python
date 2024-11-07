@@ -1,0 +1,103 @@
+@startuml
+title Processo di Valorizzazione di PBI_Container_temp
+
+start
+:Avvia procedura SP_PBI_Container;
+
+' Verifica e creazione della tabella temporanea
+:Verifica esistenza di PBI_Container_temp;
+if (PBI_Container_temp esiste?) then (Sì)
+  :Elimina PBI_Container_temp;
+endif
+:Creazione tabella PBI_Container_temp con colonne I_E, Booking_Number, ecc.;
+
+' Inizio dell'inserimento dati nella tabella temporanea
+:Inserisci dati in PBI_Container_temp;
+
+note right
+  Seleziona dati da varie tabelle e funzioni T-SQL
+  per valorizzare ciascuna colonna.
+end note
+
+' Valorizzazione delle colonne da ciascuna fonte
+partition "Valorizzazione Colonne di PBI_Container_temp" {
+
+  :Valorizza colonna [I_E]; #LightYellow
+  note right
+    Estratto dalla tabella Cargo_Shipment (CS):
+    - Se export_shipment = 1, assegna 'E'
+    - Altrimenti, assegna 'I'
+  end note
+
+  :Valorizza colonna [Booking_Number]; #LightYellow
+  note right
+    Estratto dalla tabella Cargo_Shipment (CS):
+    - Campo Booking_Number
+  end note
+
+  :Valorizza colonna [Bill_Of_Lading_Number]; #LightYellow
+  note right
+    Estratto dalla tabella Bill_Of_Lading (BL):
+    - Campo Bill_Of_Lading_Number
+  end note
+
+  :Valorizza colonna [Cargo_Shipment_Container_id]; #LightYellow
+  note right
+    Estratto dalla tabella Cargo_Shipment_Container (CSC):
+    - Campo Cargo_Shipment_Container_id
+  end note
+
+  :Valorizza colonna [Container_Number]; #LightYellow
+  note right
+    Assegnazione con COALESCE:
+    - Seleziona Equipment_Number da Equipment_Cycle (eq_c)
+    - Altrimenti, Equipment_Number da Equipment (eq_a)
+    - Infine, Req_Assign_Container da Cargo_Shipment_Container (CSC)
+  end note
+
+  :Valorizza colonna [EQ_Type]; #LightYellow
+  note right
+    Estratto dalla tabella gisequipment_type (et):
+    - Campo Abbreviation, tramite join con
+      Equipment_Type_id.
+  end note
+
+  :Valorizza colonna [Arrival_Date]; #LightBlue
+  note right
+    Estratto dalla function table FNTB_Schedule_Leg (SL):
+    - CAST(SL.Arrival_DateTime AS DATE)
+  end note
+
+  :Valorizza colonna [Departure_Date]; #LightBlue
+  note right
+    Estratto dalla function table FNTB_Schedule_Leg (SL):
+    - CAST(SL.Departure_DateTime AS DATE)
+  end note
+
+  :Valorizza colonna [RemotePortUN]; #LightBlue
+  note right
+    Estratto dalla function table FNTB_Schedule_Leg (SL):
+    - Campo RemotePortUN
+  end note
+
+}
+
+' Completamento dell'inserimento dati
+:Completamento dell'inserimento in PBI_Container_temp;
+
+' Inizio transazione per aggiornamento finale
+:Avvia transazione;
+if (PBI_Container esiste?) then (Sì)
+  :Elimina tabella PBI_Container;
+endif
+:Rinomina PBI_Container_temp come PBI_Container;
+:Esegui commit della transazione;
+
+' Aggiornamento di DB_Param
+:Aggiorna data nella tabella DB_Param;
+note right
+  Aggiorna il campo dtValue con la data corrente
+  nella riga dove Name = 'PBI_Container'
+end note
+stop
+@enduml
