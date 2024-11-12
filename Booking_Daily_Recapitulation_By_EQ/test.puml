@@ -1,0 +1,64 @@
+@startuml SP_RPT_GOA_Booking_Daily_Recapitulation_By_EQ_Diagram
+!define RECTANGLE_WIDTH 150
+!define RECTANGLE_HEIGHT 80
+
+title Diagramma del Processo T-SQL: SP_RPT_GOA_Booking_Daily_Recapitulation_By_EQ
+
+rectangle "Avvio della procedura" as start {
+    :Esegui SP_RPT_GOA_Booking_Daily_Recapitulation_By_EQ con parametri di input;
+    :Imposta variabile @curr_date = FORMAT(getdate(), 'yyyy-MM-dd');
+}
+
+rectangle "Definizione di Variabili e Tabelle Temporanee" as setup {
+    :Dichiarazione variabili @Release_DBToken e @this_app_name;
+    :TRUNCATE TABLE LeNavi_LOCAL.dbo.Z_RPT_GOA_Booking_Daily_Recapitulation;
+}
+
+if "( @DBToken_Id = 0 )" then
+    rectangle "Assegna Token Database" as assign_token {
+        :Imposta @this_app_name e richiama SP_SQLJob_GetDBToken;
+        :Imposta @Release_DBToken = 1;
+    }
+else
+    rectangle "Token Database esistente" as existing_token
+endif
+
+rectangle "Gestione Date" as date_management {
+    :Modifica data @EndBookingDate con DATEADD se non null;
+}
+
+rectangle "Gestione Tabelle Temporanee" as temp_management {
+    :Cancella righe da My_Z_RPT_GOA_Booking_Daily_Recapitulation;
+    :Inserisci dati da FNTB_Booking_BL_CSC e FNTB_TopCSCCargo;
+}
+
+rectangle "Popolamento di MyChg con Tipo di Charge" as populate_mychg {
+    :Esegui SELECT su FNTB_Charge_Cargo_Shipment_Container;
+    :Aggiorna campi di Charge (Freight, BUC, BFV, ecc.);
+}
+
+rectangle "Aggiornamento Currency Fields" as update_currency {
+    :Aggiorna campi Currency (Freight_Currency, BUC_Currency, ecc.);
+}
+
+rectangle "Filtri su Is_Spadoni" as spadoni_filter {
+    if "( @Is_Spadoni = 0 )" then
+        :Cancella spadoni dal recap se non inclusi;
+    else
+        if "( @Is_Spadoni = 1 )" then
+            :Mantieni solo i record Spadoni;
+        endif
+    endif
+}
+
+rectangle "Inserimento dati in Z_RPT_GOA_Booking_Daily_Recapitulation" as insert_zrpt {
+    :Inserisci risultati finali nella tabella Z_RPT_GOA_Booking_Daily_Recapitulation;
+}
+
+rectangle "Rilascio Token Database" as release_token {
+    if "( @Release_DBToken = 1 )" then
+        :Rilascia token chiamando SP_SQLJob_ReleaseDBToken;
+    endif
+}
+
+@enduml

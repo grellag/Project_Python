@@ -31,10 +31,6 @@ erDiagram
         int Cargo_Shipment_Container_id
     }
 
-    %% Indici clustered e non-clustered
-    PBI_Vessel_Reconciliation_temp }|..|{ TempScheduleLegCTE : "Schedule_Leg_id"
-    TempCSCCTE }|..|{ TempScheduleLegCTE : "Schedule_Leg_id"
-
-    %% Join
-    PBI_Vessel_Reconciliation_temp ||--|| TempScheduleLegCTE : "Schedule_Leg_id"
-    TempCSCCTE ||--|| TempScheduleLegCTE : "Schedule_Leg_id"
+    %% Definizione delle relazioni tra le tabelle
+    PBI_Vessel_Reconciliation_temp }|--|{ TempScheduleLegCTE : "Schedule_Leg_id"
+    TempCSCCTE }|--|{ TempScheduleLegCTE : "Schedule_Leg_id"

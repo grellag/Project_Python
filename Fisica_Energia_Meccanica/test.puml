@@ -1,0 +1,32 @@
+@startuml Diagramma Conservazione dell'energia Meccanica nei sistemi do Forze Conservative
+skinparam defaultTextAlignment center
+
+A :Inizio;
+B :Forza Conservativa\nAgisce sul Punto Materiale;
+C :La Forza Compie Lavoro?;
+D :Calcolo del Lavoro\n<<math>> W <<endmath>>;
+E :Relazione:\n<<math>> W_{A \\rightarrow B} = -\\Delta U = -(U_B - U_A) <<endmath>>;
+F :Calcolo di\n<<math>> \\Delta U <<endmath>>;
+G :Determinazione di\n<<math>> U_A <<endmath>>\ne <<math>> U_B <<endmath>>;
+H :Variazione dell'Energia Cinetica;
+I :<<math>> \\Delta K = -W <<endmath>>;
+J :<<math>> \\Delta K = -W <<endmath>>;
+K :Conservazione dell'Energia Meccanica:\n<<math>> K + U = \\text{Costante} <<endmath>>;
+L :<<math>> U <<endmath>>\ne <<math>> K <<endmath>>\nRimangono Invariati;
+M :Fine;
+
+A --> B
+B --> C
+C --> D :Sì
+D --> E
+E --> F
+F --> G
+G --> H
+H --> I :Aumenta
+H --> J :Diminuisce
+I --> K
+J --> K
+C --> L :No
+L --> K
+K --> M
+@enduml

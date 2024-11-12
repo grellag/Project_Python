@@ -1,0 +1,34 @@
+@startuml Teorema_Lavoro_Energia
+title Teorema Lavoro-Energia e Energia Meccanica
+
+start
+
+:Teorema lavoro-energia di base;
+note right
+  Si applica solo all'energia cinetica
+  e al lavoro netto compiuto su un oggetto.
+end note
+
+if (Forze conservative presenti?) then (Sì)
+  :Energia potenziale può essere inclusa;
+  :Conservazione dell'energia meccanica;
+  note right
+    In presenza di forze conservative,
+    l'energia meccanica totale si conserva.
+  end note
+else (No)
+  if (Forze non conservative presenti?) then (Sì)
+    :Il lavoro delle forze non conservative;
+    :Causa variazione dell'energia meccanica totale;
+    note right
+      L'energia meccanica totale cambia,
+      includendo variazioni di energia cinetica
+      e potenziale.
+    end note
+  else (No)
+    :Solo energia cinetica cambia;
+  endif
+endif
+
+stop
+@enduml
