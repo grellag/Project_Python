@@ -18,6 +18,10 @@ config:
 flowchart TB
     %% Definisci una classe personalizzata per il nodo parameters
     classDef parametersStyle fill:#e6f7ff,stroke:#007acc,stroke-width:2px,color:#333,font-weight:bold;
+    classDef jobStyle fill:#FFD700,stroke:#333,stroke-width:2px,color:#333,font-weight:bold;
+    classDef storedProcStyle fill:#8AC6D1,stroke:#333,stroke-width:2px,color:#333,font-weight:bold;
+    classDef databaseStyle fill:#D1C4E9,stroke:#333,stroke-width:2px,color:#333,font-weight:bold;
+    classDef scheduleStyle fill:#C5E1A5,stroke:#333,stroke-width:2px,color:#333,font-weight:bold;
 
     job["Job:<br>[LN][Rebuild Cache]-PBI-Booking Daily Recapitulation<br>Executes a s.p."]
 
@@ -44,6 +48,11 @@ flowchart TB
 
     %% Applica lo stile personalizzato al nodo parameters
     class parameters parametersStyle;
+    %% Applica gli stili personalizzati ai nodi specifici
+    class job jobStyle;
+    class stored_proc storedProcStyle;
+    class db databaseStyle;
+    class schedule scheduleStyle;
 
     job         -->     |On schedule|sql_job
     sql_job     -->     |With parameters|stored_proc
