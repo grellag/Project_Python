@@ -15,9 +15,9 @@ flowchart TB
     SP["Stored Procedure:<br>SP_RPT_GOA_Booking_Daily_Recapitulation_By_EQ"]
 
     %% Tabelle principali
-    table_ZRPT["Table:<br>LeNavi_LOCAL.dbo.Z_RPT_GOA_Booking_Daily_Recapitulation"]
-    table_MyZRPT["Table:<br>Interlink_Temp90.dbo.My_Z_RPT_GOA_Booking_Daily_Recapitulation"]
-    table_DBParam["Table:<br>dbo.DB_Param"]
+    table_ZRPT["Table:<br>LeNavi_LOCAL.dbo.<br>Z_RPT_GOA_Booking_Daily_Recapitulation"]
+    table_MyZRPT["Table:<br>Interlink_Temp90<br>My_Z_RPT_GOA_Booking_Daily_Recapitulation"]
+    table_DBParam["Table:<br>DB_Param"]
 
     %% Componenti esterni chiamati dalla stored procedure
     SP_GetDBToken["Stored Procedure:<br>SP_SQLJob_GetDBToken"]
