@@ -33,8 +33,8 @@ flowchart TB
 
     stored_proc["SP_RPT_GOA_Booking_Daily_Recapitulation_By_EQ<br>S.P.<br>Generates daily booking recap by equipment"]
 
-    %% Simula l'allineamento a sinistra utilizzando <div> con text-align:left
-    parameters["<div style='text-align:left'>
+    %% Nodo parameters con font ridotto e allineamento a sinistra
+    parameters["<div style='text-align:left; font-size:12px; line-height:1.2;'>
     Parameters:<br>
     - @DBToken_Id: INT<br>
     - @POL_Id: INT<br>
