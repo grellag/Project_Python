@@ -1,14 +1,4 @@
-# Documentation Control Diagrams
-
-## Context Diagram
-
 ```mermaid
----
-config:
-  look: handDrawn
-  theme: forest
-  layout: dagre
----
 flowchart TB
     classDef departmentColor fill:#FFD700,stroke:#333,stroke-width:2px;
     classDef dccColor fill:#FF6347,stroke:#333,stroke-width:2px;
@@ -24,8 +14,6 @@ flowchart TB
         TransshipmentOffice["Transshipment Port"]:::departmentColor
     end
 
-    %% Central DCC Node with link to Container Diagram file
-    click DCC "./DCC Container Diagram.md" "Go to Container Diagram"
     DCC["Documentation Control Console (DCC)"]:::dccColor
 
     subgraph DataSources ["Data Sources"]
@@ -39,3 +27,4 @@ flowchart TB
     DCC -.->|Data Feed| MSCLink
     DCC -.->|Data Feed| SharePoint
     DCC -.->|Data Feed| BarcodeReader
+```

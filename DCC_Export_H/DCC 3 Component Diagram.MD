@@ -14,11 +14,7 @@ flowchart LR
     classDef containerStyle fill:#8AC6D1,stroke:#333,stroke-width:1px;
     classDef dccColor fill:#FFA07A,stroke:#333,stroke-width:2px;
     classDef invisible fill:transparent,stroke:none;
-    
     classDef redLink stroke:#FF0000,stroke-width:2px;
-
-
-
     %% Jobs in the first column
     subgraph JOBS_COLUMN["Jobs"]
         direction TB
@@ -100,3 +96,4 @@ flowchart LR
     ChargesContainer --> PaymentTermsContainer
     PaymentTermsContainer --> HazardousInfoContainer
     HazardousInfoContainer --> DCC
+```

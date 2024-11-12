@@ -26,3 +26,4 @@ graph TD
 
     %% Collegamento del nodo finale
     DangerousGoods --> DCC["Documentation Control Console (DCC)"]:::finalOutput
+```

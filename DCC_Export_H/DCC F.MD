@@ -101,3 +101,4 @@ SP_PBI_DCC_EXPORT_H_Cache_Final -->|Import Data| PBI_DCC_Export_H_Cache_vw:::sto
 PBI_DCC_Export_H_Cache_vw -->|Importa dati| PBI_DCC_Export_H_Cache_final_temp
 
 PBI_DCC_Export_H_Cache_final_temp -->|Rename Table| PBI_DCC_Export_H_Cache_final
+```

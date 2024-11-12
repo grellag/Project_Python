@@ -34,3 +34,4 @@ erDiagram
     %% Definizione delle relazioni tra le tabelle
     PBI_Vessel_Reconciliation_temp }|--|{ TempScheduleLegCTE : "Schedule_Leg_id"
     TempCSCCTE }|--|{ TempScheduleLegCTE : "Schedule_Leg_id"
+```
