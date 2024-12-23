@@ -1,0 +1,123 @@
++@startuml
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam classFontSize 6
+skinparam classAttributeFontSize 6
+
+title Mapping da Excel a SQL Server
+
+class "File Excel" as Excel {
+    + Call Port
+    + Pre/On Carriage
+    + Vessel Name
+    + Voy
+    + Date Ref
+    + Bill Of Lading
+    + Container
+    + Inland Locality
+    + Inland Zip Code
+    + Mty Depot
+    + MoT
+    + Dry Port Location
+    + Type
+    + Gross Weight
+    + Cargo Weight
+    + "20'" #LightBlue
+    + "40'" #LightBlue
+    + Unit
+    + "Teu(s)"
+    + Total Cost
+    + Base
+    + Presa Extra
+    + Soste
+    + HC/Adr
+    + "20' - 30T" #LightBlue
+    + Altro
+    + Fuel
+    + Fuori Polizza
+    + Comments
+    + Trasporto N
+    + Viaggio N
+    + DataFattura
+    + Num.Fatt
+    + Bollo
+    + Congestion
+    + Tipologia
+}
+
+class "SQL Server Table" as SQL {
+    + Call Port
+    + Pre/On Carriage
+    + Vessel Name
+    + Voy
+    + Date Ref
+    + Bill Of Lading
+    + Container
+    + Inland Locality
+    + Inland Zip Code
+    + Mty Depot
+    + MoT
+    + Dry Port Location
+    + Type
+    + Gross Weight
+    + Cargo Weight
+    + "20" #LightGreen
+    + "40" #LightGreen
+    + Unit
+    + "Teu(s)"
+    + Total Cost
+    + Base
+    + "PRESA EXTRA"
+    + "SOSTE"
+    + "HC/ADR"
+    + "20 - 30T" #LightGreen
+    + ALTRO
+    + FUEL
+    + "Fuori polizza"
+    + Comments
+    + Trasporto N
+    + Viaggio N
+    + DATAFATTURA
+    + NUM.FATT
+    + BOLLO
+    + Congestion
+    + Tipologia
+}
+
+Excel --> SQL : Call Port
+Excel --> SQL : Pre/On Carriage
+Excel --> SQL : Vessel Name
+Excel --> SQL : Voy
+Excel --> SQL : Date Ref
+Excel --> SQL : Bill Of Lading
+Excel --> SQL : Container
+Excel --> SQL : Inland Locality
+Excel --> SQL : Inland Zip Code
+Excel --> SQL : Mty Depot
+Excel --> SQL : MoT
+Excel --> SQL : Dry Port Location
+Excel --> SQL : Type
+Excel --> SQL : Gross Weight
+Excel --> SQL : Cargo Weight
+Excel --> SQL : "20'" --> "20" : **Nome modificato** [[#FF4500]]
+Excel --> SQL : "40'" --> "40" : **Nome modificato** [[#FF4500]]
+Excel --> SQL : Unit
+Excel --> SQL : "Teu(s)"
+Excel --> SQL : Total Cost
+Excel --> SQL : Base
+Excel --> SQL : Presa Extra --> "PRESA EXTRA" : **Nome modificato**
+Excel --> SQL : Soste --> "SOSTE" : **Nome modificato**
+Excel --> SQL : HC/Adr --> "HC/ADR" : **Nome modificato**
+Excel --> SQL : "20' - 30T" --> "20 - 30T" : **Nome modificato** [[#FF4500]]
+Excel --> SQL : Altro --> ALTRO : **Nome modificato**
+Excel --> SQL : Fuel --> FUEL : **Nome modificato**
+Excel --> SQL : Fuori Polizza --> "Fuori polizza" : **Nome modificato**
+Excel --> SQL : Comments
+Excel --> SQL : Trasporto N
+Excel --> SQL : Viaggio N
+Excel --> SQL : DataFattura --> DATAFATTURA : **Nome modificato**
+Excel --> SQL : Num.Fatt --> NUM.FATT : **Nome modificato**
+Excel --> SQL : Bollo --> BOLLO : **Nome modificato**
+Excel --> SQL : Congestion
+Excel --> SQL : Tipologia
+@enduml

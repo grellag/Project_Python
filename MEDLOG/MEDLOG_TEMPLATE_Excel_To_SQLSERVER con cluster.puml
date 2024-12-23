@@ -1,0 +1,138 @@
+@startuml
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam classFontSize 10
+skinparam classAttributeFontSize 10
+skinparam ArrowFontSize 8
+skinparam ArrowThickness 0.5
+skinparam RankSpacing 10
+skinparam NodeSep 10
+
+title Mapping da Excel a SQL Server
+
+frame "Colonne Senza Modifiche - 22 colonne" {
+    class "File Excel" as Excel1 {
+        + Call Port
+        + Pre/On Carriage
+        + Vessel Name
+        + Voy
+        + Date Ref
+        + Bill Of Lading
+        + Container
+        + Inland Locality
+        + Inland Zip Code
+        + Mty Depot
+        + MoT
+        + Dry Port Location
+        + Type
+        + Gross Weight
+        + Cargo Weight
+        + Unit
+        + Teus
+        + Total Cost
+        + Base
+        + Comments
+        + Trasporto N
+        + Viaggio N
+        + Congestion
+        + Tipologia
+    }
+
+    class "SQL Server Table" as SQL1 {
+        + Call Port
+        + Pre/On Carriage
+        + Vessel Name
+        + Voy
+        + Date Ref
+        + Bill Of Lading
+        + Container
+        + Inland Locality
+        + Inland Zip Code
+        + Mty Depot
+        + MoT
+        + Dry Port Location
+        + Type
+        + Gross Weight
+        + Cargo Weight
+        + Unit
+        + Teus
+        + Total Cost
+        + Base
+        + Comments
+        + Trasporto N
+        + Viaggio N
+        + Congestion
+        + Tipologia
+    }
+
+    Excel1 --> SQL1 : Call Port
+    Excel1 --> SQL1 : Pre/On Carriage
+    Excel1 --> SQL1 : Vessel Name
+    Excel1 --> SQL1 : Voy
+    Excel1 --> SQL1 : Date Ref
+    Excel1 --> SQL1 : Bill Of Lading
+    Excel1 --> SQL1 : Container
+    Excel1 --> SQL1 : Inland Locality
+    Excel1 --> SQL1 : Inland Zip Code
+    Excel1 --> SQL1 : Mty Depot
+    Excel1 --> SQL1 : MoT
+    Excel1 --> SQL1 : Dry Port Location
+    Excel1 --> SQL1 : Type
+    Excel1 --> SQL1 : Gross Weight
+    Excel1 --> SQL1 : Cargo Weight
+    Excel1 --> SQL1 : Unit
+    Excel1 --> SQL1 : Teus
+    Excel1 --> SQL1 : Total Cost
+    Excel1 --> SQL1 : Base
+    Excel1 --> SQL1 : Comments
+    Excel1 --> SQL1 : Trasporto N
+    Excel1 --> SQL1 : Viaggio N
+    Excel1 --> SQL1 : Congestion
+    Excel1 --> SQL1 : Tipologia
+}
+
+frame "Colonne con Modifiche - 12 colonne" {
+    class "File Excel" as Excel2 {
+        + "20'"
+        + "40'"
+        + "20' - 30T"
+        + Altro
+        + Fuel
+        + Fuori Polizza
+        + DataFattura
+        + Num.Fatt
+        + Bollo
+        + Presa Extra
+        + Soste
+        + HC/Adr
+    }
+
+    class "SQL Server Table" as SQL2 {
+        + "20"
+        + "40"
+        + "20 - 30T"
+        + ALTRO
+        + FUEL
+        + "Fuori polizza"
+        + DATAFATTURA
+        + NUM.FATT
+        + BOLLO
+        + "PRESA EXTRA"
+        + "SOSTE"
+        + "HC/ADR"
+    }
+
+    Excel2 --> SQL2 : "20'" --> "20" : Nome modificato
+    Excel2 --> SQL2 : "40'" --> "40" : Nome modificato
+    Excel2 --> SQL2 : "20' - 30T" --> "20 - 30T" : Nome modificato
+    Excel2 --> SQL2 : Altro --> ALTRO : Nome modificato
+    Excel2 --> SQL2 : Fuel --> FUEL : Nome modificato
+    Excel2 --> SQL2 : Fuori Polizza --> "Fuori polizza" : Nome modificato
+    Excel2 --> SQL2 : DataFattura --> DATAFATTURA : Nome modificato
+    Excel2 --> SQL2 : Num.Fatt --> NUM.FATT : Nome modificato
+    Excel2 --> SQL2 : Bollo --> BOLLO : Nome modificato
+    Excel2 --> SQL2 : Presa Extra --> "PRESA EXTRA" : Nome modificato
+    Excel2 --> SQL2 : Soste --> "SOSTE" : Nome modificato
+    Excel2 --> SQL2 : HC/Adr --> "HC/ADR" : Nome modificato
+}
+@enduml

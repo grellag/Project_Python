@@ -1,0 +1,30 @@
+@startuml
+skinparam style strictuml
+
+actor "Utente" as user
+rectangle "Sito Web .NET (IIS)" as site
+rectangle "Cartella di partenza" as dir #red
+rectangle "File Caricato (CSV o Excel)" as uploaded_file
+rectangle "Upload del File" as upload #blue
+rectangle "Script Python" as script
+rectangle "Errore di Validazione" as error #red
+rectangle "File Valido" as valid #green
+rectangle "Tabella Validata" as table #blue
+
+user --> site : Accede al sito web
+site --> dir : Naviga alla pagina di upload
+user --> upload : Carica il file
+upload --> uploaded_file : Salva il file nella cartella del server
+uploaded_file --> script : Script Python valida il file
+
+' Condizioni per file valido o invalido
+script --> error : Se il file è invalido
+script --> valid : Se il file è valido
+error --> user : Mostra errore e richiede correzione
+
+' Mostra contenuto validato
+valid --> table : Visualizza contenuto nella tabella
+table --> user : Conferma caricamento del file
+
+@enduml
+
