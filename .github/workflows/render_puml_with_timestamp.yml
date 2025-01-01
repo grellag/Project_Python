@@ -1,51 +1,49 @@
-name: Render PlantUML Diagram with Timestamp
-
-on:
-  push:
-    paths:
-      - 'DCC_Trasporti_H/*.puml' # Trigger solo per modifiche ai file .puml in questa directory
-  workflow_dispatch: # Permette l'esecuzione manuale del workflow
-
 jobs:
   render-puml:
-    # Specifica direttamente 'ubuntu-24.04' per evitare il warning
-    runs-on: ubuntu-24.04
-
+    runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Step 2: Setup Java environment
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
-          java-version: '11'
+          java-version: 11
 
-      - name: Install Graphviz
+      # Step 3: Install dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y graphviz
 
-      - name: Verify Graphviz Installation
-        run: dot -version
-
-      - name: Download PlantUML JAR
+      # Step 4: Download PlantUML jar
+      - name: Download PlantUML
         run: |
           mkdir -p tools
           curl -L https://github.com/plantuml/plantuml/releases/latest/download/plantuml.jar -o tools/plantuml.jar
 
-      - name: Render diagram with timestamp
+      # Step 5: Generate PNG with timestamp in filename
+      - name: Generate diagram
         run: |
-          TIMESTAMP=$(date +'%Y%m%d_%H%M%S') # Calcola data e ora
+          TIMESTAMP=$(date +'%Y%m%d_%H%M%S') # Calculate timestamp
           java -jar tools/plantuml.jar -tpng DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.puml -o DCC_Trasporti_H/
           mv DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_${TIMESTAMP}.png
 
-      - name: Verify generated files
+      # Step 6: Commit and push the PNG to the repository
+      - name: Commit and push PNG
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          ls -l DCC_Trasporti_H/
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_*.png
+          git commit -m "Add generated diagram: FNTB_Equipment_Cycle_Sub_${TIMESTAMP}.png"
+          git push
 
-      - name: Upload diagram as artifact
-        # Aggiornato per utilizzare actions/upload-artifact@v4
+      # Step 7: Upload artifact (optional, to keep the current behavior)
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: rendered-diagram
