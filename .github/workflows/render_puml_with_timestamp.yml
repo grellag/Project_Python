@@ -1,0 +1,50 @@
+name: Render PlantUML Diagram with Timestamp
+
+on:
+  push:
+    paths:
+      - 'DCC_Trasporti_H/*.puml' # Trigger solo per modifiche ai file .puml in questa directory
+  workflow_dispatch: # Permette l'esecuzione manuale del workflow
+
+jobs:
+  render-puml:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Install Graphviz
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+
+      - name: Verify Graphviz Installation
+        run: dot -version
+
+      - name: Download PlantUML JAR
+        run: |
+          mkdir -p tools
+          curl -L https://github.com/plantuml/plantuml/releases/latest/download/plantuml.jar -o tools/plantuml.jar
+
+      - name: Render diagram with timestamp
+        run: |
+          TIMESTAMP=$(date +'%Y%m%d_%H%M%S') # Calcola data e ora
+          java -jar tools/plantuml.jar -tpng DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.puml -o DCC_Trasporti_H/
+          mv DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_${TIMESTAMP}.png
+
+      - name: Verify generated files
+        run: |
+          ls -l DCC_Trasporti_H/
+
+      - name: Upload diagram as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: rendered-diagram
+          path: DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_*.png
