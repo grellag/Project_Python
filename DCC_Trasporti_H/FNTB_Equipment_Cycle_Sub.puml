@@ -16,6 +16,7 @@ entity "Equipment_Event (ee)" {
     Event_Time : datetime
     Location_id : int
     Depot_id : int
+    EDI_Filename : varchar
 }
 
 entity "Equipment_Event_Type (et)" {
