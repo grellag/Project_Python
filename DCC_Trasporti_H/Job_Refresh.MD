@@ -47,6 +47,8 @@ flowchart LR
     V1 -->  K5[SP_PBI_DCC_H_ALL]
 
     K5 -->|Tutti Equipment| T3[PBI_DCC_H_ALL_cache]
+    
+    %% SSAS connection added as the last link explicitly
     B4 -->|SSAS| C1[Cubo: DCC_ITALY]
 
     %% Stili personalizzati:
