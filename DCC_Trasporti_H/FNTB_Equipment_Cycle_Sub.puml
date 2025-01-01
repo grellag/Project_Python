@@ -1,0 +1,82 @@
+@startuml
+
+title Database Schema for Equipment Cycle
+
+entity "Equipment_Cycle (ec)" {
+    Eq_Cycle_id : int
+    Voyage_Port_Call_id : int
+    Booking_Number : varchar
+    BOL_Number : varchar
+    Equipment_id : int
+}
+
+entity "Equipment_Event (ee)" {
+    Event_id : int
+    Eq_Cycle_id : int
+    Event_Time : datetime
+    Location_id : int
+    Depot_id : int
+}
+
+entity "Equipment_Event_Type (et)" {
+    EQEV_Type_id : int
+    Name : varchar
+    Description : varchar
+    Event_Kind : char
+    Depot_In_Out : char
+}
+
+entity "GISequipment (eq)" {
+    Equipment_id : int
+    Equipment_Number : varchar
+    Equipment_Type_id : int
+}
+
+entity "GISEquipment_Type (eqty)" {
+    Equipment_Type_id : int
+    Length : int
+    Equipment_Kind : char
+    ISO_Code : varchar
+}
+
+entity "FNTB_Voyage_Port_Call (vpc)" {
+    Voyage_Port_Call_id : int
+    Port : varchar
+    UNCode : varchar
+}
+
+entity "FNTB_Port (pol/pod)" {
+    Port_id : int
+    Port : varchar
+    UNCode : varchar
+    Location_id : int
+}
+
+entity "FNTB_Location (loc)" {
+    Location_id : int
+    UNCode : varchar
+}
+
+entity "FNTB_Depot (DP)" {
+    Depot_id : int
+    Depot : varchar
+    MSCCode : varchar
+    Depot_Type : char
+}
+
+entity "Equipment_Cycle_Type (ect)" {
+    Eq_Cycle_Type_id : int
+    Name : varchar
+}
+
+Equipment_Cycle --|> Equipment_Event : "Eq_Cycle_id"
+Equipment_Event --> Equipment_Event_Type : "EQEV_Type_id"
+Equipment_Cycle --> GISequipment : "Equipment_id"
+GISequipment --> GISEquipment_Type : "Equipment_Type_id"
+Equipment_Cycle --> FNTB_Voyage_Port_Call : "Voyage_Port_Call_id"
+FNTB_Voyage_Port_Call --> FNTB_Port : "POL_id / POD_id"
+Equipment_Event --> FNTB_Location : "Location_id"
+Equipment_Event --> FNTB_Depot : "Depot_id"
+Equipment_Cycle --> Equipment_Cycle_Type : "Eq_Cycle_Type_id"
+
+@enduml
