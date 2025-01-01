@@ -14,12 +14,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Setup Java environment using AdoptOpenJDK
-      - name: Setup Java (AdoptOpenJDK)
+      # Step 2: Setup Java environment
+      - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'  # Usa AdoptOpenJDK
-          java-version: '21'     # Specifica la versione 21 (come installato localmente)
+          distribution: 'temurin'
+          java-version: '11'
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -27,7 +27,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y graphviz
 
-      # Step 4: Download PlantUML
+      # Step 4: Download PlantUML jar
       - name: Download PlantUML
         run: |
           mkdir -p tools
@@ -37,31 +37,44 @@ jobs:
       - name: Debug - Visualizza contenuto file .puml
         run: |
           echo "Checking content of PlantUML file:"
-          cat DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.puml
+          cat DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.puml || { echo "File not found!"; exit 1; }
 
-      # Step 6: Render PlantUML diagram
-      - name: Render PlantUML diagram
+      # Step 6: Debugging PlantUML Rendering
+      - name: Debug PlantUML Rendering
         run: |
           TIMESTAMP=$(date +'%Y%m%d_%H%M%S')
           mkdir -p DCC_Trasporti_H/ # Assicura che la directory esista
+          echo "Rendering PlantUML file..."
           java -jar tools/plantuml.jar -tpng DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.puml -o DCC_Trasporti_H/ || {
-            echo "PlantUML rendering failed. Checking tools directory and file permissions.";
+            echo "PlantUML rendering failed! Checking tools and output directory:";
             ls -l tools;
             ls -l DCC_Trasporti_H/;
             exit 1;
           }
+          echo "Listing generated files in output directory:"
+          ls -l DCC_Trasporti_H/
           if [ -f "DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png" ]; then
             echo "PNG generated successfully:"
-            ls -l DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png
             mv DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_${TIMESTAMP}.png
           else
-            echo "PNG generation failed. Checking tools directory and output:"
+            echo "PNG generation failed. Checking directory contents again:"
             ls -l tools
             ls -l DCC_Trasporti_H/
             exit 1
           fi
 
-      # Step 7: Upload artifact
+      # Step 7: Add verbose logging for PlantUML process
+      - name: Verify PNG Content
+        run: |
+          if [ -f "DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_${TIMESTAMP}.png" ]; then
+            echo "PNG file exists, analyzing content..."
+            file DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_${TIMESTAMP}.png
+          else
+            echo "ERROR: Expected PNG file is missing!"
+            exit 1
+          fi
+
+      # Step 8: Upload artifact
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
