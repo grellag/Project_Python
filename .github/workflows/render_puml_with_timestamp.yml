@@ -49,7 +49,6 @@ jobs:
       # Step 6: Debugging PlantUML Rendering
       - name: Debug PlantUML Rendering
         run: |
-          TIMESTAMP=$(date +'%Y%m%d_%H%M%S')
           mkdir -p DCC_Trasporti_H/ # Assicura che la directory esista
           echo "Rendering PlantUML file..."
           java -jar tools/plantuml.jar -tpng DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.puml || {
@@ -62,34 +61,19 @@ jobs:
           ls -l DCC_Trasporti_H/
 
           # Trova il file generato
-          GENERATED_FILE=$(find DCC_Trasporti_H/ -type f -name "FNTB_Equipment_Cycle_Sub*.png" | head -n 1)
+          GENERATED_FILE=$(find DCC_Trasporti_H/ -type f -name "FNTB_Equipment_Cycle_Sub.png" | head -n 1)
           if [ -z "$GENERATED_FILE" ]; then
             echo "ERROR: No PNG file generated. Exiting."
             exit 1
           fi
-
-          # Verifica che ci sia solo un file generato
-          COUNT_FILES=$(find DCC_Trasporti_H/ -type f -name "FNTB_Equipment_Cycle_Sub*.png" | wc -l)
-          if [ "$COUNT_FILES" -ne 1 ]; then
-            echo "ERROR: Multiple PNG files generated. Please clean up the directory."
-            find DCC_Trasporti_H/ -type f -name "FNTB_Equipment_Cycle_Sub*.png"
-            exit 1
-          fi
-
-          # Rinomina il file con timestamp
           echo "Generated file: $GENERATED_FILE"
-          mv "$GENERATED_FILE" "DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_${TIMESTAMP}.png"
-          if [ $? -ne 0 ]; then
-            echo "ERROR: Failed to rename the file."
-            exit 1
-          fi
 
       # Step 7: Verify PNG Content
       - name: Verify PNG Content
         run: |
-          if [ -f "DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_${TIMESTAMP}.png" ]; then
+          if [ -f "DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png" ]; then
             echo "PNG file exists, analyzing content..."
-            file DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_${TIMESTAMP}.png
+            file DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png
           else
             echo "ERROR: Expected PNG file is missing!"
             exit 1
@@ -100,4 +84,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: rendered-diagram
-          path: DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_*.png
+          path: DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png
