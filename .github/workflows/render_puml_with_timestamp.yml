@@ -8,7 +8,8 @@ on:
 
 jobs:
   render-puml:
-    runs-on: ubuntu-latest
+    # Specifica direttamente 'ubuntu-24.04' per evitare il warning
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
@@ -44,7 +45,8 @@ jobs:
           ls -l DCC_Trasporti_H/
 
       - name: Upload diagram as artifact
-        uses: actions/upload-artifact@v3
+        # Aggiornato per utilizzare actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: rendered-diagram
           path: DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_*.png
