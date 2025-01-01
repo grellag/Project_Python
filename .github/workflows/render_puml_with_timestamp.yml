@@ -33,14 +33,18 @@ jobs:
           mkdir -p tools
           curl -L https://github.com/plantuml/plantuml/releases/latest/download/plantuml.jar -o tools/plantuml.jar
 
-      # Step 5: Generate PNG with timestamp in filename
+      # Step 5: Debug - Visualizza il contenuto del file .puml
+      - name: Debug - Visualizza contenuto file .puml
+        run: cat DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.puml
+
+      # Step 6: Generate PNG with timestamp in filename
       - name: Generate diagram
         run: |
           TIMESTAMP=$(date +'%Y%m%d_%H%M%S') # Calcola timestamp
           java -jar tools/plantuml.jar -tpng DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.puml -o DCC_Trasporti_H/
           mv DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub_${TIMESTAMP}.png
 
-      # Step 6: Commit and push the PNG to the repository
+      # Step 7: Commit and push the PNG to the repository
       - name: Commit and push PNG
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -51,7 +55,7 @@ jobs:
           git commit -m "Add generated diagram: FNTB_Equipment_Cycle_Sub_${TIMESTAMP}.png"
           git push
 
-      # Step 7: Upload artifact
+      # Step 8: Upload artifact
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
