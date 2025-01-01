@@ -13,6 +13,8 @@ jobs:
       # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: true # Necessario per eseguire il push delle modifiche
 
       # Step 2: Setup Java environment
       - name: Setup Java
@@ -68,20 +70,11 @@ jobs:
           fi
           echo "Generated file: $GENERATED_FILE"
 
-      # Step 7: Verify PNG Content
-      - name: Verify PNG Content
+      # Step 7: Commit and push updated PNG
+      - name: Commit and Push changes
         run: |
-          if [ -f "DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png" ]; then
-            echo "PNG file exists, analyzing content..."
-            file DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png
-          else
-            echo "ERROR: Expected PNG file is missing!"
-            exit 1
-          fi
-
-      # Step 8: Upload artifact
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: rendered-diagram
-          path: DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png
+          git commit -m "Update PlantUML diagram"
+          git push origin main
