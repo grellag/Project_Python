@@ -1,3 +1,11 @@
+name: Render PlantUML Diagrams
+
+on:
+  push:
+    branches:
+      - main # Specifica su quali branch attivare il workflow
+  workflow_dispatch: # Permette di eseguire il workflow manualmente
+
 jobs:
   render-puml:
     runs-on: ubuntu-latest
