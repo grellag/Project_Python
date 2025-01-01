@@ -1,6 +1,6 @@
 @startuml
 
-title Database Schema for Equipment Cycle
+title Funtion Table for Equipment Cycle
 
 entity "Equipment_Cycle (ec)" {
     Eq_Cycle_id : int
