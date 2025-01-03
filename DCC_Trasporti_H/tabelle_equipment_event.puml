@@ -1,0 +1,23 @@
+@startuml
+
+title Data Flow Diagram: PBI_Equipment_Cycle_Sub to Z_PBI_Equipment_Event_X
+
+database "LeNavi_LOCAL" {
+    rectangle "PBI_Equipment_Cycle_Sub" as PBI_Equipment_Cycle_Sub
+    rectangle "PBI_CODECO_Cache" as PBI_CODECO_Cache
+    rectangle "Z_PBI_Equipment_Event_E" as Z_PBI_Equipment_Event_E
+    rectangle "Z_PBI_Equipment_Event_I" as Z_PBI_Equipment_Event_I
+    rectangle "Z_PBI_Equipment_Event_EM" as Z_PBI_Equipment_Event_EM
+    rectangle "#PBI_DCC_TEMP" as PBI_DCC_TEMP
+}
+
+PBI_Equipment_Cycle_Sub --> PBI_DCC_TEMP: "JOIN with [I/E] filter"
+PBI_DCC_TEMP --> Z_PBI_Equipment_Event_E: "Filter [I/E] = 'E'"
+PBI_DCC_TEMP --> Z_PBI_Equipment_Event_I: "Filter [I/E] = 'I'"
+PBI_Equipment_Cycle_Sub --> Z_PBI_Equipment_Event_EM: "Filter EventType IN ('MST', 'MRY', 'MSH', 'MCY')"
+
+PBI_CODECO_Cache --> Z_PBI_Equipment_Event_E: "Update [Rail_Truck], [Rail_Truck_ID]"
+PBI_CODECO_Cache --> Z_PBI_Equipment_Event_I: "Update [Rail_Truck], [Rail_Truck_ID]"
+PBI_CODECO_Cache --> Z_PBI_Equipment_Event_EM: "Update [Rail_Truck], [Rail_Truck_ID]"
+
+@enduml
