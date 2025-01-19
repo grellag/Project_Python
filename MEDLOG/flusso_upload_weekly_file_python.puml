@@ -1,0 +1,29 @@
+@startuml
+start
+
+:Pagina .aspx caricata;
+:Inserimento dei parametri (Anno, Settimana);
+if (File selezionato?) then (Sì)
+  :Selezione del file Excel/CSV;
+  :Salvataggio file nella directory IIS;
+  :Esecuzione script Python - Lettura file;
+  :Esecuzione script Python - Validazione file;
+  if (File valido?) then (Sì)
+    :Salvataggio contenuto in tabella temporanea;
+    :Visualizzazione contenuto in GridView;
+    if (Conferma o Annulla?) then (Conferma)
+      :Trasferimento dati nella tabella definitiva;
+      :Messaggio di salvataggio dati definitivo;
+    else (Annulla)
+      :Cancellazione tabella temporanea, GridView, parametri;
+      :Messaggio di operazione annullata;
+    endif
+  else (No)
+    :Messaggio di errore visualizzato;
+  endif
+else (No)
+  :Richiesta selezione file;
+endif
+
+stop
+@enduml

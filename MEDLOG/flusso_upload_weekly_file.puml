@@ -1,29 +1,51 @@
 @startuml
-start
+!define RECTANGLE_WITH_BORDER_COLOR(rectangle_color, border_color) rectangle_color=rectangle_color border_color=border_color
 
-:Pagina .aspx caricata;
-:Inserimento dei parametri (Anno, Settimana);
-if (File selezionato?) then (Sì)
-  :Selezione del file Excel/CSV;
-  :Salvataggio file nella directory IIS;
-  :Esecuzione script Python - Lettura file;
-  :Esecuzione script Python - Validazione file;
-  if (File valido?) then (Sì)
-    :Salvataggio contenuto in tabella temporanea;
-    :Visualizzazione contenuto in GridView;
-    if (Conferma o Annulla?) then (Conferma)
-      :Trasferimento dati nella tabella definitiva;
-      :Messaggio di salvataggio dati definitivo;
-    else (Annulla)
-      :Cancellazione tabella temporanea, GridView, parametri;
-      :Messaggio di operazione annullata;
-    endif
-  else (No)
-    :Messaggio di errore visualizzato;
-  endif
-else (No)
-  :Richiesta selezione file;
-endif
+title Diagramma: Flusso di Elaborazione Script e Inserimento in SQL Server
 
-stop
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor black
+}
+
+skinparam database {
+    BackgroundColor #EAEAEA
+    BorderColor black
+}
+
+actor User as user
+participant "Script Python" as script
+database "SQL Server" as sql
+
+== Flusso Principale ==
+user -> script: Caricamento file Excel
+script -> script: Elaborazione file Excel
+
+script -> sql: Connessione al database
+sql -> script: Connessione stabilita
+
+script -> script: Validazione dei dati
+script -> script: Trasformazione dei dati per il caricamento
+script -> sql: Inserimento dati in [excel_medlog_weekly_temp]
+
+== Operazioni sui Dati ==
+script -> script: Rimuovi record duplicati
+script -> sql: DELETE FROM Excel_MEDLOG_weekly_double_rows
+sql -> script: Conferma eliminazione duplicati
+
+script -> sql: Inserimento righe duplicate (debug)\n[Excel_MEDLOG_weekly_double_rows]
+sql -> script: Conferma inserimento duplicati
+
+== Dati Elaborati ==
+script -> sql: Controllo di coerenza colonne\n(chiamate: [Call Port])
+script -> sql: Validazione contenitore vuoto o mancante
+
+== Generazione HTML ==
+script -> script: Generazione di output HTML\n(tabella + grafici)
+script -> user: Pagina HTML generata e mostrata
+
+== Tabelle Involved ==
+sql <- script: [excel_medlog_weekly_temp]\nContiene i dati trasformati
+sql <- script: [Excel_MEDLOG_weekly_double_rows]\nPer il debug delle righe duplicate
+
 @enduml
