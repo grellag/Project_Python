@@ -4,7 +4,7 @@ config:
   look: handDrawn
   theme: forest
 ---
-flowchart TB
+flowchart LR
 
 %% --------------------------------------------
 %% BLOCCO 1: TABELLE/OGGETTI DI ORIGINE PER #TEMP
@@ -16,7 +16,7 @@ subgraph SD[Origine dei dati per le tabelle temporanee]
   noteSources([**Sorgenti**<br/>• Z_PBI_Schedule_Leg<br/>• PBI_Bk_Bl_CSC_Export<br/>• Z_PBI_Equipment_Event_E])
   noteSources --(Popolano)--> tempStg[#TempScheduleLegCTE,<br/>#TempCSCCTE,<br/>#Z_PBI_Equipment_Event]
 
-  tempStg --(JOIN)--> VR_temp((PBI_Vessel_Reconciliation_temp))
+  tempStg --(JOIN)--> VR_temp((PBI_Vessel_Reconciliation<br/>_temp))
 end
 
 %% --------------------------------------------
