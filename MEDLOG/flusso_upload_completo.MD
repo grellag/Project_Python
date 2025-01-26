@@ -1,5 +1,7 @@
 ```mermaid
-flowchart TD
+flowchart TB
+
+
     subgraph AppWeb["Applicazione Web"]
         A[Pagina Web: Upload Excel] -->|Caricamento File Excel| B[Salvataggio File sul Server]
     end
@@ -10,12 +12,14 @@ flowchart TD
     end
 
     subgraph SQLServer["SQL Server"]
-        D -->|Validazione| E[Tabella Finale - Produzione]
+        D --> E[Tabella Pronta EXP in PROD]
     end
 
     subgraph Validazione["Pagina Web di Validazione"]
-        D --> F[Pagina Web: Validazione Dati]
-        F -->|Salvataggio Valido| E
+        D --> F[Validazione Dati]
+        F -->|Validazione| G{Dati Validati?}
+        G -->|Sì| E
+        G -->|No| A
     end
 
     style A fill:#ffcc00,stroke:#000,stroke-width:2px
@@ -23,4 +27,8 @@ flowchart TD
     style D fill:#66ccff,stroke:#000,stroke-width:2px
     style E fill:#66ff66,stroke:#000,stroke-width:2px
     style F fill:#ffcc00,stroke:#000,stroke-width:2px
+    style G fill:#ffcc00,stroke:#000,stroke-width:2px,shape:diamond
+
+
+
 ```
