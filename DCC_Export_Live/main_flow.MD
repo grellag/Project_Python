@@ -4,118 +4,58 @@ config:
   look: handDrawn
   theme: forest
 ---
-
 flowchart TB
 
-    %% --------------------------------------------
-    %% Staging 1: #TempScheduleLegCTE, #TempCSCCTE, #Z_PBI_Equipment_Event
-    %% --------------------------------------------
+%% --------------------------------------------
+%% BLOCCO 1: TABELLE/OGGETTI DI ORIGINE PER #TEMP
+%% --------------------------------------------
 
-    subgraph STG[Creazione e Unione Tabelle Temporanee]
-      direction TB
+subgraph SD[Origine dei dati per le tabelle temporanee]
+  direction TB
 
-      A1((Z_PBI_Schedule_Leg)) --(Popola)--> Temp1(#TempScheduleLegCTE)
-      A2((PBI_Bk_Bl_CSC_Export)) --(Popola)--> Temp2(#TempCSCCTE)
-      A3((Z_PBI_Equipment_Event_E)) --(Popola)--> Temp3(#Z_PBI_Equipment_Event)
+  noteSources([**Sorgenti**<br/>• Z_PBI_Schedule_Leg<br/>• PBI_Bk_Bl_CSC_Export<br/>• Z_PBI_Equipment_Event_E])
+  noteSources --(Popolano)--> tempStg[#TempScheduleLegCTE,<br/>#TempCSCCTE,<br/>#Z_PBI_Equipment_Event]
 
-      Temp1 --(JOIN)--> VR_temp((PBI_Vessel_Reconciliation_temp))
-      Temp2 --(JOIN)--> VR_temp
-      Temp3 --(JOIN)--> VR_temp
-    end
+  tempStg --(JOIN)--> VR_temp((PBI_Vessel_Reconciliation_temp))
+end
 
-    %% --------------------------------------------
-    %% Tabelle/viste secondarie che alimentano la temp
-    %% --------------------------------------------
+%% --------------------------------------------
+%% BLOCCO 2: ALTRE FONTI/UPDATE SU VR_temp
+%% --------------------------------------------
 
-    subgraph UPD[Altre fonti/UPDATE su PBI_Vessel_Reconciliation_temp]
-      direction TB
+subgraph UPD[Altre fonti  - JOIN - UPDATE su PBI_Vessel_Reconciliation_temp]
+  direction TB
 
-      subgraph LNAV[LeNavi_LOCAL]
-        F1((PBI_Vessel_Reconciliation_FTC))
-        F2((PBI_Doc_Date_Time))
-        F3((PBI_Vessel_Reconciliation_VGM))
-        F4((PBI_BL_List_by_freight_debtor))
-        F5((PBI_Vessel_Reconciliation_SI_cache))
-        F6((PBI_Charge_Lenavi_MEDLOG))
-        F7((PBI_Vessel_Reconciliation_Seals))
-        F8((PBI_Intermodal_CSC<br/>PBI_DCC_Intermodal_cache))
-        F9((PBI_Vessel_Reconciliation_MFTC))
-      end
+  subgraph LNAV[Fonti varie in LeNavi_LOCAL]
+    direction TB
+    LNAVList([**Tabelle/Viste**<br/>• PBI_Vessel_Reconciliation_FTC<br/>• PBI_Doc_Date_Time<br/>• PBI_Vessel_Reconciliation_VGM<br/>• PBI_BL_List_by_freight_debtor<br/>• PBI_Charge_Lenavi_MEDLOG<br/>…])
+  end
+  LNAVList --(UPDATE)--> VR_temp
 
-      subgraph M90[Interlink_Main90]
-        M1((Bill_Of_Lading))
-        M2((Cargo_Shipment_Container))
-        M3((Equipment_Event/Detail<br/>+ GISTerminal, etc.))
-        M4((BOLREP_Header/Company))
-        M5((Web_BL_Journal))
-        M6((Service_Contract_Type))
-        M7((Casp_File_7 / Casp_File_7_Container))
-        M8((Doc_Date_Time / GISCurrency))
-      end
+  subgraph M90[Fonti in Interlink_Main90]
+    direction TB
+    M90List([**Tabelle/Viste**<br/>• Bill_Of_Lading<br/>• Cargo_Shipment_Container<br/>• Equipment_Event/Detail<br/>• BOLREP_Header/Company<br/>• Web_BL_Journal<br/>• Casp_File_7…])
+  end
+  M90List --(UPDATE)--> VR_temp
 
-      subgraph DFD[Interlink_DFeed90.dfeed]
-        D1((FNTB_Port))
-        D2((FNTB_Depot))
-        D3((FNTB_Container_Last_Event))
-        D4((OVAVREC_FNTB_CSC_Hazardous_Info))
-        D5((FNTB_AssocDocCompany_BusinessEntity))
-        D6((FNTB_Is_UPC_Contract))
-        D7((FNTB_Booking_DG_Accept_Finalize))
-        D8((FNTB_HSCodes_By_CSC))
-        D9((FNTB_EDI_Extended_ByTableCode))
-        D10((FNTB_Schedule_Leg_<br/>TS_ETA_ETD_Cache))
-        D11((FNTB_SecUser))
-        D12((FN_AlphaNumOnly, FNTB_ECR_DaGaLlie,<br/>FNTB_Equipment_Cycle_Sub,...))
-        D13((OVAVREC_FNTB_<br/>Get_COPRAR_Info_Main))
-      end
+  subgraph DFD[Fonti in Interlink_DFeed90.dfeed]
+    direction TB
+    DFDList([**Funzioni/Viste**<br/>• FNTB_Port<br/>• FNTB_Depot<br/>• FNTB_AssocDocCompany…<br/>• FNTB_Schedule_Leg_TS_ETA_ETD_Cache<br/>• OVAVREC_FNTB_CSC_Hazardous_Info<br/>…])
+  end
+  DFDList --(UPDATE)--> VR_temp
 
-      subgraph LNLOC[Altre in LeNavi_LOCAL]
-        X1((PBI_Vessel_Reconciliation_<br/>SI))
-        X2((FNTB_BL_<br/>CLASSIFICATIONS))
-      end
+  subgraph LNLOC[Altre in LeNavi_LOCAL]
+    direction TB
+    LNLOCList([**Tabelle/Viste**<br/>• PBI_Vessel_Reconciliation_SI_cache<br/>• FNTB_BL_CLASSIFICATIONS<br/>…])
+  end
+  LNLOCList --(UPDATE)--> VR_temp
 
-      %% Tutte queste alimentano PBI_Vessel_Reconciliation_temp via UPDATE
-      F1 --(UPDATE)--> VR_temp
-      F2 --(UPDATE)--> VR_temp
-      F3 --(UPDATE)--> VR_temp
-      F4 --(UPDATE)--> VR_temp
-      F5 --(UPDATE)--> VR_temp
-      F6 --(UPDATE)--> VR_temp
-      F7 --(UPDATE)--> VR_temp
-      F8 --(UPDATE)--> VR_temp
-      F9 --(UPDATE)--> VR_temp
+end
 
-      M1 --(UPDATE)--> VR_temp
-      M2 --(UPDATE)--> VR_temp
-      M3 --(UPDATE)--> VR_temp
-      M4 --(UPDATE)--> VR_temp
-      M5 --(UPDATE)--> VR_temp
-      M6 --(UPDATE)--> VR_temp
-      M7 --(UPDATE)--> VR_temp
-      M8 --(UPDATE)--> VR_temp
+%% --------------------------------------------
+%% BLOCCO 3: TABELLA FINALE
+%% --------------------------------------------
 
-      D1 --(UPDATE)--> VR_temp
-      D2 --(UPDATE)--> VR_temp
-      D3 --(UPDATE)--> VR_temp
-      D4 --(UPDATE)--> VR_temp
-      D5 --(UPDATE)--> VR_temp
-      D6 --(UPDATE)--> VR_temp
-      D7 --(UPDATE)--> VR_temp
-      D8 --(UPDATE)--> VR_temp
-      D9 --(UPDATE)--> VR_temp
-      D10 --(UPDATE)--> VR_temp
-      D11 --(UPDATE)--> VR_temp
-      D12 --(UPDATE)--> VR_temp
-      D13 --(UPDATE)--> VR_temp
+VR_temp --(RENAME/COMMIT)--> VR((PBI_Vessel_Reconciliation))
 
-      X1 --(UPDATE)--> VR_temp
-      X2 --(UPDATE)--> VR_temp
-
-    end
-
-    %% --------------------------------------------
-    %% Tabella finale: rename di PBI_Vessel_Reconciliation_temp
-    %% --------------------------------------------
-
-    VR_temp --(RENAME/COMMIT)--> VR((PBI_Vessel_Reconciliation))
 ```
