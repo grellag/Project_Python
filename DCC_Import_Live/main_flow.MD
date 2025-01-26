@@ -5,13 +5,19 @@ config:
   theme: forest
 ---
 flowchart LR
-    A((PBI_BK_BL_CSC)) --(popola)--> Z_PBI_BK_BL_CSC_IMPORT
-    A1((LNAV_ACC_ALL_Charges_cache)) --(popola)--> LNAV_ACC_ALL_CHARGES_CACHE_IMPORT
-    A2((Interlink_DFeed90.dfeed.FNTB_TSPorts_CSC)) --(popola)--> Z_PBI_BK_BL_CSC_IMPORT_TS
-    A3((Z_PBI_Dwell_Import)) --(popola)--> Z_PBI_BK_BL_CSC_IMPORT_IDV
 
-    subgraph Calcolo e Staging
-      Z_PBI_BK_BL_CSC_IMPORT --(JOIN)--> T((PBI_DCC_Import_cache_temp))
+
+    %% Definizione di una classe "verde" con sfondo + bordo
+    classDef verde fill:#90EE90,stroke:#2F4F4F,stroke-width:4px
+
+
+    A((PBI_BK_BL_CSC)) --(popola)--> Z_PBI_BK_BL_CSC_IMPORT
+    A1((LNAV_ACC_ALL_<br/>Charges_cache)) --(popola)--> LNAV_ACC_ALL_CHARGES_CACHE_IMPORT
+    A2((Interlink_DFeed90.<br/>dfeed.<br/>FNTB_TSPorts_CSC)) --(popola)--> Z_PBI_BK_BL_CSC_IMPORT_TS
+    A3((Z_PBI_<br/>Dwell_Import)) --(popola)--> Z_PBI_BK_BL_CSC_IMPORT_IDV
+
+    subgraph Calcolo e JOIN
+      Z_PBI_BK_BL_CSC_IMPORT --(JOIN)--> T((PBI_DCC_<br/>Import_cache_temp))
       Z_PBI_BK_BL_CSC_IMPORT_TS --(JOIN)--> T
       Z_PBI_BK_BL_CSC_IMPORT_IDV --(JOIN)--> T
       LNAV_ACC_ALL_CHARGES_CACHE_IMPORT --(JOIN)--> T
@@ -24,4 +30,10 @@ flowchart LR
     end
 
     T --(RENAME/FINALE)--> PBI_DCC_Import_cache
+
+
+    %% Assegnazione della classe "verde" ai 4 nodi
+    class A,A1,A2,A3 verde
+
+
 ```
