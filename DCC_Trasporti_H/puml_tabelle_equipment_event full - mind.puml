@@ -1,0 +1,46 @@
+@startmindmap
+* <size:40><b>SP_PBI_Equipment_Event_Full</b></size>
+** <size:20><b><color:YellowGreen>Parametri</color></b></size>
+*** <b>@WeeksBack</b>: <i>Numero di settimane indietro</i>
+*** <b>@Debug_mode</b>: <i>Abilita debug</i>
+*** <b>@FromDate</b>: <i>Data calcolata</i>
+*** <b>@Created_Since</b>: <i>Ultima data creazione</i>
+** <size:20><b><color:LightPink>Tabelle Temporanee</color></b></size>
+*** #Temp_PBI_Equipment_Cycle_Sub
+**** Dati da PBI_Equipment_Cycle_Sub
+**** Indici creati:
+***** Equipment_id + EC_Booking_Number
+***** Equipment_id + EC_Bill_Of_Lading_Number
+***** Equipment_id + Voyage_Port_Call_id
+*** #PBI_DCC_TEMP
+**** Dati distinti da PBI_Agency_CSC
+**** Indici creati:
+***** Equipment_id + Voyage_Port_Call_id
+***** Booking Number
+***** Bill of Lading Number
+** <size:20><b><color:LightBlue>Dati Inseriti</color></b></size>
+*** Z_PBI_Equipment_Event_E_temp
+**** Dati filtrati su [I/E] = 'E'
+**** Inserimenti basati su:
+***** Equipment_id + Voyage_Port_Call_id
+***** Equipment_id + Booking Number
+*** Z_PBI_Equipment_Event_I_temp
+**** Dati filtrati su [I/E] = 'I'
+**** Inserimenti basati su:
+***** Equipment_id + Voyage_Port_Call_id
+***** Equipment_id + Bill of Lading Number
+** <size:20><b><color:LightGray>Indici</color></b></size>
+*** Indici creati su PBI_Equipment_Cycle_Sub:
+**** Equipment_id + EC_Booking_Number
+**** Equipment_id + EC_Bill_Of_Lading_Number
+**** Equipment_id + Voyage_Port_Call_id
+*** Indici creati su PBI_Agency_CSC:
+**** Equipment_id + Voyage_Port_Call_id
+**** [I/E]
+** <size:20><b><color:OrangeRed>Operazioni Finali</color></b></size>
+*** <b>DROP</b>: Tabelle temporanee (es. #Temp_PBI_Equipment_Cycle_Sub, #PBI_DCC_TEMP)
+*** <b>RENAME</b>: Tabelle temporanee in tabelle finali
+**** Z_PBI_Equipment_Event_E_temp -> Z_PBI_Equipment_Event_E
+**** Z_PBI_Equipment_Event_I_temp -> Z_PBI_Equipment_Event_I
+*** <b>UPDATE</b>: Parametro nella tabella DB_Param
+@endmindmap
