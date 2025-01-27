@@ -1,0 +1,33 @@
+@startmindmap
+* PBI_DCC_H_ALL_cache
+** Initialization
+*** Check and drop existing `PBI_DCC_H_ALL_cache`
+*** Create `PBI_DCC_H_ALL_cache` from combined queries
+** Sources
+*** FULL Data
+**** Source: `PBI_DCC_H_cache`
+**** Includes `Shipment type` and `BusinessEntityGroup` adjustments
+**** Filters: Year >= 2023
+*** EMPTY Data
+**** Source: `PBI_DCC_H_EM_cache`
+**** Includes `Shipment type = 'Empty Container'`
+**** Filters: Year >= 2023
+** Columns
+*** Shared Columns
+**** `I_E`
+**** `Accounting_VPC_Date` and derived fields
+**** `Local_Logistic`
+**** `POL`, `POD`, `PortUN`
+**** `Booking Number`, `Container Number`, `Equipment_id`
+**** `Transport_Mode`, `Event_Type`
+*** Derived Columns
+**** `Event_Port_date_clean`, `Event_Transport_Rail_date_clean`, `Event_Transport_truck_date_clean`
+**** `DWell_Time` (calculated dwell time based on event dates)
+*** Adjusted Columns
+**** `Shipper BusinessEntityGroup`, `Consignee BusinessEntityGroup`, `Notify BusinessEntityGroup` (handles `<No Business Entity>`)
+** Logic
+*** UNION ALL
+**** Combines `FULL` and `EMPTY` data sources
+*** Dwell Time Calculation
+**** Based on differences between `Event_Port_date`, `Event_Transport_Rail_date`, and `Event_Transport_truck_date`
+@endmindmap
