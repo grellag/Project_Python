@@ -1,6 +1,6 @@
 @startuml
 
-title Funtion Table for Equipment Cycle
+title ALL Funtion Tables for Equipment Cycle DATA
 
 entity "Equipment_Cycle (ec)" {
     Eq_Cycle_id : int
