@@ -62,14 +62,14 @@ jobs:
           echo "Listing generated files in output directory:"
           ls -l DCC_Trasporti_H/
 
-      # Step 7: Commit and Push changes
-      - name: Commit and Push changes
+      # Step 7: Commit and Push all updated PNG files
+      - name: Commit and Push all updated PNG files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Aggiungi solo file modificati
-          git add DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png
+          # Aggiungi tutti i file PNG nella directory specificata
+          git add DCC_Trasporti_H/*.png
 
           # Controlla se ci sono modifiche da committare
           if git diff --cached --quiet; then
@@ -77,6 +77,7 @@ jobs:
             exit 0
           fi
 
-          # Esegui il commit e push solo se ci sono modifiche
-          git commit -m "Update PlantUML diagram"
+          # Esegui il commit e il push solo se ci sono modifiche
+          git commit -m "Update all PlantUML diagrams"
           git push origin main
+
