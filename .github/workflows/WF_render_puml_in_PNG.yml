@@ -1,0 +1,82 @@
+name: Render PlantUML Diagrams
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Permette di eseguire il workflow manualmente
+
+jobs:
+  render-puml:
+    runs-on: ubuntu-22.04
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true # Necessario per eseguire il push delle modifiche
+
+      # Step 2: Setup Java environment
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+
+      # Step 4: Download PlantUML jar
+      - name: Download PlantUML
+        run: |
+          mkdir -p tools
+          curl -L https://github.com/plantuml/plantuml/releases/latest/download/plantuml.jar -o tools/plantuml.jar
+
+      # Step 5: Debug - Visualizza il contenuto del file .puml
+      - name: Debug - Visualizza contenuto file .puml
+        run: |
+          echo "Checking content of PlantUML file:"
+          cat DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.puml || { echo "File not found!"; exit 1; }
+
+      # Step 5.1: Cleanup previous PNG files
+      - name: Cleanup previous PNG files
+        run: |
+          echo "Cleaning up old PNG files in output directory..."
+          find DCC_Trasporti_H/ -type f -name "FNTB_Equipment_Cycle_Sub*.png" -exec rm -f {} \;
+          echo "Old PNG files removed."
+
+      # Step 6: Render PlantUML Diagram
+      - name: Render PlantUML Diagram
+        run: |
+          mkdir -p DCC_Trasporti_H/ # Assicura che la directory esista
+          echo "Rendering PlantUML file..."
+          java -jar tools/plantuml.jar -tpng DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.puml || {
+            echo "PlantUML rendering failed! Checking tools and output directory:"
+            ls -l tools
+            ls -l DCC_Trasporti_H/
+            exit 1
+          }
+          echo "Listing generated files in output directory:"
+          ls -l DCC_Trasporti_H/
+
+      # Step 7: Commit and Push changes
+      - name: Commit and Push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Aggiungi solo file modificati
+          git add DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png
+
+          # Controlla se ci sono modifiche da committare
+          if git diff --cached --quiet; then
+            echo "No changes to commit. Skipping."
+            exit 0
+          fi
+
+          # Esegui il commit e push solo se ci sono modifiche
+          git commit -m "Update PlantUML diagram"
+          git push origin main
