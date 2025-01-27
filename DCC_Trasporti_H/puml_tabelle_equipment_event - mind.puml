@@ -1,49 +1,34 @@
-@startmindmap
+@startuml
+digraph EquipmentDataFlow {
+    rankdir=TB; // Orienta dall'alto verso il basso
 
-* <size:40><b>Equipment Data Flow</b></size>
-** <size:20><b><color:YellowGreen>MAIN Data Sources</color></b></size>
-*** PBI_Equipment_Cycle_Sub
-**** <i>Contains all equipment cycles</i>
-**** Fields:
-***** <b>Event Time</b>
-***** <b>Voyage Port Call ID</b>
-***** Depot
-***** Port of Load
-***** Port of Discharge
-***** Booking Number
-***** Bill of Lading Number
-*** PBI_Agency_CSC
-**** <i>Contains all documents</i>
-**** Fields:
-***** <b>Equipment_id</b>
-***** <b>Voyage_Port_Call_id</b>
-***** Booking Number
-***** Bill of Lading Number
-***** I/E
+    // Nodo principale
+    "Equipment Data Flow" [shape=box, style=bold];
 
-*** PBI_CODECO_Cache
-**** <u>Received from EDI CODECO files</u>
-**** Updates Rail_Truck & Rail_Truck_ID
+    // Nodi principali orizzontali
+    "MAIN Data Sources" [color=YellowGreen, style=bold];
+    "Event Categories" [color=LightPink, style=bold];
+    "Key Tables" [color=LightBlue, style=bold];
+    "TABLE Relationships" [color=LightGray, style=bold];
 
-** <size:20><b><color:LightPink>Event Categories</color></b></size>
-*** <&check> Import Full
-*** <&check> Export Full
-*** <&check> Empty
+    // Collegamenti
+    "Equipment Data Flow" -> { "MAIN Data Sources" "Event Categories" "Key Tables" "TABLE Relationships" };
 
-** <size:20><b><color:LightBlue>Key Tables</color></b></size>
-*** PBI_Equipment_Cycle_Sub
-**** <b>Central table for all cycles</b>
-*** Z_PBI_Equipment_Event_E
-**** Export Full
-*** Z_PBI_Equipment_Event_I
-**** Import Full
-*** Z_PBI_Equipment_Event_EM
-**** Empty Equipment
+    // Dettagli dei nodi secondari
+    "MAIN Data Sources" -> "PBI_Equipment_Cycle_Sub" [label="Contains all equipment cycles"];
+    "MAIN Data Sources" -> "PBI_Agency_CSC" [label="Contains all documents"];
+    "MAIN Data Sources" -> "PBI_CODECO_Cache" [label="Received from EDI CODECO files"];
 
-** <size:20><b><color:LightGray>TABLE Relationships</color></b></size>
-*** PBI_Equipment_Cycle_Sub joins with temporary table
-**** Filters based on I/E or EventType
-*** PBI_CODECO_Cache updates event tables
-**** Based on Equipment_Number and EDI_Filename
+    "Event Categories" -> "Import Full";
+    "Event Categories" -> "Export Full";
+    "Event Categories" -> "Empty";
 
-@endmindmap
+    "Key Tables" -> "Central table for all cycles";
+    "Key Tables" -> "Export Full";
+    "Key Tables" -> "Import Full";
+    "Key Tables" -> "Empty Equipment";
+
+    "TABLE Relationships" -> "Filters based on I/E or EventType";
+    "TABLE Relationships" -> "Updates event tables";
+}
+@enduml
