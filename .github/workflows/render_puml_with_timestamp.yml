@@ -48,8 +48,8 @@ jobs:
           find DCC_Trasporti_H/ -type f -name "FNTB_Equipment_Cycle_Sub*.png" -exec rm -f {} \;
           echo "Old PNG files removed."
 
-      # Step 6: Debugging PlantUML Rendering
-      - name: Debug PlantUML Rendering
+      # Step 6: Render PlantUML Diagram
+      - name: Render PlantUML Diagram
         run: |
           mkdir -p DCC_Trasporti_H/ # Assicura che la directory esista
           echo "Rendering PlantUML file..."
@@ -62,19 +62,21 @@ jobs:
           echo "Listing generated files in output directory:"
           ls -l DCC_Trasporti_H/
 
-          # Trova il file generato
-          GENERATED_FILE=$(find DCC_Trasporti_H/ -type f -name "FNTB_Equipment_Cycle_Sub.png" | head -n 1)
-          if [ -z "$GENERATED_FILE" ]; then
-            echo "ERROR: No PNG file generated. Exiting."
-            exit 1
-          fi
-          echo "Generated file: $GENERATED_FILE"
-
-      # Step 7: Commit and push updated PNG
+      # Step 7: Commit and Push changes
       - name: Commit and Push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Aggiungi solo file modificati
           git add DCC_Trasporti_H/FNTB_Equipment_Cycle_Sub.png
+
+          # Controlla se ci sono modifiche da committare
+          if git diff --cached --quiet; then
+            echo "No changes to commit. Skipping."
+            exit 0
+          fi
+
+          # Esegui il commit e push solo se ci sono modifiche
           git commit -m "Update PlantUML diagram"
           git push origin main
