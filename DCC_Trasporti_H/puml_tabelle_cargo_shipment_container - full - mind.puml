@@ -1,0 +1,56 @@
+@startmindmap
+* <size:40><b>SP_PBI_DCC_ITALY_H</b></size>\n<size:30>Sorgente FULL</size>
+** <size:20><b><color:YellowGreen>Parametri</color></b></size>
+*** @Debug_mode: Livello di debug
+*** @KEY: Chiave per informazioni aggiuntive
+** <size:20><b><color:LightPink>Tabelle Temporanee</color></b></size>
+*** PBI_DCC_H_cache_temp
+**** Campi principali:
+***** I/E (Import/Export)
+***** Accounting_VPC_Date (Data contabile)
+***** Cargo_Shipment_Container_id
+***** Container Number
+***** Event_Port
+***** Event_Transport_Rail
+***** Event_Transport_truck
+** <size:20><b><color:LightBlue>Dati Inseriti</color></b></size>
+*** Origine dei dati:
+**** LeNavi_LOCAL.dbo.PBI_Agency_CSC
+**** Interlink_DFeed90.dfeed.FNTB_Depot
+**** Interlink_Main90.dbo.Cargo_Shipment_Container
+**** Interlink_DFeed90.dfeed.FNTB_Commodity
+**** LeNavi_LOCAL.dbo.PBI_DCC_Intermodal_cache
+*** Campi aggiornati:
+**** Event_Port: Tipo di evento di porto
+**** Event_Transport_Rail: Tipo di evento ferroviario
+**** Event_Transport_truck: Tipo di evento su camion
+**** Rail_Truck: Servizio ferroviario o camion
+**** Harmonized_Code: Codice armonizzato
+**** Commodity: Merce associata
+** <size:20><b><color:LightGray>Operazioni di Aggiornamento</color></b></size>
+*** Aggiornamenti specifici:
+**** [Pick Up Empty Depot] da FNTB_Depot
+**** [Drop Off Empty Depot] da GISDepot
+**** [Intermodal Appointment Date] da PBI_DCC_Intermodal_cache
+**** [Transport_Mode] calcolato da Shipment type
+**** [Location_EU] e [Location_EU_UNCODE] da Cargo_Shipment_Comment
+*** Flag e validazioni:
+**** Flag_Validity_App: Validità appuntamenti intermodali
+**** Transport_Mode_by_Carrier_Loc: Modalità di trasporto da posizione vettore
+** <size:20><b><color:OrangeRed>Eventi</color></b></size>
+*** Import:
+**** IDV: Evento di scarico container
+**** IPC: Evento ferroviario di importazione
+**** ICO: Evento su camion di importazione
+*** Export:
+**** ELV: Evento di carico container
+**** ERY: Evento ferroviario di esportazione
+**** ECY: Evento su camion di esportazione
+** <size:20><b><color:Gold>Operazioni Finali</color></b></size>
+*** Verifica ed elimina tabelle temporanee:
+**** PBI_DCC_H_cache_temp
+*** Rinomina tabella temporanea:
+**** PBI_DCC_H_cache_temp -> PBI_DCC_H_cache
+*** Aggiorna parametri:
+**** DB_Param per aggiornare il timestamp di `PBI_DCC_H_cache`
+@endmindmap
