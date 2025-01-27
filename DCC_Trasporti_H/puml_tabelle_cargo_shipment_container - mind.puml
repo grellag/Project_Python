@@ -1,0 +1,57 @@
+@startmindmap
+* <size:40><b>SP_PBI_Build_Agency_CSC_Cache</b></size>
+** <size:20><b><color:YellowGreen>Parametri</color></b></size>
+*** Month: Periodo di riferimento
+*** Debug_mode: Modalità di debug
+** <size:20><b><color:LightPink>Tabelle Temporanee</color></b></size>
+*** #TMP_SLeg
+**** Dati da:
+***** FNTB_Schedule_Leg
+**** Indici creati:
+***** Schedule_Leg_id
+*** PBI_Agency_CSC_temp
+**** Dati da:
+***** FNTB_Booking_BL_CSC
+***** FNTB_AssocDocCompany
+***** FNTB_Equipment_Group
+***** FNTB_Location
+***** FNTB_Port
+**** Campi principali:
+***** Booking Number
+***** Bill of Lading Number
+***** I/E
+***** Vessel
+***** Voyage
+***** Cargo Weight
+***** Equipment Type
+***** POL/POD
+**** Indici creati:
+***** Local_voyage_port_call_id
+***** Container Number
+** <size:20><b><color:LightBlue>Dati Aggiornati</color></b></size>
+*** PBI_Agency_CSC_temp
+**** Aggiornati campi:
+***** Is for Local Export TEUs
+***** Is for Local Import TEUs
+***** Is for Transit Export TEUs
+***** Is for Transit Import TEUs
+***** Carrier Haulage Containers
+***** BLs Issued
+***** MFTC Checks
+** <size:20><b><color:LightGray>Operazioni Finali</color></b></size>
+*** Eliminazione di tabelle temporanee:
+**** #TMP_SLeg
+**** PBI_Agency_CSC_temp
+*** Rinomina tabella temporanea:
+**** PBI_Agency_CSC_temp -> PBI_Agency_CSC
+*** Ottimizzazioni:
+**** Creazione indici su campi chiave
+** <size:20><b><color:OrangeRed>KPIs Calcolati</color></b></size>
+*** Local Export TEUs
+*** Local Import TEUs
+*** Transit Export TEUs
+*** Transit Import TEUs
+*** Carrier Haulage Containers
+*** Inspired Haulage Containers
+*** BLs Issued
+@endmindmap
