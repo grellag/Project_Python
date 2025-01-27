@@ -35,41 +35,49 @@ jobs:
           mkdir -p tools
           curl -L https://github.com/plantuml/plantuml/releases/latest/download/plantuml.jar -o tools/plantuml.jar
 
-      # Step 5: Debug - Visualizza il contenuto del file .puml
-      - name: Debug - Visualizza contenuto file .puml
-        run: |
-          echo "Checking content of PlantUML file:"
-          cat DCC_Trasporti_H/puml_FNTB_Equipment_Cycle_Sub.puml || { echo "File not found!"; exit 1; }
-
-      # Step 5.1: Cleanup previous PNG files
+      # Step 5: Cleanup previous PNG files
       - name: Cleanup previous PNG files
         run: |
           echo "Cleaning up old PNG files in output directory..."
-          find DCC_Trasporti_H/ -type f -name "puml_FNTB_Equipment_Cycle_Sub*.png" -exec rm -f {} \;
+          find DCC_Trasporti_H/ -type f -name "*.png" -exec rm -f {} \;
           echo "Old PNG files removed."
 
-      # Step 6: Render PlantUML Diagram
-      - name: Render PlantUML Diagram
+      # Step 6: Render all PlantUML Diagrams
+      - name: Render all PlantUML Diagrams
         run: |
           mkdir -p DCC_Trasporti_H/ # Assicura che la directory esista
-          echo "Rendering PlantUML file..."
-          java -jar tools/plantuml.jar -tpng DCC_Trasporti_H/puml_FNTB_Equipment_Cycle_Sub.puml || {
-            echo "PlantUML rendering failed! Checking tools and output directory:"
-            ls -l tools
-            ls -l DCC_Trasporti_H/
-            exit 1
-          }
+          echo "Rendering all PlantUML files in DCC_Trasporti_H/ directory..."
+          for file in DCC_Trasporti_H/*.puml; do
+            echo "Processing $file"
+            java -jar tools/plantuml.jar -tpng "$file" || {
+              echo "PlantUML rendering failed for $file! Checking tools and output directory:"
+              ls -l tools
+              ls -l DCC_Trasporti_H/
+              exit 1
+            }
+          done
           echo "Listing generated files in output directory:"
           ls -l DCC_Trasporti_H/
 
-      # Step 7: Commit and Push all updated PNG files
+      # Step 7: Rename all PNG files with prefix 'img_'
+      - name: Rename PNG files
+        run: |
+          echo "Renaming all PNG files in DCC_Trasporti_H/ directory..."
+          for file in DCC_Trasporti_H/*.png; do
+            base_name=$(basename "$file")
+            mv "$file" "DCC_Trasporti_H/img_$base_name"
+          done
+          echo "Renamed files:"
+          ls -l DCC_Trasporti_H/
+
+      # Step 8: Commit and Push all updated PNG files
       - name: Commit and Push all updated PNG files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Aggiungi tutti i file PNG nella directory specificata
-          git add DCC_Trasporti_H/*.png
+          git add DCC_Trasporti_H/img_*.png
 
           # Controlla se ci sono modifiche da committare
           if git diff --cached --quiet; then
@@ -78,6 +86,5 @@ jobs:
           fi
 
           # Esegui il commit e il push solo se ci sono modifiche
-          git commit -m "Update all PlantUML diagrams"
+          git commit -m "Update all PlantUML diagrams with prefixed filenames"
           git push origin main
-
