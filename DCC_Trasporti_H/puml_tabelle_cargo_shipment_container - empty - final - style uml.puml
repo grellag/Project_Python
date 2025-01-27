@@ -1,0 +1,135 @@
+@startuml
+!define Table(name) class name << (T,#FFAAAA) >>
+
+Table(PBI_DCC_H_EM_cache_temp) {
+  I_E: varchar(6) NOT NULL
+  Accounting_VPC_Date: date NULL
+  Accounting_VPC_Year: generated column
+  Accounting_VPC_Month: generated column
+  Accounting_VPC_Week: generated column
+  Accounting_VPC_Quarter: generated column
+  Local_Logistic: varchar(100) NULL
+  Trasport_Mode_by_Intermodal_Haulage: varchar(25) NULL
+  Schedule_Leg_id: int NULL
+  Cargo_Shipment_Container_id: int NOT NULL
+  Voyage_Port_Call_id: int NULL
+  Cargo_Shipment_id: int NOT NULL
+  Intermodal_For_Merchant_Acct: bit NOT NULL
+  Shipment_type: varchar(255) NULL
+  GVA_DOC_Service: varchar(100) NULL
+  Trade: varchar(100) NULL
+  POL: varchar(35) NULL
+  POD: varchar(35) NULL
+  POLUN: varchar(15) NULL
+  PODUN: varchar(15) NULL
+  Port: varchar(35) NULL
+  PortUN: varchar(5) NULL
+  Booking_Status: varchar(100) NULL
+  F_E: varchar(1) NULL
+  Is_Over_Dimension: bit NULL
+  Is_Operating_Reefer: int NULL
+  Booking_Agent: varchar(100) NULL
+  Booking_Client: varchar(100) NULL
+  Contract_Holder: varchar(100) NULL
+  Service_Contract_Number: varchar(30) NULL
+  Consignee_BL_Company_Name: varchar(255) NULL
+  Notify_BL_Company_Name: varchar(255) NULL
+  Freight_Forwarder_BusinessEntityGroup: varchar(101) NULL
+  Shipper_BusinessEntityGroup: varchar(101) NULL
+  Consignee_BusinessEntityGroup: varchar(101) NULL
+  Notify_BusinessEntityGroup: varchar(101) NULL
+  Customs_Fwd_Booking_BusinessEntityGroup: varchar(101) NULL
+  Release_To_Company: varchar(101) NULL
+  Booking_Number: varchar(17) NULL
+  Bill_Of_Lading_id: int NULL
+  Bill_Of_Lading_Number: varchar(12) NULL
+  Equipment_id: int NULL
+  Container_Number: varchar(20) NULL
+  EQ_Type: varchar(10) NULL
+  EQ_Cycle_id: int NULL
+  Vessel_Name: varchar(35) NULL
+  Voyage_Number: varchar(11) NULL
+  Transport_Mode: varchar(2) NOT NULL
+  Transport_Mode_by_Carrier_Loc: varchar(1000) NULL
+  BL_Source_Desc: varchar(35) NULL
+  Tare_Weight_kgs: float NULL
+  Cargo_weight_kgs: float NULL
+  Cargo_Tare_Weight_kgs: float NULL
+  Intermodal_Appointment_Date: date NULL
+  Intermodal_Appointment_Time: time(7) NULL
+  Intermodal_Appointment_End_Date: date NULL
+  Intermodal_Appointment_End_Time: time(7) NULL
+  Intermodal_Appointment_Time_AMPM: time(7) NULL
+  Intermodal_Appointment_AMPM: time(7) NULL
+  Intermodal_Appointment_Time_APM: varchar(2) NULL
+  Intermodal_Appointment_Hour: int NULL
+  Intermodal_Appointment_Minute: int NULL
+  Intermodal_Appointment_MinuteInterval: varchar(100) NULL
+  Inland_Special_Ref: varchar(4000) NULL
+  Inland_Special_Ref_Expected_Amount: varchar(4000) NULL
+  Flag_Validity_App: int NULL
+  Carrier_Name: varchar(100) NULL
+  Carrier_id: int NULL
+  Carrier_Location: varchar(100) NULL
+  DryPot_by_Carrier_Loc: varchar(100) NULL
+  Customer_Location: varchar(100) NULL
+  Cust_Cargo_Ship_To: varchar(100) NULL
+  Cust_Cargo_Ship_Address: varchar(4000) NULL
+  Cust_Cargo_Ship_Location: varchar(4000) NULL
+  Cust_Cargo_Ship_State: varchar(100) NULL
+  Cust_Cargo_Ship_Postal_Code: varchar(100) NULL
+  Cust_Cargo_Ship_Country: varchar(100) NULL
+  Intermodal_Final_Location: varchar(100) NULL
+  Intermodal_Final_Location_CT: varchar(100) NULL
+  PO_Num: varchar(16) NULL
+  PO_User_Name: varchar(64) NULL
+  Flag_ONE_WAY: int NULL
+  TEU: int NULL
+  Event_Port: varchar(4000) NULL
+  Event_Port_date: date NULL
+  Event_Port_Depot: varchar(60) NULL
+  Event_Transport_Rail: varchar(4000) NULL
+  Event_Transport_Rail_date: date NULL
+  Event_Transport_Rail_Depot: varchar(60) NULL
+  Event_Transport_truck: varchar(4000) NULL
+  Event_Transport_truck_date: date NULL
+  Event_Transport_truck_Depot: varchar(60) NULL
+  EDI_Filename: varchar(4000) NULL
+  Rail_Truck: varchar(4000) NULL
+  Rail_Truck_ID: varchar(4000) NULL
+  Rail_Truck_Service: varchar(3) NULL
+  Rail_Truck_Country: varchar(4000) NULL
+  Rail_Truck_DryPort: varchar(4000) NULL
+  Location_EU: varchar(4000) NULL
+  Location_EU_UNCODE: varchar(4000) NULL
+  Dangerous_Cargo_Status: varchar(100) NULL
+  Is_Hazardous: int NULL
+  Pick_Up_Empty_Depot: varchar(4000) NULL
+  Drop_Off_Empty_Depot: varchar(4000) NULL
+  Harmonized_Code: varchar(4000) NULL
+  Commodity: varchar(4000) NULL
+}
+
+Table(Z_PBI_Equipment_Event_EM) {
+  Equipment_id
+  EventType
+  Event_Date
+  Rail_Truck
+}
+
+entity PBI_DCC_Intermodal_Service {
+  Rail_Truck_Service
+  Rail_Truck_Country
+  Rail_Truck_DryPort
+}
+
+entity GISDepot {
+  Depot_id
+  Global_Name
+}
+
+PBI_DCC_H_EM_cache_temp --> Z_PBI_Equipment_Event_EM : Populates event details
+PBI_DCC_H_EM_cache_temp --> PBI_DCC_Intermodal_Service : Fills Rail_Truck attributes
+PBI_DCC_H_EM_cache_temp --> GISDepot : Gets Depot details
+
+@enduml

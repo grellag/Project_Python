@@ -1,0 +1,20 @@
+@startmindmap
+* SP_PBI_Equipment_Event_Empty
+** Initialize
+*** Variables
+*** Drop existing `Z_PBI_Equipment_Event_EM_temp`
+*** Create `Z_PBI_Equipment_Event_EM_temp`
+** Insert Data
+*** Source: `PBI_Equipment_Cycle_Sub`
+*** Filter: Event types [MST, MRY, MSH, MCY]
+*** Insert into temp table
+** Update Data
+*** Update `Rail_Truck` and `Rail_Truck_ID`
+*** Source: `PBI_CODECO_Cache`
+** Finalize
+*** Start transaction
+*** Drop old `Z_PBI_Equipment_Event_EM`
+*** Rename temp table to `Z_PBI_Equipment_Event_EM`
+*** Commit transaction
+*** Update timestamp in `DB_Param`
+@endmindmap

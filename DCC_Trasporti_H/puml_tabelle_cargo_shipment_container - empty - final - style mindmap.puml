@@ -1,0 +1,24 @@
+@startmindmap
+* SP_PBI_DCC_ITALY_H_EM
+** Initialize
+*** Variables
+*** Drop existing `PBI_DCC_H_EM_cache_temp`
+*** Create `PBI_DCC_H_EM_cache_temp`
+*** Calculate `@MaxCargoShipmentContainerId` from cache
+** Insert Data
+*** Source: `Z_PBI_Equipment_Event_EM`
+*** Join with related tables
+*** Populate columns based on logic
+** Update Data
+*** `Pick Up/Drop Off depots`
+*** `Harmonized codes`
+*** Other calculated fields
+** Debugging
+*** Print debug info (if enabled)
+** Finalize
+*** Start transaction
+*** Drop old `PBI_DCC_H_EM_cache`
+*** Rename temp table to `PBI_DCC_H_EM_cache`
+*** Commit transaction
+*** Update timestamp in `DB_Param`
+@endmindmap

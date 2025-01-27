@@ -1,0 +1,59 @@
+@startuml
+!define Table(name) class name << (T,#FFAAAA) >>
+
+Table(Z_PBI_Equipment_Event_EM_temp) {
+  Process_id: int NOT NULL
+  Eq_Cycle_id: int NULL
+  Voyage_Port_Call_id: int NULL
+  Event_Time: datetime NULL
+  Event_Date: date NULL
+  EventType: varchar(20) NULL
+  EventDesc: varchar(255) NULL
+  Depot: varchar(60) NULL
+  Depot_MSCCode: varchar(15) NULL
+  Depot_Type: varchar(1) NULL
+  POLLoc_id: int NULL
+  EE_Location_id: int NULL
+  ET_Depot_In_Out: char(1) NULL
+  EqLength: smallint NULL
+  TEU: int NULL
+  ISO_Code: varchar(6) NULL
+  Event_id: int NULL
+  Start_Event_id: int NULL
+  End_Event_id: int NULL
+  Event_Kind: char(1) NOT NULL
+  POL: varchar(50) NULL
+  POLUN: varchar(5) NULL
+  POD: varchar(50) NULL
+  PODUN: varchar(5) NULL
+  Start_Location_UNCode: varchar(15) NULL
+  EC_Booking_Number: varchar(17) NULL
+  EC_BIll_Of_Lading_Number: varchar(17) NULL
+  Equipment_Number: varchar(11) NULL
+  Equipment_id: int NULL
+  I_E: varchar(11) NOT NULL
+  EDI_Filename: varchar(4000) NULL
+  Rail_Truck: varchar(16) NULL
+  Rail_Truck_ID: varchar(4000) NULL
+}
+
+entity PBI_CODECO_Cache {
+  ordinal
+  Equipment_Number
+  File_Name
+  TransformedValue
+  [MODE OF TRANSPORT]
+  [TRANSPORT MEANS]
+  [TRANSPORT IDENTIFICATION]
+}
+
+entity FNTB_Equipment_Cycle_Sub {
+  EventType
+  Equipment_id
+  Voyage_Port_Call_id
+}
+
+Z_PBI_Equipment_Event_EM_temp --> PBI_CODECO_Cache : Updates Rail_Truck & Rail_Truck_ID
+Z_PBI_Equipment_Event_EM_temp --> FNTB_Equipment_Cycle_Sub : Populates temp table
+
+@enduml
