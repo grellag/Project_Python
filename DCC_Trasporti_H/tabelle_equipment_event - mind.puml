@@ -1,7 +1,7 @@
 @startmindmap
 
 * <size:40><b>Equipment Data Flow</b></size>
-** <size:20><b><color:YellowGreen>Data Sources</color></b></size>
+** <size:20><b><color:YellowGreen>MAIN Data Sources</color></b></size>
 *** PBI_Equipment_Cycle_Sub
 **** <i>Contains all equipment cycles</i>
 **** Fields:
@@ -40,7 +40,7 @@
 *** Z_PBI_Equipment_Event_EM
 **** Empty Equipment
 
-** <size:20><b><color:LightGray>Relationships</color></b></size>
+** <size:20><b><color:LightGray>TABLE Relationships</color></b></size>
 *** PBI_Equipment_Cycle_Sub joins with temporary table
 **** Filters based on I/E or EventType
 *** PBI_CODECO_Cache updates event tables

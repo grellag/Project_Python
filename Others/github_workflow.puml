@@ -1,0 +1,20 @@
+@startuml
+start
+:Trigger Event;
+if (Push to *.puml?) then (yes)
+  :Start Job: Render PlantUML;
+else
+  if (Manual dispatch?) then (yes)
+    :Start Job: Render PlantUML;
+  else
+    stop
+  endif
+endif
+:Step 1: Checkout repository;
+:Step 2: Setup Java (Java 11);
+:Step 3: Install Graphviz;
+:Step 4: Verify Graphviz Installation;
+:Step 5: Download PlantUML JAR;
+:Step 6: Render diagram to PNG;
+stop
+@enduml
