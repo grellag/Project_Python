@@ -1,0 +1,54 @@
+@startmindmap
+* <size:40><b>SP_PBI_CODECO_CACHE</b></size>
+** <size:20><b><color:YellowGreen>Parametri</color></b></size>
+*** StartOfPreviousYear: Data di riferimento iniziale
+*** Debug_mode: Abilita o disabilita debug
+** <size:20><b><color:LightPink>Tabelle Temporanee</color></b></size>
+*** #Temp_Event_IDs
+**** Dati da:
+***** Z_PBI_Equipment_Event_E
+***** Z_PBI_Equipment_Event_I
+**** Indici creati:
+***** Event_id
+*** PBI_CODECO_Cache_temp
+**** Dati da Equipment_Event_Mart_Edifact
+**** Dati trasformati in:
+***** MODE OF TRANSPORT
+***** TRANSPORT IDENTIFICATION
+**** Indici creati:
+***** Equipment_Number + File_Name
+***** Counter
+***** Ordinal
+** <size:20><b><color:LightBlue>Dati Inseriti</color></b></size>
+*** PBI_CODECO_Cache
+**** Nuovi record da:
+***** Equipment_Event_Mart_Edifact
+***** CODECO Info elaborata
+**** Campi principali:
+***** Equipment_Number
+***** File_Name
+***** CODECO_Info
+***** TransformedValue
+** <size:20><b><color:LightGray>Operazioni di Aggiornamento</color></b></size>
+*** Z_PBI_Equipment_Event_E
+**** Aggiornati campi:
+***** Rail_Truck
+***** Rail_Truck_ID
+**** Dati ottenuti da:
+***** PBI_CODECO_Cache (pivot su MODE OF TRANSPORT e TRANSPORT IDENTIFICATION)
+*** Z_PBI_Equipment_Event_I
+**** Aggiornati campi:
+***** Rail_Truck
+***** Rail_Truck_ID
+**** Dati ottenuti da:
+***** PBI_CODECO_Cache (pivot su MODE OF TRANSPORT e TRANSPORT IDENTIFICATION)
+** <size:20><b><color:OrangeRed>Operazioni Finali</color></b></size>
+*** Verifica ed elimina tabelle temporanee:
+**** #Temp_Event_IDs
+**** PBI_CODECO_Cache_temp
+*** Rinomina tabella temporanea:
+**** PBI_CODECO_Cache_temp -> PBI_CODECO_Cache
+*** Ottimizzazioni con indici:
+**** Event_id
+**** Equipment_Number + File_Name
+@endmindmap
