@@ -1,0 +1,33 @@
+@startmindmap
+* Process Overview
+** Data Sources
+*** FULL Data
+**** Stored Procedure: SP_PBI_DCC_ITALY_H
+**** Tables and Logic:
+***** `PBI_DCC_H_cache`
+***** Event Handling: IDV, ELV, IPC, ERY, ICO, ECY
+**** Output: `PBI_DCC_H_cache` (Finalized FULL data)
+*** EMPTY Data
+**** Stored Procedure: SP_PBI_Equipment_Event_Empty
+**** Event Types: MST, MRY, MSH, MCY
+**** Stored Procedure: SP_PBI_DCC_ITALY_H_EM
+**** Tables and Logic:
+***** `PBI_DCC_H_EM_cache`
+**** Output: `PBI_DCC_H_EM_cache` (Finalized EMPTY data)
+** Data Combination
+*** Final Merge
+**** Table: `PBI_DCC_H_ALL_cache`
+**** Combines FULL (`PBI_DCC_H_cache`) and EMPTY (`PBI_DCC_H_EM_cache`) data
+**** Logic:
+***** UNION ALL of FULL and EMPTY
+***** Adjustments for BusinessEntityGroup and calculated fields (e.g., `DWell_Time`)
+** Key Calculations
+*** DWell Time
+**** Derived from event date differences (PORT, RAIL, TRUCK)
+**** Handles null or default values
+*** Event Type
+**** Derived from event columns: Event_Port, Event_Transport_Rail, Event_Transport_Truck
+** Outputs
+*** `PBI_DCC_H_ALL_cache`
+**** Comprehensive container event data for FULL and EMPTY containers
+@endmindmap
