@@ -54,8 +54,16 @@ flowchart TB
     classDef legendStyle fill:#E6E6FA,stroke:#000,stroke-width:1px,font-size:12px,padding:5px
 
 ```
-## Flusso dati Equipment Cycle
+## 1. Flusso dati Equipment Cycle
 
+![Diagramma UML](./img_1_puml_FNTB_Equipment_Cycle_Sub.png)
+
+## 2. Flusso dati Eventi Export & Import
+
+![Diagramma UML](./img_2_puml_tabelle_equipment_event full - mind.png)
+
+
+<<<<<<< HEAD
 ![Diagramma UML](./img_1_puml_FNTB_Equipment_Cycle_Sub.png)
 
 ## Flusso dati Equipment Export & Import
@@ -63,3 +71,5 @@ flowchart TB
 ![Diagramma UML](./img_2_puml_tabelle_equipment_event full - uml)
 
 
+=======
+>>>>>>> 4dcbbad15274b01a4a90e541557b61c642e3ac0e
