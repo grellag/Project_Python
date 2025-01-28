@@ -1,33 +1,80 @@
-@startmindmap
-* Process Overview
-** Data Sources
-*** FULL Data
-**** Stored Procedure: SP_PBI_DCC_ITALY_H
-**** Tables and Logic:
-***** `PBI_DCC_H_cache`
-***** Event Handling: IDV, ELV, IPC, ERY, ICO, ECY
-**** Output: `PBI_DCC_H_cache` (Finalized FULL data)
-*** EMPTY Data
-**** Stored Procedure: SP_PBI_Equipment_Event_Empty
-**** Event Types: MST, MRY, MSH, MCY
-**** Stored Procedure: SP_PBI_DCC_ITALY_H_EM
-**** Tables and Logic:
-***** `PBI_DCC_H_EM_cache`
-**** Output: `PBI_DCC_H_EM_cache` (Finalized EMPTY data)
-** Data Combination
-*** Final Merge
-**** Table: `PBI_DCC_H_ALL_cache`
-**** Combines FULL (`PBI_DCC_H_cache`) and EMPTY (`PBI_DCC_H_EM_cache`) data
-**** Logic:
-***** UNION ALL of FULL and EMPTY
-***** Adjustments for BusinessEntityGroup and calculated fields (e.g., `DWell_Time`)
-** Key Calculations
-*** DWell Time
-**** Derived from event date differences (PORT, RAIL, TRUCK)
-**** Handles null or default values
-*** Event Type
-**** Derived from event columns: Event_Port, Event_Transport_Rail, Event_Transport_Truck
-** Outputs
-*** `PBI_DCC_H_ALL_cache`
-**** Comprehensive container event data for FULL and EMPTY containers
-@endmindmap
+@startuml
+title Flusso di aggiornamento PBI_DCC_H_ALL_cache
+
+skinparam linetype ortho
+skinparam arrowThickness 2
+skinparam direction top to bottom  ' Forza una disposizione verticale
+
+rectangle "SQL Server Job: Aggiornamento PBI_DCC_H_ALL_cache" as Job {
+  
+  rectangle "Step 1: Equipment Cycle" as Step1 {
+    [SP_PBI_Equipment_Cycle_Sub]
+    note bottom of Step1
+      Parametro: @WeeksBack=108
+      Output: PBI_Equipment_Cycle_Sub
+    end note
+  }
+
+  rectangle "Step 2: Full Events" as Step2 {
+    [SP_PBI_Equipment_Event_Full]
+    note bottom of Step2
+      Parametro: @WeeksBack=108
+      Outputs: Z_PBI_Equipment_Event_E, Z_PBI_Equipment_Event_I
+    end note
+  }
+
+  rectangle "Step 3: CODECO" as Step3 {
+    [SP_PBI_CODECO_CACHE]
+    note bottom of Step3
+      Parametro: @WeeksBack=108
+      Output: PBI_CODECO_Cache
+    end note
+  }
+
+  rectangle "Step 4: Empty Events" as Step4 {
+    [SP_PBI_Equipment_Event_Empty]
+    note bottom of Step4
+      Parametro: @WeeksBack=108
+      Output: Z_PBI_Equipment_Event_EM
+    end note
+  }
+
+  rectangle "Step 5: CSC" as Step5 {
+    [SP_PBI_Build_Agency_CSC_Cache]
+    note bottom of Step5
+      Parametro: @WeeksBack=108
+      Output: PBI_Agency_CSC
+    end note
+  }
+
+  rectangle "Step 6: DCC Full" as Step6 {
+    [SP_PBI_DCC_ITALY_H]
+    note bottom of Step6
+      Output: PBI_DCC_H_cache
+    end note
+  }
+
+  rectangle "Step 7: DCC Empty" as Step7 {
+    [SP_PBI_DCC_ITALY_H_EM]
+    note bottom of Step7
+      Output: PBI_DCC_H_EM_cache
+    end note
+  }
+
+  rectangle "Step 8: DCC Full + Empty" as Step8 {
+    [SP_PBI_DCC_H_ALL]
+    note bottom of Step8
+      Output: PBI_DCC_H_ALL_cache
+    end note
+  }
+}
+
+Step1 --> Step2
+Step2 --> Step3
+Step3 --> Step4
+Step4 --> Step5
+Step5 --> Step6
+Step6 --> Step7
+Step7 --> Step8
+
+@enduml
