@@ -76,8 +76,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Aggiungi tutti i file PNG nella directory specificata
-          git add DCC_Trasporti_H/img_*.png
+          # Forza l'aggiunta di tutti i file PNG ignorati
+          git add -f DCC_Trasporti_H/img_*.png
 
           # Controlla se ci sono modifiche da committare
           if git diff --cached --quiet; then
