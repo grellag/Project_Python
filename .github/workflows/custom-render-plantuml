@@ -1,4 +1,4 @@
-name: Render PlantUML Diagrams tramite WF_render_puml_in_PNG.yml
+name: Render PlantUML Diagrams
 
 on:
   push:
