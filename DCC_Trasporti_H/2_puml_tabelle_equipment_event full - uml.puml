@@ -1,6 +1,6 @@
 @startuml
 
-title Tables and Relationships into SP_PBI_Equipment_Event_Full
+title Tables and Relationships for SP_PBI_Equipment_Event_Full
 
 entity "Z_PBI_Equipment_Event_E_temp" {
     Process_id : int
