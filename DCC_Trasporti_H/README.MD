@@ -62,14 +62,3 @@ flowchart TB
 
 ![Diagramma UML](./img_2_puml_tabelle_equipment_event full - mind.png)
 
-
-<<<<<<< HEAD
-![Diagramma UML](./img_1_puml_FNTB_Equipment_Cycle_Sub.png)
-
-## Flusso dati Equipment Export & Import
-
-![Diagramma UML](./img_2_puml_tabelle_equipment_event full - uml)
-
-
-=======
->>>>>>> 4dcbbad15274b01a4a90e541557b61c642e3ac0e
