@@ -60,5 +60,5 @@ flowchart TB
 
 ## 2. Flusso dati Eventi Export & Import
 
-![Diagramma UML](./img_2_puml_tabelle_equipment_event full - mind.png)
+![Diagramma UML](./img_2_puml_tabelle_equipment_event full - uml.png)
 
