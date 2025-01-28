@@ -30,10 +30,10 @@ flowchart TB
     style P fill:#87CEFA,stroke:#000,stroke-width:2px
     style Q fill:#87CEFA,stroke:#000,stroke-width:2px
     style R fill:#87CEFA,stroke:#000,stroke-width:2px
-    style S fill:#87CEFA,stroke:#000,stroke-width:2px
+    style S fill:#FFA500,stroke:#000,stroke-width:2px
     style T fill:#87CEFA,stroke:#000,stroke-width:2px
     style U fill:#87CEFA,stroke:#000,stroke-width:2px
-    style V fill:#87CEFA,stroke:#000,stroke-width:2px
+    style V fill:#FFA500,stroke:#000,stroke-width:2px
     style Z fill:#87CEFA,stroke:#000,stroke-width:2px
 ```
 ## Flusso dati Equipment Cycle
