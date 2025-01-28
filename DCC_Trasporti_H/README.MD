@@ -56,4 +56,5 @@ flowchart TB
 ```
 ## Flusso dati Equipment Cycle
 
-![Diagramma UML](./img_1. puml_FNTB_Equipment_Cycle_Sub.png)
+![Diagramma UML](DCC_Trasporti_H/img_1_puml_FNTB_Equipment_Cycle_Sub.png)
+
