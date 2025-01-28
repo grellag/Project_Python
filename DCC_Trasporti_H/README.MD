@@ -56,4 +56,10 @@ flowchart TB
 ```
 ## Flusso dati Equipment Cycle
 
-![Diagramma UML](./img_1. puml_FNTB_Equipment_Cycle_Sub.png)
+![Diagramma UML](./img_1_puml_FNTB_Equipment_Cycle_Sub.png)
+
+## Flusso dati Equipment Export & Import
+
+![Diagramma UML](./img_2_puml_tabelle_equipment_event full - uml)
+
+

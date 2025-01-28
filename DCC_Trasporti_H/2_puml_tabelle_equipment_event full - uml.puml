@@ -1,0 +1,122 @@
+@startuml
+
+title Tables and Relationships into SP_PBI_Equipment_Event_Full
+
+entity "Z_PBI_Equipment_Event_E_temp" {
+    Process_id : int
+    Eq_Cycle_id : int
+    Voyage_Port_Call_id : int
+    Event_Time : datetime
+    Event_Date : date
+    EventType : varchar
+    EventDesc : varchar
+    Depot : varchar
+    Depot_MSCCode : varchar
+    Depot_Type : char
+    POLLoc_id : int
+    EE_Location_id : int
+    ET_Depot_In_Out : char
+    EqLength : smallint
+    TEU : int
+    ISO_Code : varchar
+    Event_id : int
+    Start_Event_id : int
+    End_Event_id : int
+    Event_Kind : char
+    POL : varchar
+    POLUN : varchar
+    POD : varchar
+    PODUN : varchar
+    Start_Location_UNCode : varchar
+    EC_Booking_Number : varchar
+    EC_Bill_Of_Lading_Number : varchar
+    Equipment_Number : varchar
+    Equipment_id : int
+    I_E : varchar
+    EDI_Filename : varchar
+    Rail_Truck : varchar
+    Rail_Truck_ID : varchar
+}
+
+entity "PBI_Equipment_Cycle_Sub" {
+    Equipment_id : int
+    EC_Booking_Number : varchar
+    EC_Bill_Of_Lading_Number : varchar
+    Voyage_Port_Call_id : int
+    Eq_Cycle_id : int
+}
+
+entity "PBI_Agency_CSC" {
+    Equipment_id : int
+    Local_voyage_port_call_id : int
+    Booking_Number : varchar
+    Bill_of_Lading_Number : varchar
+    I_E : varchar
+}
+
+entity "FNTB_Depot" {
+    Depot_id : int
+    Depot : varchar
+    MSCCode : varchar
+    Depot_Type : char
+}
+
+entity "FNTB_Location" {
+    Location_id : int
+    UNCode : varchar
+}
+
+entity "FNTB_Voyage_Port_Call" {
+    Voyage_Port_Call_id : int
+    Port : varchar
+    UNCode : varchar
+}
+
+entity "Z_PBI_Equipment_Event_I_temp" {
+    Process_id : int
+    Eq_Cycle_id : int
+    Voyage_Port_Call_id : int
+    Event_Time : datetime
+    Event_Date : date
+    EventType : varchar
+    EventDesc : varchar
+    Depot : varchar
+    Depot_MSCCode : varchar
+    Depot_Type : char
+    POLLoc_id : int
+    EE_Location_id : int
+    ET_Depot_In_Out : char
+    EqLength : smallint
+    TEU : int
+    ISO_Code : varchar
+    Event_id : int
+    Start_Event_id : int
+    End_Event_id : int
+    Event_Kind : char
+    POL : varchar
+    POLUN : varchar
+    POD : varchar
+    PODUN : varchar
+    Start_Location_UNCode : varchar
+    EC_Booking_Number : varchar
+    EC_Bill_Of_Lading_Number : varchar
+    Equipment_Number : varchar
+    Equipment_id : int
+    I_E : varchar
+    EDI_Filename : varchar
+    Rail_Truck : varchar
+    Rail_Truck_ID : varchar
+}
+
+PBI_Equipment_Cycle_Sub --> Z_PBI_Equipment_Event_E_temp : "Equipment_id"
+PBI_Agency_CSC --> PBI_Equipment_Cycle_Sub : "Equipment_id"
+PBI_Agency_CSC --> Z_PBI_Equipment_Event_E_temp : "Booking_Number"
+PBI_Equipment_Cycle_Sub --> FNTB_Voyage_Port_Call : "Voyage_Port_Call_id"
+Z_PBI_Equipment_Event_E_temp --> FNTB_Depot : "Depot_id"
+Z_PBI_Equipment_Event_E_temp --> FNTB_Location : "EE_Location_id"
+Z_PBI_Equipment_Event_E_temp --> FNTB_Voyage_Port_Call : "Voyage_Port_Call_id"
+Z_PBI_Equipment_Event_I_temp --> FNTB_Depot : "Depot_id"
+Z_PBI_Equipment_Event_I_temp --> FNTB_Location : "EE_Location_id"
+Z_PBI_Equipment_Event_I_temp --> FNTB_Voyage_Port_Call : "Voyage_Port_Call_id"
+
+@enduml
