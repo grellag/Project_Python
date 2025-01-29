@@ -39,7 +39,7 @@ jobs:
       - name: Cleanup previous PNG files
         run: |
           echo "Cleaning up old PNG files in output directory..."
-          find DCC_Trasporti_H/ -type f -name "*.png" -exec rm -f {} \;
+          rm -rf DCC_Trasporti_H/PNG/*.png
           echo "Old PNG files removed."
 
       # Step 6: Render all PlantUML Diagrams
@@ -48,6 +48,7 @@ jobs:
           mkdir -p DCC_Trasporti_H/ # Assicura che la directory esista
           echo "Rendering all PlantUML files in DCC_Trasporti_H/ directory..."
           for file in DCC_Trasporti_H/*.puml; do
+            [ -f "$file" ] || continue  # Salta se nessun file .puml esiste
             echo "Processing $file"
             java -jar tools/plantuml.jar -tpng "$file" || {
               echo "PlantUML rendering failed for $file! Checking tools and output directory:"
@@ -59,16 +60,21 @@ jobs:
           echo "Listing generated files in output directory:"
           ls -l DCC_Trasporti_H/
 
-      # Step 7: Rename all PNG files with prefix 'img_'
-      - name: Rename PNG files
+      # Step 7: Move all PNG files to a subdirectory 'PNG' and rename them with prefix 'img_'
+      - name: Move and Rename PNG files
         run: |
-          echo "Renaming all PNG files in DCC_Trasporti_H/ directory..."
+          echo "Ensuring PNG directory exists inside DCC_Trasporti_H/"
+          mkdir -p DCC_Trasporti_H/PNG
+          
+          echo "Moving and renaming all PNG files to DCC_Trasporti_H/PNG/"
           for file in DCC_Trasporti_H/*.png; do
+            [ -f "$file" ] || continue  # Salta se nessun file .png esiste
             base_name=$(basename "$file")
-            mv "$file" "DCC_Trasporti_H/img_$base_name"
+            mv "$file" "DCC_Trasporti_H/PNG/img_$base_name"
           done
-          echo "Renamed files:"
-          ls -l DCC_Trasporti_H/
+          
+          echo "Updated PNG files in PNG directory:"
+          ls -l DCC_Trasporti_H/PNG/
 
       # Step 8: Commit and Push all updated PNG files
       - name: Commit and Push all updated PNG files
@@ -76,8 +82,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Forza l'aggiunta di tutti i file PNG ignorati
-          git add -f DCC_Trasporti_H/img_*.png
+          # Aggiungi tutti i file PNG dalla nuova cartella
+          git add -f DCC_Trasporti_H/PNG/img_*.png
 
           # Controlla se ci sono modifiche da committare
           if git diff --cached --quiet; then
@@ -86,5 +92,5 @@ jobs:
           fi
 
           # Esegui il commit e il push solo se ci sono modifiche
-          git commit -m "Update all PlantUML diagrams with prefixed filenames"
+          git commit -m "Update all PlantUML diagrams and move to PNG subdirectory"
           git push origin main
