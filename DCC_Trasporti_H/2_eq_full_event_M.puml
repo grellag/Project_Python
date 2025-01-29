@@ -1,5 +1,5 @@
 @startmindmap
-* <size:40><b>SP_PBI_Equipment_Event_Full</b></size>
+* <size:30><b>All FULL Equipment Events</b></size>\n<size:20><b>By Import & Export</b></size>\n<size:20><b>SP_PBI_Equipment_Event_Full</b></size>
 ** <size:20><b><color:YellowGreen>Parametri</color></b></size>
 *** <b>@WeeksBack</b>: <i>Numero di settimane indietro</i>
 *** <b>@Debug_mode</b>: <i>Abilita debug</i>

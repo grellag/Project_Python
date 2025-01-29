@@ -1,6 +1,6 @@
 @startuml
 
-title ALL Funtion Tables for Equipment Cycle DATA
+title ALL Tables for create Equipment Cycle TABLE by SP_PBI_Equipment_Cycle_Sub
 
 entity "Equipment_Cycle (ec)" {
     Eq_Cycle_id : int

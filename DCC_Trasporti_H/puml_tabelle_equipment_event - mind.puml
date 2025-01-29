@@ -1,5 +1,5 @@
 @startmindmap
-* <size:40><b>Equipment Data Flow</b></size>
+* <size:40><b>Equipment Data Flow</b>
 ** <size:20><b><color:YellowGreen>MAIN Data Sources</color></b></size>
 *** PBI_Equipment_Cycle_Sub
 **** <i>Contains all equipment cycles</i>
