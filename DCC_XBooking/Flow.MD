@@ -2,20 +2,18 @@
 
 ```mermaid
 graph TD;
-    A[XBooking arriva in IMPORT] --> B{Incluso nel manifesto?};
-    B -- NO --> C[Confermato come non incluso nel manifesto];
-    B -- SI --> L[Passa a processo EXPORT];
-    C --> D{Necessario Cargo per trasbordi?};
-    D -- SI --> E[Acquisizione Cargo];
-    E --> F[Cargo compare in IMPORT];
-    D -- NO --> G[L'agente estero manifesta];
-    F --> H[BL con Cargo viene cancellata];
-    H --> I[Acquisizione DTX];
-    H --> L;
-    G --> I;
+    A["XBooking arriva in IMPORT"]:::import -->|Incluso nel manifesto?| B{Verifica}:::import;
+    B -- SI --> L["Passa a processo EXPORT"]:::export;
+    B -- NO --> C["Non incluso, verifica Cargo"]:::import;
+    
+    C -- Cargo necessario --> E["Acquisizione Cargo in IMPORT"]:::import --> H["Cancella BL con Cargo"]:::import --> I["Acquisizione DTX"]:::import;
+    C -- Cargo non necessario --> G["L'agente estero manifesta"]:::import --> I;
+    
     I --> L;
-    L --> J[Aggiunta costi da recuperare];
-    J --> K[Flusso completato];
+    L --> J["Aggiunta costi da recuperare"]:::export --> K["Flusso completato"]:::export;
+
+    classDef import fill:#8db3e2,stroke:#00509e,stroke-width:2px;
+    classDef export fill:#91c788,stroke:#2d6a4f,stroke-width:2px;
 
 
 ```
