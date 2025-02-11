@@ -38,43 +38,54 @@ jobs:
       # Step 5: Cleanup previous PNG files
       - name: Cleanup previous PNG files
         run: |
-          echo "Cleaning up old PNG files in output directory..."
+          echo "Cleaning up old PNG files in output directories..."
           rm -rf DCC_Trasporti_H/PNG/*.png
+          rm -rf DCC_XBooking/PNG/*.png
           echo "Old PNG files removed."
 
       # Step 6: Render all PlantUML Diagrams
       - name: Render all PlantUML Diagrams
         run: |
-          mkdir -p DCC_Trasporti_H/ # Assicura che la directory esista
-          echo "Rendering all PlantUML files in DCC_Trasporti_H/ directory..."
-          for file in DCC_Trasporti_H/*.puml; do
-            [ -f "$file" ] || continue  # Salta se nessun file .puml esiste
-            echo "Processing $file"
-            java -jar tools/plantuml.jar -tpng "$file" || {
-              echo "PlantUML rendering failed for $file! Checking tools and output directory:"
-              ls -l tools
-              ls -l DCC_Trasporti_H/
-              exit 1
-            }
-          done
-          echo "Listing generated files in output directory:"
-          ls -l DCC_Trasporti_H/
+          mkdir -p DCC_Trasporti_H/PNG
+          mkdir -p DCC_XBooking/PNG
 
-      # Step 7: Move all PNG files to a subdirectory 'PNG' and rename them with prefix 'img_'
+          echo "Rendering all PlantUML files in DCC_Trasporti_H/ and DCC_XBooking/ directories..."
+          for dir in DCC_Trasporti_H DCC_XBooking; do
+            for file in $dir/*.puml; do
+              [ -f "$file" ] || continue  # Skip if no .puml files exist
+              echo "Processing $file"
+              java -jar tools/plantuml.jar -tpng "$file" || {
+                echo "PlantUML rendering failed for $file! Checking tools and output directory:"
+                ls -l tools
+                ls -l $dir/
+                exit 1
+              }
+            done
+          done
+          
+          echo "Listing generated files in output directories:"
+          ls -l DCC_Trasporti_H/
+          ls -l DCC_XBooking/
+
+      # Step 7: Move and Rename PNG files
       - name: Move and Rename PNG files
         run: |
-          echo "Ensuring PNG directory exists inside DCC_Trasporti_H/"
+          echo "Ensuring PNG directories exist inside both folders"
           mkdir -p DCC_Trasporti_H/PNG
+          mkdir -p DCC_XBooking/PNG
           
-          echo "Moving and renaming all PNG files to DCC_Trasporti_H/PNG/"
-          for file in DCC_Trasporti_H/*.png; do
-            [ -f "$file" ] || continue  # Salta se nessun file .png esiste
-            base_name=$(basename "$file")
-            mv "$file" "DCC_Trasporti_H/PNG/img_$base_name"
+          echo "Moving and renaming all PNG files"
+          for dir in DCC_Trasporti_H DCC_XBooking; do
+            for file in $dir/*.png; do
+              [ -f "$file" ] || continue  # Skip if no PNG exists
+              base_name=$(basename "$file")
+              mv "$file" "$dir/PNG/img_$base_name"
+            done
           done
           
-          echo "Updated PNG files in PNG directory:"
+          echo "Updated PNG files in PNG directories:"
           ls -l DCC_Trasporti_H/PNG/
+          ls -l DCC_XBooking/PNG/
 
       # Step 8: Commit and Push all updated PNG files
       - name: Commit and Push all updated PNG files
@@ -82,15 +93,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Aggiungi tutti i file PNG dalla nuova cartella
+          # Add all PNG files from both folders
           git add -f DCC_Trasporti_H/PNG/img_*.png
+          git add -f DCC_XBooking/PNG/img_*.png
 
-          # Controlla se ci sono modifiche da committare
-          if git diff --cached --quiet; then
-            echo "No changes to commit. Skipping."
-            exit 0
-          fi
-
-          # Esegui il commit e il push solo se ci sono modifiche
-          git commit -m "Update all PlantUML diagrams and move to PNG subdirectory"
-          git push origin main
