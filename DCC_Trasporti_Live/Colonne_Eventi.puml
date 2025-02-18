@@ -1,0 +1,50 @@
+@startuml
+title Relazioni tra Tabelle e Triplette di Colonne
+
+entity "PBI_DCC_cache_temp (Z)" {
+  + Equipment_Id
+  + Voyage_Port_Call_id
+  + Booking_Number
+  + I_E
+  --
+  + Event_Port
+  + Event_Port_date
+  + Event_Port_Depot
+  --
+  + Event_Transport_Rail
+  + Event_Transport_Rail_date
+  + Event_Transport_Rail_Depot
+  --
+  + Event_Transport_track
+  + Event_Transport_track_date
+  + Event_Transport_track_Depot
+}
+
+entity "Z_PBI_Equipment_Event_E (E)" {
+  + Equipment_Id
+  + Voyage_Port_Call_id
+  + EC_Booking_Number
+  + EventType
+  + Event_Date
+  + Depot
+  + Depot_Type
+  + POLUN
+}
+
+' Connessione UPDATE 1: Event_Port
+Z_PBI_Equipment_Event_E -[hidden]-> PBI_DCC_cache_temp
+Z_PBI_Equipment_Event_E --> PBI_DCC_cache_temp : "UPDATE Event_Port\nON Equipment_Id e Voyage_Port_Call_id\nWHERE EventType = 'ELV' e I_E = 'E'"
+
+' Connessione UPDATE 2: Event_Transport_Rail (Voyage_Port_Call_id)
+Z_PBI_Equipment_Event_E -[hidden]-> PBI_DCC_cache_temp
+Z_PBI_Equipment_Event_E --> PBI_DCC_cache_temp : "UPDATE Event_Transport_Rail\nON Equipment_Id e Voyage_Port_Call_id\nWHERE EventType IN ('ERY', 'EDR')\ne Depot_Type = 'T' e I_E = 'E'"
+
+' Connessione UPDATE 3: Event_Transport_Rail (Booking Number)
+Z_PBI_Equipment_Event_E -[hidden]-> PBI_DCC_cache_temp
+Z_PBI_Equipment_Event_E --> PBI_DCC_cache_temp : "UPDATE Event_Transport_Rail\nON Equipment_Id e Booking_Number\nWHERE EventType IN ('ERY', 'EDR')\ne Depot_Type = 'T' e I_E = 'E'"
+
+' Connessione UPDATE 4: Event_Transport_track
+Z_PBI_Equipment_Event_E -[hidden]-> PBI_DCC_cache_temp
+Z_PBI_Equipment_Event_E --> PBI_DCC_cache_temp : "UPDATE Event_Transport_track\nON Equipment_Id e Voyage_Port_Call_id\nWHERE EventType IN ('ECY', 'ESTR', 'ESTF')\ne LEFT(Depot_MSCCode, 5) = POLUN e I_E = 'E'"
+
+@enduml
