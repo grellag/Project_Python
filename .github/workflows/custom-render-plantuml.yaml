@@ -93,7 +93,21 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Add all PNG files from both folders
-          git add -f DCC_Trasporti_H/PNG/img_*.png
-          git add -f DCC_XBooking/PNG/img_*.png
+          # Add PNG files only if they exist
+          if ls DCC_Trasporti_H/PNG/img_*.png 1> /dev/null 2>&1; then
+            git add -f DCC_Trasporti_H/PNG/img_*.png
+          fi
+
+          if ls DCC_XBooking/PNG/img_*.png 1> /dev/null 2>&1; then
+            git add -f DCC_XBooking/PNG/img_*.png
+          fi
+
+          # Commit and push if there are changes
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update PlantUML-generated PNGs"
+            git push
+          fi
+
 
