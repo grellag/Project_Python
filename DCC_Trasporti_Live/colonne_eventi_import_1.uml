@@ -1,0 +1,23 @@
+@startuml
+title Flusso Import - Aggiornamento Eventi
+
+participant "PBI_DCC_cache_temp (Z)" as Z
+participant "Z_PBI_Equipment_Event_I (E)" as E
+
+== Aggiornamento Event_Port ==
+E -> Z: JOIN su Equipment_Id & Voyage_Port_Call_id
+Z <- E: Aggiorna Event_Port, Event_Port_date, Event_Port_Depot\n(EventType = 'IDV' e I_E = 'I')
+
+== Aggiornamento Event_Transport_Rail ==
+E -> Z: JOIN su Equipment_Id & Voyage_Port_Call_id
+Z <- E: Aggiorna Event_Transport_Rail, Event_Transport_Rail_date, Event_Transport_Rail_Depot\n(EventType = 'IPC', 'ILR' e I_E = 'I', Depot_Type = 'T')
+
+== Aggiornamento Event_Transport_Rail (con Bill of Lading) ==
+E -> Z: JOIN su Equipment_Id & Bill Of Lading Number
+Z <- E: Aggiorna Event_Transport_Rail, Event_Transport_Rail_date, Event_Transport_Rail_Depot\n(EventType = 'IPC', 'ILR' e I_E = 'I', Depot_Type = 'T')
+
+== Aggiornamento Event_Transport_Track ==
+E -> Z: JOIN su Equipment_Id & Voyage_Port_Call_id
+Z <- E: Aggiorna Event_Transport_track, Event_Transport_track_date, Event_Transport_track_Depot\n(EventType = 'ICO', 'ISTR', 'IPO', 'ISTF', 'RRC' e I_E = 'I')
+
+@enduml

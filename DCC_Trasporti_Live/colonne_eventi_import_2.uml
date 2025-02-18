@@ -1,0 +1,34 @@
+@startuml
+title Flusso Import - Aggiornamenti su PBI_DCC_cache_temp
+
+start
+
+:Recupera dati da Z_PBI_Equipment_Event_I;
+:Filtra eventi con Z.I_E = 'I';
+
+if (EventType = 'IDV' AND Start Location UNCode = PODUN) then
+    :Aggiorna Z.Event_Port;
+    :Aggiorna Z.Event_Port_date;
+    :Aggiorna Z.Event_Port_Depot;
+endif
+
+if (EventType IN ('IPC', 'ILR') AND Depot_Type = 'T') then
+    :Aggiorna Z.Event_Transport_Rail;
+    :Aggiorna Z.Event_Transport_Rail_date;
+    :Aggiorna Z.Event_Transport_Rail_Depot;
+endif
+
+if (EventType IN ('IPC', 'ILR') AND Depot_Type = 'T') then
+    :Aggiorna Z.Event_Transport_Rail (BOL match);
+    :Aggiorna Z.Event_Transport_Rail_date (BOL match);
+    :Aggiorna Z.Event_Transport_Rail_Depot (BOL match);
+endif
+
+if (EventType IN ('ICO', 'ISTR', 'IPO', 'ISTF', 'RRC')) then
+    :Aggiorna Z.Event_Transport_track;
+    :Aggiorna Z.Event_Transport_track_date;
+    :Aggiorna Z.Event_Transport_track_Depot;
+endif
+
+end
+@enduml
