@@ -41,6 +41,7 @@ jobs:
           echo "Cleaning up old PNG files in output directories..."
           rm -rf DCC_Trasporti_H/PNG/*.png
           rm -rf DCC_XBooking/PNG/*.png
+          rm -rf DCC_Trasporti_Live/PNG/*.png
           echo "Old PNG files removed."
 
       # Step 6: Render all PlantUML Diagrams
@@ -48,9 +49,10 @@ jobs:
         run: |
           mkdir -p DCC_Trasporti_H/PNG
           mkdir -p DCC_XBooking/PNG
+          mkdir -p DCC_Trasporti_Live/PNG
 
-          echo "Rendering all PlantUML files in DCC_Trasporti_H/ and DCC_XBooking/ directories..."
-          for dir in DCC_Trasporti_H DCC_XBooking; do
+          echo "Rendering all PlantUML files in directories..."
+          for dir in DCC_Trasporti_H DCC_XBooking DCC_Trasporti_Live; do
             for file in $dir/*.puml; do
               [ -f "$file" ] || continue  # Skip if no .puml files exist
               echo "Processing $file"
@@ -66,16 +68,18 @@ jobs:
           echo "Listing generated files in output directories:"
           ls -l DCC_Trasporti_H/
           ls -l DCC_XBooking/
+          ls -l DCC_Trasporti_Live/
 
       # Step 7: Move and Rename PNG files
       - name: Move and Rename PNG files
         run: |
-          echo "Ensuring PNG directories exist inside both folders"
+          echo "Ensuring PNG directories exist inside all folders"
           mkdir -p DCC_Trasporti_H/PNG
           mkdir -p DCC_XBooking/PNG
+          mkdir -p DCC_Trasporti_Live/PNG
           
           echo "Moving and renaming all PNG files"
-          for dir in DCC_Trasporti_H DCC_XBooking; do
+          for dir in DCC_Trasporti_H DCC_XBooking DCC_Trasporti_Live; do
             for file in $dir/*.png; do
               [ -f "$file" ] || continue  # Skip if no PNG exists
               base_name=$(basename "$file")
@@ -86,6 +90,7 @@ jobs:
           echo "Updated PNG files in PNG directories:"
           ls -l DCC_Trasporti_H/PNG/
           ls -l DCC_XBooking/PNG/
+          ls -l DCC_Trasporti_Live/PNG/
 
       # Step 8: Commit and Push all updated PNG files
       - name: Commit and Push all updated PNG files
@@ -93,7 +98,23 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Add all PNG files from both folders
-          git add -f DCC_Trasporti_H/PNG/img_*.png
-          git add -f DCC_XBooking/PNG/img_*.png
+          # Add PNG files only if they exist
+          if ls DCC_Trasporti_H/PNG/img_*.png 1> /dev/null 2>&1; then
+            git add -f DCC_Trasporti_H/PNG/img_*.png
+          fi
 
+          if ls DCC_XBooking/PNG/img_*.png 1> /dev/null 2>&1; then
+            git add -f DCC_XBooking/PNG/img_*.png
+          fi
+
+          if ls DCC_Trasporti_Live/PNG/img_*.png 1> /dev/null 2>&1; then
+            git add -f DCC_Trasporti_Live/PNG/img_*.png
+          fi
+
+          # Commit and push if there are changes
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update PlantUML-generated PNGs"
+            git push
+          fi
