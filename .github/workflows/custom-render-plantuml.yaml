@@ -42,6 +42,7 @@ jobs:
           rm -rf DCC_Trasporti_H/PNG/*.png
           rm -rf DCC_XBooking/PNG/*.png
           rm -rf DCC_Trasporti_Live/PNG/*.png
+          rm -rf Accounting_Cube/PNG/*.png
           echo "Old PNG files removed."
 
       # Step 6: Render all PlantUML Diagrams
@@ -50,9 +51,10 @@ jobs:
           mkdir -p DCC_Trasporti_H/PNG
           mkdir -p DCC_XBooking/PNG
           mkdir -p DCC_Trasporti_Live/PNG
+          mkdir -p Accounting_Cube/PNG
 
           echo "Rendering all PlantUML files in directories..."
-          for dir in DCC_Trasporti_H DCC_XBooking DCC_Trasporti_Live; do
+          for dir in DCC_Trasporti_H DCC_XBooking DCC_Trasporti_Live Accounting_Cube; do
             for file in $dir/*.puml; do
               [ -f "$file" ] || continue  # Skip if no .puml files exist
               echo "Processing $file"
@@ -69,6 +71,7 @@ jobs:
           ls -l DCC_Trasporti_H/
           ls -l DCC_XBooking/
           ls -l DCC_Trasporti_Live/
+          ls -l Accounting_Cube/
 
       # Step 7: Move and Rename PNG files
       - name: Move and Rename PNG files
@@ -77,9 +80,10 @@ jobs:
           mkdir -p DCC_Trasporti_H/PNG
           mkdir -p DCC_XBooking/PNG
           mkdir -p DCC_Trasporti_Live/PNG
+          mkdir -p Accounting_Cube/PNG
           
           echo "Moving and renaming all PNG files"
-          for dir in DCC_Trasporti_H DCC_XBooking DCC_Trasporti_Live; do
+          for dir in DCC_Trasporti_H DCC_XBooking DCC_Trasporti_Live Accounting_Cube; do
             for file in $dir/*.png; do
               [ -f "$file" ] || continue  # Skip if no PNG exists
               base_name=$(basename "$file")
@@ -91,6 +95,7 @@ jobs:
           ls -l DCC_Trasporti_H/PNG/
           ls -l DCC_XBooking/PNG/
           ls -l DCC_Trasporti_Live/PNG/
+          ls -l Accounting_Cube/PNG/
 
       # Step 8: Commit and Push all updated PNG files
       - name: Commit and Push all updated PNG files
@@ -109,6 +114,10 @@ jobs:
 
           if ls DCC_Trasporti_Live/PNG/img_*.png 1> /dev/null 2>&1; then
             git add -f DCC_Trasporti_Live/PNG/img_*.png
+          fi
+          
+          if ls Accounting_Cube/PNG/img_*.png 1> /dev/null 2>&1; then
+            git add -f Accounting_Cube/PNG/img_*.png
           fi
 
           # Commit and push if there are changes
