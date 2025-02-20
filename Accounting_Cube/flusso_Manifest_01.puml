@@ -1,0 +1,107 @@
+@startuml
+skinparam direction top to bottom
+skinparam packageStyle rectangle
+skinparam arrowColor #blue
+
+package "Stored Procedure" {
+  entity "dbo_ACC_SP_MANIFEST_ReBuildCache" {
+    + LOADED_STARTDATE : DATE
+    + LOADED_ENDDATE : DATE
+  }
+}
+
+package "Tabelle Coinvolte" {
+  entity "dbo_ACC_Manifest_Charges" {
+    + AD_ACC_Invoice_id
+    + ACC_Invoice_Detail_id
+    + Invoice_Type
+    + Invoice_Number
+    + Bill_Of_Lading
+    + Debit_Credit
+    + Charge_Name
+    + Charge_DTX_Code
+    + Result_Standard_LocalCurrency
+    + Result_Manifest_LocalCurrency
+    + GVA_Amount
+    + Result_Standard
+    + Local_Currency
+    + Currency
+    + Invoice_Currency
+    + Exchange_Rate
+    + ExRateDesc
+    + Original_Date
+    + Credit_Date
+    + Doc_Date
+    + Loaded_Date
+    + On_Board_Date
+    + Locked_Date
+    + Mnfst_Approved_Date
+    + DTX_File_Name
+    + Processed
+    + POL
+    + POLUN
+    + POD
+    + PODUN
+    + Vessel_Name
+    + Voyage
+    + Port
+    + UNCode
+    + Local_VPC_Date
+    + Accounting_VPC_Date
+    + Accounting_Arrival_Date
+    + Accounting_Departure_Date
+    + Accounting_Type
+  }
+
+  entity "dbo_ACC_Manifest_Charges_temp" {
+    + stesse_colonne_di_ACC_Manifest_Charges
+  }
+
+  entity "tempdb_TMP_Ctr" {
+    + Cargo_Shipment_Container_id
+    + Bill_Of_Lading_id
+    + TEU
+  }
+
+  entity "dbo_DB_Param" {
+    + Name
+    + dtValue
+  }
+}
+
+package "Function Table" {
+  entity "LeNavi_LOCAL_ACC_FNTB_Manifest_Charges" {
+    + LOADED_STARTDATE
+    + LOADED_ENDDATE
+  }
+  entity "interlink_DFeed90_FNTB_Charge" {
+    + Parametro_0
+    + Parametro_NULL
+  }
+  entity "interlink_DFeed90_FNTB_Booking_BL_CSC" {
+    + Parametro_1
+    + Parametro_NULL
+  }
+  entity "Interlink_DFeed90_FNTB_AssocDocCompany_BusinessEntity" {
+    + Parametro_NULL
+  }
+  entity "PBI_Charge_Active" {
+    + ChgDef_Id
+  }
+  entity "LeNavi_LOCAL_PBI_Customer" {
+    + Company_Address_ID
+  }
+}
+
+"dbo_ACC_SP_MANIFEST_ReBuildCache" --> "dbo_ACC_Manifest_Charges_temp" : INSERT INTO
+"dbo_ACC_SP_MANIFEST_ReBuildCache" --> "dbo_ACC_Manifest_Charges" : INSERT INTO
+"dbo_ACC_SP_MANIFEST_ReBuildCache" --> "dbo_DB_Param" : UPDATE
+"dbo_ACC_Manifest_Charges_temp" --> "LeNavi_LOCAL_ACC_FNTB_Manifest_Charges" : SELECT FROM
+"dbo_ACC_Manifest_Charges_temp" --> "interlink_DFeed90_FNTB_Charge" : JOIN ON
+"dbo_ACC_Manifest_Charges_temp" --> "interlink_DFeed90_FNTB_Booking_BL_CSC" : JOIN ON
+"dbo_ACC_Manifest_Charges_temp" --> "Interlink_DFeed90_FNTB_AssocDocCompany_BusinessEntity" : JOIN ON
+"dbo_ACC_Manifest_Charges_temp" --> "PBI_Charge_Active" : JOIN ON
+"dbo_ACC_Manifest_Charges_temp" --> "LeNavi_LOCAL_PBI_Customer" : JOIN ON
+"dbo_ACC_SP_MANIFEST_ReBuildCache" --> "tempdb_TMP_Ctr" : SELECT INTO
+
+@enduml

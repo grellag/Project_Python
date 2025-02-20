@@ -1,0 +1,71 @@
+@startuml
+skinparam direction top to bottom
+skinparam packageStyle rectangle
+skinparam arrowColor #blue
+
+package "Stored Procedure" {
+  entity "[dbo_ACC_SP_MANIFEST_ReBuildCache]" {
+    + @LOADED_STARTDATE : DATE
+    + @LOADED_ENDDATE : DATE
+  }
+}
+
+package "Tabelle Coinvolte" {
+  entity "[dbo_ACC_Manifest_Charges]" {
+    + AD_ACC_Invoice_id
+    + ACC_Invoice_Detail_id
+    + Invoice_Type
+    + Invoice_Number
+    + Bill_Of_Lading
+    + Debit_Credit
+  }
+
+  entity "[dbo_ACC_Manifest_Charges_temp]" {
+    + (stesse colonne di ACC_Manifest_Charges)
+  }
+
+  entity "[tempdb_TMP_Ctr]" {
+    + Cargo_Shipment_Container_id
+    + Bill_Of_Lading_id
+    + TEU
+  }
+
+  entity "[dbo_DB_Param]" {
+    + Name
+    + dtValue
+  }
+}
+
+package "Function Table" {
+  entity "[LeNavi_LOCAL_ACC_FNTB_Manifest_Charges]" {
+    + (Parametri: @LOADED_STARTDATE, @LOADED_ENDDATE)
+  }
+  entity "[interlink_DFeed90_FNTB_Charge]" {
+    + (Parametri: 0, NULL)
+  }
+  entity "[interlink_DFeed90_FNTB_Booking_BL_CSC]" {
+    + (Parametri: 1, NULL)
+  }
+  entity "[Interlink_DFeed90_FNTB_AssocDocCompany_BusinessEntity]" {
+    + (Parametri: NULL)
+  }
+  entity "[PBI_Charge_Active]" {
+    + ChgDef_Id
+  }
+  entity "[LeNavi_LOCAL_PBI_Customer]" {
+    + Company_Address_ID
+  }
+}
+
+"[dbo_ACC_SP_MANIFEST_ReBuildCache]" --> "[dbo_ACC_Manifest_Charges_temp]" : INSERT INTO
+"[dbo_ACC_SP_MANIFEST_ReBuildCache]" --> "[dbo_ACC_Manifest_Charges]" : INSERT INTO
+"[dbo_ACC_SP_MANIFEST_ReBuildCache]" --> "[dbo_DB_Param]" : UPDATE
+"[dbo_ACC_Manifest_Charges_temp]" --> "[LeNavi_LOCAL_ACC_FNTB_Manifest_Charges]" : SELECT FROM
+"[dbo_ACC_Manifest_Charges_temp]" --> "[interlink_DFeed90_FNTB_Charge]" : JOIN ON
+"[dbo_ACC_Manifest_Charges_temp]" --> "[interlink_DFeed90_FNTB_Booking_BL_CSC]" : JOIN ON
+"[dbo_ACC_Manifest_Charges_temp]" --> "[Interlink_DFeed90_FNTB_AssocDocCompany_BusinessEntity]" : JOIN ON
+"[dbo_ACC_Manifest_Charges_temp]" --> "[PBI_Charge_Active]" : JOIN ON
+"[dbo_ACC_Manifest_Charges_temp]" --> "[LeNavi_LOCAL_PBI_Customer]" : JOIN ON
+"[dbo_ACC_SP_MANIFEST_ReBuildCache]" --> "[tempdb_TMP_Ctr]" : SELECT INTO
+
+@enduml

@@ -1,0 +1,164 @@
+@startuml
+skinparam direction top to bottom
+skinparam packageStyle rectangle
+skinparam arrowColor #blue
+skinparam classAttributeIconSize 0
+
+package "Stored Procedure" {
+  entity "[dbo_ACC_SP_MANIFEST_ReBuildCache]" {
+    + @LOADED_STARTDATE : DATE
+    + @LOADED_ENDDATE : DATE
+  }
+}
+
+package "Function Table Principale" {
+  entity "[dbo_ACC_FNTB_Manifest_Charges]" {
+    + AD_ACC_Invoice_id
+    + ACC_Invoice_Detail_id
+    + Invoice_Type
+    + Invoice_Number
+    + I_E
+    + Bill_Of_Lading
+    + Debit_Credit
+    + Charge_Name
+    + Charge_DTX_Code
+    + Result_Standard_LocalCurrency
+    + Result_Manifest_LocalCurrency
+    + GVA_Amount
+    + Result_Standard
+    + Local_Currency
+    + Currency
+    + Invoice_Currency
+    + Exchange_Rate
+    + ExRateDesc
+    + Original_Date
+    + Credit_Date
+    + Doc_Date
+    + Loaded_Date
+    + On_Board_Date
+    + Locked_Date
+    + Mnfst_Approved_Date
+    + DTX_File_Name
+    + Processed
+    + POL
+    + POLUN
+    + POD
+    + PODUN
+    + Vessel_Name
+    + Voyage
+    + Port
+    + UNCode
+    + Local_VPC_Date
+    + Accounting_VPC_Date
+    + Accounting_Arrival_Date
+    + Accounting_Departure_Date
+    + Accounting_Type
+    + SAP_ExportHeader_id
+    + Note_id
+    + Note_Created_Date
+    + GVA_Cr_Db_Note_Sent_Date
+    + Note_Number
+    + Note_Seq
+    + NoteType_Abbrev
+    + Note_Total_Amount
+    + Paid_At
+    + Paid_At_UNCode
+    + MC_Seq_Number
+    + Include_In_Manifest_And_DTX
+    + Invoice_Company_Name
+    + Invoice_Company_Code
+    + Invoice_Company_Accounting_Code
+    + Bill_Of_Lading_id
+    + Voyage_Port_Call_id
+    + Invoice_Company_Address_id
+    + Invoice_Company_ID
+    + Note_Printed_By_User_id
+    + Approved_Period
+    + Original_Period
+    + Available_Period
+    + Loaded_Period
+    + VPC_Period
+    + Units
+    + Unit_Type
+    + Container_Number
+    + Container_ISO_Code
+    + Office
+    + Accounting
+    + Issued_By
+    + Charge_Applicable_At
+    + Payment_Type
+    + Service_Contract
+    + GVA_DocService
+    + Elsewhere_at
+    + Amount_Paid
+    + Currency_Paid
+    + Service
+    + ChgDef_id
+    + Trade
+    + EQ_Type
+    + EQ_Length
+    + TEU
+    + Charge_id
+    + Charge_Type
+    + SAP_CHARGE_CODE
+    + SAP_Customer_Code
+    + Cargo_Shipment_id
+    + Cargo_Shipment_Container_id
+  }
+}
+
+package "Tabelle Coinvolte" {
+  entity "[dbo_ACC_Manifest_Charges]" {
+    + (stesse colonne di ACC_FNTB_Manifest_Charges)
+  }
+
+  entity "[dbo_ACC_Manifest_Charges_temp]" {
+    + (stesse colonne di ACC_FNTB_Manifest_Charges)
+  }
+
+  entity "[tempdb_TMP_Ctr]" {
+    + Cargo_Shipment_Container_id
+    + Bill_Of_Lading_id
+    + TEU
+  }
+
+  entity "[dbo_DB_Param]" {
+    + Name
+    + dtValue
+  }
+}
+
+package "Function Table" {
+  entity "[LeNavi_LOCAL_ACC_FNTB_Manifest_Charges]" {
+    + (Parametri: @LOADED_STARTDATE, @LOADED_ENDDATE)
+  }
+  entity "[interlink_DFeed90_FNTB_Charge]" {
+    + (Parametri: 0, NULL)
+  }
+  entity "[interlink_DFeed90_FNTB_Booking_BL_CSC]" {
+    + (Parametri: 1, NULL)
+  }
+  entity "[Interlink_DFeed90_FNTB_AssocDocCompany_BusinessEntity]" {
+    + (Parametri: NULL)
+  }
+  entity "[PBI_Charge_Active]" {
+    + ChgDef_Id
+  }
+  entity "[LeNavi_LOCAL_PBI_Customer]" {
+    + Company_Address_ID
+  }
+}
+
+"[dbo_ACC_SP_MANIFEST_ReBuildCache]" --> "[dbo_ACC_FNTB_Manifest_Charges]" : SELECT FROM
+"[dbo_ACC_FNTB_Manifest_Charges]" --> "[dbo_ACC_Manifest_Charges_temp]" : INSERT INTO
+"[dbo_ACC_SP_MANIFEST_ReBuildCache]" --> "[dbo_ACC_Manifest_Charges]" : INSERT INTO
+"[dbo_ACC_SP_MANIFEST_ReBuildCache]" --> "[dbo_DB_Param]" : UPDATE
+"[dbo_ACC_Manifest_Charges_temp]" --> "[LeNavi_LOCAL_ACC_FNTB_Manifest_Charges]" : SELECT FROM
+"[dbo_ACC_Manifest_Charges_temp]" --> "[interlink_DFeed90_FNTB_Charge]" : JOIN ON
+"[dbo_ACC_Manifest_Charges_temp]" --> "[interlink_DFeed90_FNTB_Booking_BL_CSC]" : JOIN ON
+"[dbo_ACC_Manifest_Charges_temp]" --> "[Interlink_DFeed90_FNTB_AssocDocCompany_BusinessEntity]" : JOIN ON
+"[dbo_ACC_Manifest_Charges_temp]" --> "[PBI_Charge_Active]" : JOIN ON
+"[dbo_ACC_Manifest_Charges_temp]" --> "[LeNavi_LOCAL_PBI_Customer]" : JOIN ON
+"[dbo_ACC_SP_MANIFEST_ReBuildCache]" --> "[tempdb_TMP_Ctr]" : SELECT INTO
+
+@enduml
