@@ -1,0 +1,64 @@
+@startuml
+
+title Relazione UPDATE: Charges <---> CTE_BL (FNTB_Booking_BL)
+
+' Entità che rappresenta la tabella Charges
+entity "Charges (Z)" as Charges {
+  + Bill_Of_Lading_id : int
+  + Cargo_Shipment_Container_id : int?
+  ...
+  --
+  [Shipment Status] : varchar
+  [Collection Office Code] : varchar
+  [Release Office Code] : varchar
+  [Service Contract] : varchar
+  [S/C Type] : char
+  [Service] : varchar
+  [Trade] : varchar
+  [Shipment Type] : varchar
+  [Is Intermodal For Merchant Acct] : bit
+  [Shipment Method] : varchar
+  [Arrival Date] : datetime
+  [Departure Date] : datetime
+  [Accounting VPC Date] : date
+  [GVA DocService] : varchar
+  [Local_Port_id] : int
+  [Remote_Port_id] : int
+  [Local_Location_id] : int
+  [Remote_Location_id] : int
+  cargo_shipment_id : int
+}
+
+' Entità che rappresenta la CTE BL (deriva da FNTB_Booking_BL)
+entity "CTE_BL (CSC)" as CTE_BL {
+  + Bill_Of_Lading_id : int
+  + BL_Canceled : bit
+  + Mnfst_Approved_Date : datetime?
+  + Mnfst_Finalized_Date : datetime?
+  + Locked_Date : datetime?
+  + BL_Create_Date : datetime?
+  + Status : char
+  + SC_Type : char
+  + Export_Shipment : bit
+  + Service_Contract : varchar
+  + Shipment_Type : varchar
+  + Intermodal_For_Merchant_Acct : bit
+  + Shipment_Method : varchar
+  + Arrival_DateTime : datetime
+  + Departure_DateTime : datetime
+  + Accounting_VPC_Date : date
+  + GVA_DocService : varchar
+  + POL_id : int
+  + POD_id : int
+  + Origin_Location_id : int
+  + FDest_Location_id : int
+  + POLLoc_id : int
+  + PODLoc_id : int
+  + cargo_shipment_id : int
+  ...
+}
+
+' Relazione: la CTE (CTE_BL) si unisce a Charges attraverso Bill_Of_Lading_id
+Charges }o--|| CTE_BL : Bill_Of_Lading_id
+
+@enduml
